@@ -1,0 +1,130 @@
+# 네이버 블로그 검색으로 회차별 방문 식당(상호명/주소/좌표) 후보를 찾는 스크립트
+import html as ihtml
+import json
+import re
+import time
+
+import requests
+
+CANDIDATE_SLEEP_SEC = 0.5
+
+HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/120.0 Safari/537.36"
+    )
+}
+
+BLOG_LINK_RE = re.compile(r"blog\.naver\.com/([a-zA-Z0-9_\-]+)/(\d+)")
+MAP_MODULE_RE = re.compile(r"data-module='(\{\"type\":\"v2_map\".*?\})'")
+
+
+def search_blog_candidates(query: str, session: requests.Session, limit: int = 6) -> list[tuple[str, str]]:
+    """네이버 블로그 검색 결과 페이지에서 (blogId, logNo) 후보 목록을 순서대로, 중복 없이 반환."""
+    resp = session.get(
+        "https://search.naver.com/search.naver",
+        params={"where": "blog", "query": query},
+        headers=HEADERS,
+        timeout=15,
+    )
+    resp.raise_for_status()
+
+    seen = set()
+    candidates = []
+    for m in BLOG_LINK_RE.finditer(resp.text):
+        key = (m.group(1), m.group(2))
+        if key in seen:
+            continue
+        seen.add(key)
+        candidates.append(key)
+        if len(candidates) >= limit:
+            break
+    return candidates
+
+
+def fetch_post(blog_id: str, log_no: str, session: requests.Session) -> tuple[str, list[dict]]:
+    """PostView.naver에서 og:title과 장소(v2_map) 위젯 목록을 추출."""
+    resp = session.get(
+        "https://blog.naver.com/PostView.naver",
+        params={"blogId": blog_id, "logNo": log_no},
+        headers=HEADERS,
+        timeout=15,
+    )
+    resp.raise_for_status()
+    content = resp.text
+
+    title_m = re.search(r'<meta property="og:title" content="([^"]*)"', content)
+    title = ihtml.unescape(title_m.group(1)) if title_m else ""
+
+    places = []
+    seen_ids = set()
+    for m in MAP_MODULE_RE.finditer(content):
+        raw = ihtml.unescape(m.group(1))
+        try:
+            obj = json.loads(raw)
+        except json.JSONDecodeError:
+            continue
+        for pl in obj.get("data", {}).get("places", []):
+            place_id = pl.get("placeId")
+            if place_id in seen_ids:
+                continue
+            seen_ids.add(place_id)
+            latlng = pl.get("latlng") or {}
+            places.append(
+                {
+                    "name": pl.get("name"),
+                    "address": pl.get("address"),
+                    "tel": pl.get("tel") or None,
+                    "lat": latlng.get("latitude"),
+                    "lng": latlng.get("longitude"),
+                    "place_id": place_id,
+                }
+            )
+    return title, places
+
+
+# 오래된 회차는 블로그 제목에 "OOO회"가 다시 언급되지 않는 경우가 많아, 방송 제목에 나온
+# 지역/게스트 등 키워드가 겹치는지도 함께 확인한다 (실측: "200회 여의도 소풍 밥상" 사례에서
+# "200회" 문자열은 없지만 "여의도"는 블로그 제목에 그대로 있었음).
+STOPWORDS = {"백반기행", "허영만", "식객", "밥상", "나들이", "특집", "맛집", "기행", "여행"}
+
+
+def extract_keywords(episode_title: str) -> list[str]:
+    tokens = re.findall(r"[가-힣]{2,}", episode_title or "")
+    return [t for t in tokens if t not in STOPWORDS]
+
+
+def title_matches_episode(post_title: str, episode: int, keywords: list[str]) -> bool:
+    if "백반기행" not in post_title:
+        return False
+    if f"{episode}회" in post_title:
+        return True
+    return any(kw in post_title for kw in keywords)
+
+
+def find_restaurants_for_episode(
+    episode: int, episode_title: str, session: requests.Session
+) -> tuple[list[dict], str | None]:
+    """회차 번호+제목으로 네이버 블로그를 검색해 장소 위젯이 있는 첫 후보를 채택.
+
+    반환값: (식당 목록, 근거 블로그 URL). 못 찾으면 ([], None).
+    """
+    keywords = extract_keywords(episode_title)
+    query = f"허영만의 백반기행 {episode}회"
+    try:
+        candidates = search_blog_candidates(query, session)
+    except requests.RequestException:
+        return [], None
+
+    for blog_id, log_no in candidates:
+        time.sleep(CANDIDATE_SLEEP_SEC)
+        try:
+            post_title, places = fetch_post(blog_id, log_no, session)
+        except requests.RequestException:
+            continue
+        if not title_matches_episode(post_title, episode, keywords):
+            continue
+        if places:
+            return places, f"https://blog.naver.com/{blog_id}/{log_no}"
+
+    return [], None
