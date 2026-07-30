@@ -15,11 +15,19 @@ const forkIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
 
 let episodes = [];
 
-// 임시 관리자 게이트: 백엔드 인증 API가 생기기 전까지 클라이언트에서만 확인하는 방식이라
-// 브라우저 개발자도구로 우회 가능함 — 진짜 보안이 아니라 편집 UI 노출을 막는 용도일 뿐.
-// api/auth.js 연동 시 이 방식은 제거하고 서버 인증으로 교체할 것.
-const ADMIN_PASSCODE = 'baekban2026';
-let editing = localStorage.getItem('foodtrip_editing') === '1';
+function getAdminToken() {
+  const token = localStorage.getItem('foodtrip_admin_token');
+  const expiresAt = Number(localStorage.getItem('foodtrip_admin_expires') || 0);
+  if (!token || Date.now() > expiresAt) return null;
+  return token;
+}
+
+function clearAdminSession() {
+  localStorage.removeItem('foodtrip_admin_token');
+  localStorage.removeItem('foodtrip_admin_expires');
+}
+
+let editing = Boolean(getAdminToken());
 
 function truncateAddress(addr) {
   if (!addr) return null;
@@ -45,9 +53,18 @@ function mapSearchUrl(query) {
 }
 
 async function loadEpisodes() {
-  const res = await fetch(DATA_URL);
-  if (!res.ok) throw new Error(`데이터를 불러오지 못했습니다 (${res.status})`);
-  episodes = await res.json();
+  try {
+    const res = await fetch('/api/episodes');
+    if (res.ok) {
+      episodes = await res.json();
+      return;
+    }
+  } catch (err) {
+    // /api 서버리스 함수가 없는 환경(로컬 정적 서버 등) — 정적 스냅샷으로 폴백
+  }
+  const fallback = await fetch(DATA_URL);
+  if (!fallback.ok) throw new Error(`데이터를 불러오지 못했습니다 (${fallback.status})`);
+  episodes = await fallback.json();
 }
 
 function matchesSearch(ep, query) {
@@ -145,14 +162,41 @@ function restaurantViewRow(r) {
   `;
 }
 
+// 전화/좌표/placeId는 편집 폼에 입력칸이 없으므로, 주소를 안 건드리면 기존 값을 그대로
+// 보존하기 위해 원본 데이터를 행에 함께 담아둔다 (저장 시 restoreGeoIfUnchanged에서 사용).
 function restaurantEditRow(r, idx) {
+  const origB64 = btoa(unescape(encodeURIComponent(JSON.stringify(r || {}))));
   return `
-    <div class="restaurant-edit-row" data-idx="${idx}">
+    <div class="restaurant-edit-row" data-idx="${idx}" data-orig="${origB64}">
       <label>식당명 <input type="text" class="r-name" value="${escapeHtml(r.name)}"></label>
       <label>주소 <input type="text" class="r-addr" value="${escapeHtml(r.address)}"></label>
       <button type="button" class="spot-remove-btn">삭제</button>
     </div>
   `;
+}
+
+function collectRestaurantRows(container) {
+  return Array.from(container.querySelectorAll('.restaurant-edit-row'))
+    .map((row) => {
+      const name = row.querySelector('.r-name').value.trim();
+      const address = row.querySelector('.r-addr').value.trim();
+      let orig = {};
+      try {
+        orig = JSON.parse(decodeURIComponent(escape(atob(row.dataset.orig || ''))));
+      } catch (err) {
+        orig = {};
+      }
+      const addressUnchanged = Boolean(orig.address) && orig.address === address;
+      return {
+        name,
+        address,
+        tel: addressUnchanged ? orig.tel ?? null : null,
+        lat: addressUnchanged ? orig.lat ?? null : null,
+        lng: addressUnchanged ? orig.lng ?? null : null,
+        place_id: addressUnchanged ? orig.place_id ?? null : null,
+      };
+    })
+    .filter((r) => r.name);
 }
 
 function renderDetail(epNum) {
@@ -204,7 +248,7 @@ function renderDetail(epNum) {
             <button type="submit" class="btn-save">저장</button>
             <button type="button" class="btn-cancel" id="spotCancelBtn">취소</button>
           </div>
-          <p class="spot-note">※ 저장 기능은 관리자 인증 API 연동 후 활성화됩니다. 지금은 화면 동작만 확인할 수 있습니다.</p>
+          <p class="spot-note">※ 전화번호·좌표는 이 화면에서 직접 수정할 수 없습니다. 주소를 바꾸면 기존 좌표 정보는 초기화됩니다.</p>
         </form>
       </div>
 
@@ -242,9 +286,46 @@ function renderDetail(epNum) {
     if (!e.target.classList.contains('spot-remove-btn')) return;
     e.target.closest('.restaurant-edit-row').remove();
   });
-  spotEditForm.addEventListener('submit', (e) => {
+  spotEditForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    alert('저장 기능은 관리자 인증 API 연동 후 사용할 수 있습니다.');
+    const token = getAdminToken();
+    if (!token) {
+      alert('로그인이 만료되었습니다. 편집 모드를 다시 켜주세요.');
+      setEditing(false);
+      return;
+    }
+
+    const restaurants = collectRestaurantRows(restaurantRows);
+    const saveBtn = spotEditForm.querySelector('.btn-save');
+    saveBtn.disabled = true;
+    saveBtn.textContent = '저장 중...';
+
+    try {
+      const res = await fetch(`/api/episodes/${ep.episode}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ restaurants, verified: true }),
+      });
+      const data = await res.json();
+      if (res.status === 401) {
+        clearAdminSession();
+        setEditing(false);
+        alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
+        renderDetail(ep.episode);
+        return;
+      }
+      if (!res.ok) {
+        alert(data.error || '저장에 실패했습니다.');
+        return;
+      }
+      Object.assign(ep, data);
+      renderDetail(ep.episode);
+    } catch (err) {
+      alert('서버에 연결할 수 없습니다. 배포된 사이트에서만 저장할 수 있습니다.');
+    } finally {
+      saveBtn.disabled = false;
+      saveBtn.textContent = '저장';
+    }
   });
 }
 
@@ -280,7 +361,6 @@ grid.addEventListener('keydown', (e) => {
 
 function setEditing(value) {
   editing = value;
-  localStorage.setItem('foodtrip_editing', editing ? '1' : '0');
   editToggle.classList.toggle('active', editing);
   grid.classList.toggle('editing', editing);
 }
@@ -288,18 +368,32 @@ function setEditing(value) {
 window.addEventListener('hashchange', route);
 searchInput.addEventListener('input', () => { if (!listView.hidden) renderList(); });
 sortSelect.addEventListener('change', () => { if (!listView.hidden) renderList(); });
-editToggle.addEventListener('click', () => {
+editToggle.addEventListener('click', async () => {
   if (editing) {
+    clearAdminSession();
     setEditing(false);
     return;
   }
   const input = prompt('관리자 비밀번호를 입력하세요');
   if (input === null) return;
-  if (input !== ADMIN_PASSCODE) {
-    alert('비밀번호가 올바르지 않습니다.');
-    return;
+
+  try {
+    const res = await fetch('/api/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: input }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || '로그인에 실패했습니다.');
+      return;
+    }
+    localStorage.setItem('foodtrip_admin_token', data.token);
+    localStorage.setItem('foodtrip_admin_expires', String(data.expiresAt));
+    setEditing(true);
+  } catch (err) {
+    alert('서버에 연결할 수 없습니다. 배포된 사이트에서만 로그인할 수 있습니다.');
   }
-  setEditing(true);
 });
 
 setEditing(editing);

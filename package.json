@@ -1,0 +1,9 @@
+{
+  "name": "baekban-foodtrip",
+  "private": true,
+  "version": "1.0.0",
+  "description": "허영만의 백반기행 회차 아카이브 (정적 프론트엔드 + Vercel Serverless API)",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.4"
+  }
+}

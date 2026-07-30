@@ -1,14 +1,15 @@
 # 백반기행 웹페이지 구축 체크리스트
 
 ## 0단계: 2026-07-30 추가 범위 (식당명/주소 + 지도 링크 + 편집 기능)
-- [ ] Supabase 프로젝트 생성, `episodes` 테이블 스키마 설계(회차정보 + 식당명/주소 + 검수여부 + 수정이력) — 사용자 계정 필요, 미착수
 - [x] 지역 추정 스크립트: 제목 텍스트 → 사전 매칭으로 지역 후보 추출 (`crawler/regions.py`, 신뢰도 낮음을 "미검수" 배지로 표시)
-- [x] 네이버 블로그 검색 기반 식당명/주소/좌표 수집 (`crawler/naver_place.py`, `enrich_naver.py`) — 352건 중 220건(482곳) 확보, 상세는 context-notes.md 참고
-- [ ] `api/episodes.js` (GET), `api/episodes/[id].js` (PUT) 서버리스 함수 작성 — DB 연결 후 진행
-- [ ] `api/auth.js` 관리자 비밀번호 인증 및 토큰 발급 — DB 연결 후 진행
-- [x] 프론트 편집 모드 UI (비밀번호 입력은 아직 없음 → 지금은 폼만 동작, 저장 시 "API 연동 후 활성화" 안내, 식당 여러 곳 추가/삭제 지원)
+- [x] 네이버 블로그 검색 기반 식당명/주소/좌표 수집 (`crawler/naver_place.py`, `enrich_naver.py`) — 352건 중 212건(456곳) 확보(오매칭 8건 발견·수정 후 수치), 상세는 context-notes.md 참고
+- [x] `supabase/migrations/0001_init.sql` 스키마 작성 — **Supabase 프로젝트 자체는 사용자 계정 필요, 아직 생성 안 됨**
+- [x] `api/episodes.js` (GET), `api/episodes/[id].js` (GET/PUT) 서버리스 함수 작성 + mock Supabase로 로직 검증
+- [x] `api/auth.js` 관리자 비밀번호 인증 및 토큰 발급 (HMAC 서명, 세션 테이블 없이 상태 없는 검증) + 단위테스트 통과
+- [x] `crawler/seed_supabase.py` 최초 데이터 적재 스크립트 작성 — **실행은 Supabase 프로젝트 생성 후**
+- [x] 프론트 편집 모드 UI — 이제 실제 `/api/auth`·`/api/episodes/:id` PUT을 호출하도록 연결 (API 없는 로컬 환경에서는 정적 JSON 폴백 + 로그인 실패 메시지)
 - [x] 네이버맵 링크 생성 로직 — placeId 있으면 정확한 장소 페이지로, 없으면 `식당명 + 주소` 검색으로 연결
-- [ ] 편집 API에 최소 rate limit 적용 — API 작성 시 함께 진행
+- [ ] 편집 API rate limit — 외부 상태 저장소 없이는 구현이 번거로워 보류 (알려진 한계)
 
 ## 1단계: 크롤러
 - [x] `crawler/crawl.py`에 목록 페이지 파싱 로직 작성 (셀렉터: `ul.item-list.col-4.wrap > li > a.vd-link`)
@@ -47,3 +48,12 @@
 - [x] GitHub 원격 저장소 push (`ybkwon68-web/foodtrip`, main 브랜치)
 - [ ] Vercel 프로젝트 연결 (정적 사이트, output=`public/`) — 사용자 준비되면 진행
 - [ ] 배포된 URL에서 최종 동작 확인
+
+## 5단계: Supabase 연동 (사용자 계정 필요, 다음 단계)
+- [ ] Supabase 프로젝트 생성
+- [ ] `supabase/migrations/0001_init.sql` 실행 (SQL 에디터에 붙여넣기)
+- [ ] `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` 확인
+- [ ] `ADMIN_PASSWORD`(원하는 편집 비밀번호), `SESSION_SECRET`(임의의 긴 문자열) 정하기
+- [ ] `crawler/seed_supabase.py` 실행해 초기 데이터 적재
+- [ ] Vercel 프로젝트에 위 4개 환경변수 등록
+- [ ] 배포 후 실제 로그인 → 식당 정보 수정 → 저장이 반영되는지 종단 간 테스트

@@ -5,3 +5,7 @@ crawler/naver_enrich_log.txt
 .DS_Store
 ~$*.xlsx
 *.xlsx
+node_modules/
+.env
+.env.local
+.vercel/
