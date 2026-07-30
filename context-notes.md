@@ -82,3 +82,14 @@
 - `public/script.js`의 데이터 로딩과 인증을 API 우선 + 정적 스냅샷 폴백 구조로 바꿈 — 로컬에서 `python -m http.server`로만 띄워도(API 없음) 목록/상세는 그대로 보이고, 로그인/저장 버튼만 "서버에 연결할 수 없습니다" 메시지를 보여주도록 함. Playwright로 이 폴백 경로(352개 카드 정상 로드, 401/network 에러 시 UI 안 깨짐)까지 확인함.
 - rate limit(무차별 대입 방지)은 서버리스 특성상 상태를 유지할 곳이 없어(Upstash Redis 같은 별도 서비스가 필요) 이번 단계에서는 구현하지 않음 — 알려진 한계로 남겨둠.
 - **다음에 실제로 필요한 것**: 사용자가 Supabase 프로젝트를 만들고 `SUPABASE_URL`/`SUPABASE_SERVICE_ROLE_KEY`를 주면, `crawler/seed_supabase.py`로 데이터를 적재하고 `vercel dev`나 배포 환경에서 실제 종단 간 테스트(로그인 → 식당 정보 수정 → 저장 반영 확인)를 진행해야 함.
+
+## 2026-07-30 세션 종료 시점 — 다음 세션 재개 지점
+
+- 작업 내역 전부 GitHub(`ybkwon68-web/foodtrip`, main)에 커밋·push 완료, 로컬 작업 트리 깨끗함(uncommitted 변경 없음).
+- **다음에 할 일**: 사용자가 아래 3가지를 주면 바로 이어서 진행
+  1. Supabase Project URL
+  2. Supabase `service_role` 키
+  3. 편집 모드용 관리자 비밀번호(`ADMIN_PASSWORD`로 쓸 값)
+  - 받으면: `.env.local` 생성 → `supabase/migrations/0001_init.sql` 적용 → `crawler/seed_supabase.py`로 데이터 적재 → `vercel dev`(또는 실배포)로 로그인/저장 종단 간 테스트 → Vercel 프로젝트 연결 및 배포.
+- 로컬 정적 서버가 `http://localhost:8000`에서 백그라운드로 계속 돌고 있었음(세션 종료 후에는 사용자 컴퓨터 재부팅/터미널 종료 전까지 남아있을 수 있음 — 다음 세션에서 새로 띄우면 됨, 신경 안 써도 무방).
+- 미해결 이슈 없음. 체크리스트는 `checklist.md`, 아키텍처/의사결정은 `구축계획.md` 최신 상태.
