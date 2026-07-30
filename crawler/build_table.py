@@ -64,6 +64,8 @@ def main():
                         "sido": sido,
                         "sigungu": sigungu,
                         "detail_addr": detail,
+                        "address": r.get("address") or "",
+                        "place_id": r.get("place_id"),
                     }
                 )
         else:
@@ -77,6 +79,8 @@ def main():
                     "sido": sido,
                     "sigungu": sigungu,
                     "detail_addr": "",
+                    "address": "",
+                    "place_id": None,
                 }
             )
 

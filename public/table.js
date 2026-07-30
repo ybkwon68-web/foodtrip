@@ -18,16 +18,29 @@ function cell(value, extraClass) {
   return value ? `<td${cls}>${escapeHtml(value)}</td>` : `<td${cls ? cls.slice(0, -1) + ' empty-cell"' : ' class="empty-cell"'}>-</td>`;
 }
 
+// 네이버 플레이스 ID가 있으면 정확한 장소 페이지로, 없으면 이름+주소 검색으로 연결
+function mapUrl(r) {
+  if (r.place_id) {
+    return `https://map.naver.com/p/entry/place/${r.place_id}`;
+  }
+  const q = [r.restaurant_name, r.address].filter(Boolean).join(' ');
+  return `https://map.naver.com/p/search/${encodeURIComponent(q)}`;
+}
+
 function rowTemplate(r) {
+  const mapCell = r.address
+    ? `<td><a class="spot-link" href="${mapUrl(r)}" target="_blank" rel="noopener">네이버맵에서 보기 ↗</a></td>`
+    : `<td class="empty-cell">-</td>`;
   return `
     <tr>
-      <td class="col-ep">제${r.episode}회</td>
+      <td class="col-ep"><a href="./index.html#/episode/${r.episode}">제${r.episode}회</a></td>
       ${cell(r.restaurant_name, 'col-name')}
       ${cell(r.menu, 'col-menu')}
       ${cell(r.review, 'col-review')}
       ${cell(r.sido)}
       ${cell(r.sigungu)}
       ${cell(r.detail_addr, 'col-addr')}
+      ${mapCell}
     </tr>
   `;
 }
@@ -58,5 +71,5 @@ async function load() {
 tableSearch.addEventListener('input', render);
 
 load().catch((err) => {
-  tableBody.innerHTML = `<tr><td colspan="7">${escapeHtml(err.message)}</td></tr>`;
+  tableBody.innerHTML = `<tr><td colspan="8">${escapeHtml(err.message)}</td></tr>`;
 });
