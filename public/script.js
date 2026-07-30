@@ -80,7 +80,7 @@ function cardTemplate(ep) {
   let addrRow;
   if (primary) {
     const extraLabel = extra > 0 ? ` 외 ${extra}곳` : '';
-    nameRow = `<p class="spot-name">${forkIcon}${escapeHtml(primary.name)}${extraLabel}</p>`;
+    nameRow = `<p class="spot-name">${forkIcon}<span class="spot-name-text">${escapeHtml(primary.name)}${extraLabel}</span></p>`;
     const addr = truncateAddress(primary.address);
     addrRow = addr
       ? `<p class="spot-row">${pinIcon}<a href="${mapUrl(primary)}" target="_blank" rel="noopener">${escapeHtml(addr)}</a>${badge}</p>`
