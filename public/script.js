@@ -14,7 +14,12 @@ const pinIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stro
 const forkIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3v6a1.5 1.5 0 0 0 1.5 1.5h0A1.5 1.5 0 0 0 9 9V3M7.5 10.5V21M16 3c-1.66 0-3 1.79-3 5v3h3M16 11v10"></path></svg>';
 
 let episodes = [];
-let editing = false;
+
+// 임시 관리자 게이트: 백엔드 인증 API가 생기기 전까지 클라이언트에서만 확인하는 방식이라
+// 브라우저 개발자도구로 우회 가능함 — 진짜 보안이 아니라 편집 UI 노출을 막는 용도일 뿐.
+// api/auth.js 연동 시 이 방식은 제거하고 서버 인증으로 교체할 것.
+const ADMIN_PASSCODE = 'baekban2026';
+let editing = localStorage.getItem('foodtrip_editing') === '1';
 
 function truncateAddress(addr) {
   if (!addr) return null;
@@ -190,7 +195,7 @@ function renderDetail(epNum) {
         <div id="spotView">
           ${viewRows}
           ${sourceLink}
-          <div><button class="spot-edit-btn" id="spotEditBtn" type="button">식당 정보 직접 수정</button></div>
+          ${editing ? '<div><button class="spot-edit-btn" id="spotEditBtn" type="button">식당 정보 직접 수정</button></div>' : ''}
         </div>
         <form class="spot-edit-form" id="spotEditForm" hidden>
           <div id="restaurantRows">${editRows}</div>
@@ -219,10 +224,12 @@ function renderDetail(epNum) {
   const restaurantRows = document.getElementById('restaurantRows');
   const addRestaurantBtn = document.getElementById('addRestaurantBtn');
 
-  spotEditBtn.addEventListener('click', () => {
-    spotView.hidden = true;
-    spotEditForm.hidden = false;
-  });
+  if (spotEditBtn) {
+    spotEditBtn.addEventListener('click', () => {
+      spotView.hidden = true;
+      spotEditForm.hidden = false;
+    });
+  }
   spotCancelBtn.addEventListener('click', () => {
     spotView.hidden = false;
     spotEditForm.hidden = true;
@@ -271,14 +278,31 @@ grid.addEventListener('keydown', (e) => {
   goToCard(e.target.closest('.card'));
 });
 
+function setEditing(value) {
+  editing = value;
+  localStorage.setItem('foodtrip_editing', editing ? '1' : '0');
+  editToggle.classList.toggle('active', editing);
+  grid.classList.toggle('editing', editing);
+}
+
 window.addEventListener('hashchange', route);
 searchInput.addEventListener('input', () => { if (!listView.hidden) renderList(); });
 sortSelect.addEventListener('change', () => { if (!listView.hidden) renderList(); });
 editToggle.addEventListener('click', () => {
-  editing = !editing;
-  editToggle.classList.toggle('active', editing);
-  grid.classList.toggle('editing', editing);
+  if (editing) {
+    setEditing(false);
+    return;
+  }
+  const input = prompt('관리자 비밀번호를 입력하세요');
+  if (input === null) return;
+  if (input !== ADMIN_PASSCODE) {
+    alert('비밀번호가 올바르지 않습니다.');
+    return;
+  }
+  setEditing(true);
 });
+
+setEditing(editing);
 
 loadEpisodes()
   .then(route)
