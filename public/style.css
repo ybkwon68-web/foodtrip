@@ -401,10 +401,61 @@ button, input, select { font-family: inherit; }
   font-size: 14px;
 }
 
+/* 회차별 요약표 */
+.table-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 18px 28px 60px;
+}
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--paper-raised);
+}
+.ep-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.ep-table th {
+  position: sticky;
+  top: 0;
+  background: var(--paper-raised);
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  padding: 10px 14px;
+  font-weight: 700;
+  color: var(--brass);
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.ep-table td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+  color: var(--ink);
+  line-height: 1.5;
+}
+.ep-table tbody tr:hover { background: var(--accent-soft); }
+.ep-table td.col-ep {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  color: var(--brass);
+  white-space: nowrap;
+}
+.ep-table td.col-name { font-weight: 600; min-width: 130px; }
+.ep-table td.col-menu, .ep-table td.col-review { min-width: 190px; }
+.ep-table td.empty-cell { color: var(--ink-soft); }
+.ep-table td.col-addr { color: var(--ink-soft); min-width: 220px; }
+
 @media (max-width: 620px) {
   .site-header { padding: 14px 16px; }
   .grid { padding: 12px 16px 28px; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
   .detail-wrap { padding: 22px 18px 44px; }
+  .table-page { padding: 14px 16px 40px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

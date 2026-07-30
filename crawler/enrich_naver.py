@@ -20,7 +20,9 @@ def main():
     found = 0
 
     for i, ep in enumerate(episodes, 1):
-        places, source_url = find_restaurants_for_episode(ep["episode"], ep.get("title") or "", session)
+        places, source_url = find_restaurants_for_episode(
+            ep["episode"], ep.get("title") or "", session, expected_region=ep.get("region")
+        )
         ep["restaurants"] = places
         ep["restaurants_source_url"] = source_url
         ep["verified"] = False

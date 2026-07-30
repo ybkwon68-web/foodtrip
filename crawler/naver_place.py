@@ -102,14 +102,34 @@ def title_matches_episode(post_title: str, episode: int, keywords: list[str]) ->
     return any(kw in post_title for kw in keywords)
 
 
+def region_conflicts(places: list[dict], expected_sido: str | None) -> bool:
+    """식당 주소의 시/도가 전부 예상 지역과 다르면 오매칭으로 간주.
+
+    실측 결과, 키워드 폴백 매칭이 "고향", "중심"처럼 흔한 단어로 완전히 무관한
+    지역의 블로그(다른 회차와 동일한 글)를 잘못 채택하는 사례가 다수 발견됨
+    (예: "대전 밥상" 129회가 "강원도 고성" 블로그와 매칭). 식당 주소 중 하나라도
+    예상 시/도와 일치하면 통과시키고, 전부 다르면 이 매칭은 버린다.
+    """
+    if not expected_sido or not places:
+        return False
+    addrs_sido = [p["address"].split(" ")[0] for p in places if p.get("address")]
+    if not addrs_sido:
+        return False
+    return expected_sido not in addrs_sido
+
+
 def find_restaurants_for_episode(
-    episode: int, episode_title: str, session: requests.Session
+    episode: int, episode_title: str, session: requests.Session, expected_region: str | None = None
 ) -> tuple[list[dict], str | None]:
     """회차 번호+제목으로 네이버 블로그를 검색해 장소 위젯이 있는 첫 후보를 채택.
+
+    expected_region: regions.py로 추정한 "시도 시군구" 문자열(있으면). 식당 주소의
+    시/도가 이와 전부 어긋나면 오매칭으로 보고 건너뛴다.
 
     반환값: (식당 목록, 근거 블로그 URL). 못 찾으면 ([], None).
     """
     keywords = extract_keywords(episode_title)
+    expected_sido = expected_region.split(" ")[0] if expected_region else None
     query = f"허영만의 백반기행 {episode}회"
     try:
         candidates = search_blog_candidates(query, session)
@@ -124,7 +144,7 @@ def find_restaurants_for_episode(
             continue
         if not title_matches_episode(post_title, episode, keywords):
             continue
-        if places:
+        if places and not region_conflicts(places, expected_sido):
             return places, f"https://blog.naver.com/{blog_id}/{log_no}"
 
     return [], None

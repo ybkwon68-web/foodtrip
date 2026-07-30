@@ -3,3 +3,5 @@ __pycache__/
 *.log
 crawler/naver_enrich_log.txt
 .DS_Store
+~$*.xlsx
+*.xlsx
