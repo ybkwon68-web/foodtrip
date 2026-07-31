@@ -110,3 +110,12 @@
 - 사용자가 "프리뷰로 먼저" 확인을 원해 `vercel`(프리뷰 배포) 먼저 실행 → curl로 검증하려 했으나 Vercel 기본 Deployment Protection(팀 로그인 필요)에 막혀 401/302만 확인 가능했음. 이는 버그가 아니라 프리뷰 URL의 기본 동작이라고 사용자에게 설명함.
 - 이어서 사용자 승인 받아 `vercel --prod` 실행 → 프로덕션 별칭 `https://foodtrip-six.vercel.app` 확보(보호 없음, 공개 접근 가능). curl로 종단 간 재검증: 목록 200, `/api/episodes` 200(352건), 토큰 없는 PUT 401, 로그인→토큰 발급→PUT으로 1회 `verified` true 전환(200)→false로 원상복구(200) 전부 확인.
 - 이것으로 checklist.md 4단계·5단계 전 항목 완료. 프로젝트의 남은 알려진 한계는 편집 API rate limit 미구현(0단계 체크리스트에 명시)뿐.
+
+## 2026-07-31 편집 API rate limit 구현 (Upstash Redis)
+
+- 사용자가 "rate limit 미구현 시 문제점"을 질문해, `/api/auth`가 시도 횟수 제한 없이 무차별 대입에 노출된다는 점을 설명함(실질 위험은 낮지만 — 결제/개인정보 없는 콘텐츠 아카이브라 — 방어 장치를 추가하기로 함).
+- `lib/rateLimit.js` 신설: `@upstash/redis`로 IP별 `INCR`+`EXPIRE`(고정 윈도우, 10분에 5회) 카운트. `UPSTASH_REDIS_REST_URL`/`TOKEN` 미설정 시에는 **fail-open**(제한 없이 통과)하도록 설계 — Upstash 연동 전까지 기존 로그인 동작을 깨뜨리지 않기 위한 의도적 선택, 노드 스크립트로 이 fail-open 동작을 먼저 검증함.
+- `api/auth.js`에서 비밀번호 검증 전에 `checkLoginRateLimit(ip)` 체크 추가, 초과 시 429 + 남은 대기초 안내. IP는 `x-forwarded-for`(Vercel이 설정) 우선 사용.
+- 사용자가 Upstash 콘솔에서 무료 Redis DB를 만들어 REST URL/TOKEN 제공 → `.env.local` 반영, 로컬에서 7회 연속 호출로 5회까지 허용·6회부터 차단(retryAfterSeconds=600) 확인 → Vercel에 6번째 환경변수(2개) 3환경 등록 → 프로덕션 재배포.
+- 프로덕션에서 실제 `/api/auth`에 정상 로그인 1회 + 틀린 비밀번호 5회를 연속 호출해 검증: 1회차 200(로그인 성공), 2~5회차 401, 6회차 429(596초 대기) — 설계대로 정확히 동작 확인. 이 테스트로 인해 테스트에 사용한 curl 발신 IP는 10분간 `/api/auth`가 막히지만, 실제 사용자가 브라우저에서 접속할 때는 각자의 IP이므로 영향 없음.
+- checklist.md의 "편집 API rate limit — 보류(알려진 한계)" 항목을 완료로 갱신. 이제 프로젝트에 남은 알려진 한계 없음.

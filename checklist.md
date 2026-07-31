@@ -9,7 +9,7 @@
 - [x] `crawler/seed_supabase.py` 최초 데이터 적재 스크립트 작성 — **실행은 Supabase 프로젝트 생성 후**
 - [x] 프론트 편집 모드 UI — 이제 실제 `/api/auth`·`/api/episodes/:id` PUT을 호출하도록 연결 (API 없는 로컬 환경에서는 정적 JSON 폴백 + 로그인 실패 메시지)
 - [x] 네이버맵 링크 생성 로직 — placeId 있으면 정확한 장소 페이지로, 없으면 `식당명 + 주소` 검색으로 연결
-- [ ] 편집 API rate limit — 외부 상태 저장소 없이는 구현이 번거로워 보류 (알려진 한계)
+- [x] 편집 API rate limit — Upstash Redis(REST API)로 IP당 10분에 5회 제한 구현(`lib/rateLimit.js`), 프로덕션에서 6회 연속 로그인 시도로 5회까지 정상·6회째 429 확인
 
 ## 1단계: 크롤러
 - [x] `crawler/crawl.py`에 목록 페이지 파싱 로직 작성 (셀렉터: `ul.item-list.col-4.wrap > li > a.vd-link`)
