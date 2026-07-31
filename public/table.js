@@ -31,7 +31,7 @@ function mapUrl(r) {
 
 function rowTemplate(r) {
   const mapCell = r.address
-    ? `<td><a class="spot-link" href="${mapUrl(r)}" target="_blank" rel="noopener">네이버맵에서 보기 ↗</a></td>`
+    ? `<td><a class="spot-link" href="${mapUrl(r)}" target="_blank" rel="noopener">네이버맵 ↗</a></td>`
     : `<td class="empty-cell">-</td>`;
   return `
     <tr>

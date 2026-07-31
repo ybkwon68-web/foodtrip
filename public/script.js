@@ -157,7 +157,7 @@ function restaurantViewRow(r) {
     <div class="restaurant-row">
       <p class="spot-field"><strong>식당명</strong>${escapeHtml(r.name) || '미확인'}</p>
       <p class="spot-field"><strong>위치</strong>${addr ? escapeHtml(addr) : '미확인'}</p>
-      <a class="spot-link" href="${mapUrl(r)}" target="_blank" rel="noopener">네이버맵에서 보기 ↗</a>
+      <a class="spot-link" href="${mapUrl(r)}" target="_blank" rel="noopener">네이버맵 ↗</a>
     </div>
   `;
 }
