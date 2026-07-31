@@ -74,7 +74,13 @@ button, input, select { font-family: inherit; }
   color: var(--ink-soft);
   letter-spacing: 0.04em;
 }
-.controls { display: flex; gap: 8px; flex-wrap: wrap; }
+.controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.creator-credit {
+  font-size: 11px;
+  color: var(--ink-soft);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
 .search-box {
   display: flex;
   align-items: center;
