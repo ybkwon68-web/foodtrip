@@ -75,6 +75,8 @@ button, input, select { font-family: inherit; }
   letter-spacing: 0.04em;
 }
 .controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.action-group { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.action-row { display: flex; gap: 8px; }
 .creator-credit {
   font-size: 11px;
   color: var(--ink-soft);
