@@ -202,5 +202,101 @@
     "menu": "물닭갈비",
     "review": "육수에 끓여내는 태백 별미 물닭갈비",
     "episode": 141
+  },
+  {
+    "restaurant_name": "돌집",
+    "menu": "갈치찜, 백반",
+    "review": "목포 복만동 백반거리의 먹갈치찜 노포",
+    "episode": 8
+  },
+  {
+    "restaurant_name": "일등식당",
+    "menu": "우거지뼈해장국",
+    "review": "1986년부터 자리를 지킨 망원동 해장국 노포",
+    "episode": 15
+  },
+  {
+    "restaurant_name": "남도식호프집",
+    "menu": "육전, 가자미튀김",
+    "review": "망리단길 골목의 남도식 안주 전문 호프집",
+    "episode": 15
+  },
+  {
+    "restaurant_name": "남도식당",
+    "menu": "짜장면, 탕수육",
+    "review": "숭인동 골목의 50년 전통 중식당",
+    "episode": 19
+  },
+  {
+    "restaurant_name": "광주식당",
+    "menu": "동태찌개 백반",
+    "review": "주문 없이도 알아서 차려주는 창신동 동태찌개 백반집",
+    "episode": 19
+  },
+  {
+    "restaurant_name": "고기튀김",
+    "menu": "고기튀김, 비빔국수",
+    "review": "창신동 골목의 명물 고기튀김",
+    "episode": 19
+  },
+  {
+    "restaurant_name": "서궁",
+    "menu": "오향장육, 군만두",
+    "review": "짜장면 없는 40년 전통 여의도 중식당",
+    "episode": 22
+  },
+  {
+    "restaurant_name": "대원앤대원",
+    "menu": "생선구이, 고추장불고기",
+    "review": "여의도 직장인들이 찾는 꼬치구이·생선구이 백반집",
+    "episode": 22
+  },
+  {
+    "restaurant_name": "솔",
+    "menu": "김치찌개",
+    "review": "하루 20여 명만 맛볼 수 있는 여의도 김치찌개 백반집",
+    "episode": 22
+  },
+  {
+    "restaurant_name": "장미의집",
+    "menu": "냉동삼겹살, 고추장불고기",
+    "review": "여의도 직장인 단골 냉동삼겹살집",
+    "episode": 22
+  },
+  {
+    "restaurant_name": "영원식당",
+    "menu": "수제비",
+    "review": "사골육수와 으깬 감자로 든든한 여의도 수제비집",
+    "episode": 22
+  },
+  {
+    "restaurant_name": "승우네식당",
+    "menu": "",
+    "review": "광장시장 골목 깊숙이 자리한 노포 백반집",
+    "episode": 26
+  },
+  {
+    "restaurant_name": "달밝은집",
+    "menu": "숙성돼지불고기, 돼지껍데기",
+    "review": "정릉동 골목의 숙성 돼지고기 노포",
+    "episode": 28
+  },
+  {
+    "restaurant_name": "골목식당",
+    "menu": "보쌈, 청국장, 홍어찜",
+    "review": "을지로3가역 인근 골목의 청국장 잘하는 보쌈집",
+    "episode": 30
+  },
+  {
+    "restaurant_name": "별미곱창",
+    "menu": "곱창볶음",
+    "review": "서촌 필운동 골목의 곱창볶음 노포",
+    "episode": 40
+  },
+  {
+    "restaurant_name": "다미식당",
+    "menu": "한정식 백반",
+    "review": "가성비 좋은 상차림으로 손님이 끊이지 않는 고흥 두원면 백반집",
+    "episode": 80
   }
 ]
