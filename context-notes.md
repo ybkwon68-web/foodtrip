@@ -183,3 +183,10 @@
   - 조사 결과 NCP 공지 "[AI NAVER API ▶ 지도 API 신규 이용 신청 차단 및 무료 이용량 제공 중단 예정 안내](https://www.ncloud.com/support/notice/all/1930)"(2025-03-24 등록, 2025-06-24 수정)를 발견함 — 제목상 지도 API의 **신규 이용 신청 자체를 정책적으로 차단**하는 조치가 있었던 것으로 보임(본문 전체는 JS 렌더링이라 못 읽음). NCP 포럼에도 동일 증상(체크박스 켜고 저장했는데 210 에러)을 문의한 사례가 있었으나 NCP 측이 "공식 문의 채널로 접수" 안내만 하고 공개된 해결책은 없었음.
   - 사용자가 NCP 고객센터에 정식 문의를 넣기로 하고, 그동안은 보류하기로 결정함. 코드는 fail-open이라 그대로 둬도 안전(키가 안 통하면 좌표 없이 저장되는 기존 동작과 동일) — NCP 쪽 문제가 풀리면 추가 코드 변경 없이 바로 동작함.
 - **다음 세션에서 재개 시**: 사용자가 NCP 답변을 받으면, `.env.local`에 이미 넣어둔 `NAVER_GEOCODE_CLIENT_ID`/`SECRET`(`kph5ji8tv4` / `wPm4aryYzhz3waosuh2i5jODBgQfjK6CEKhJdtOh`)으로 재테스트만 하면 됨. Vercel 프로덕션 환경변수 등록과 표로 보기 수정 배포는 아직 안 한 상태 — 다음에 이어서 진행.
+
+## 2026-07-31 소개된 메뉴·한줄평을 편집 화면에서 직접 수정 가능하도록 변경
+
+- 기존에는 소개된메뉴/한줄평이 `crawler/review_chunk_*.json`(서브에이전트가 방송 본문 읽고 작성한 텍스트)에만 존재하고 Supabase `restaurants` JSONB에는 없었음 — 표로 보기에서만 보이고 편집 불가능했음.
+- `restaurants` 배열의 각 식당 객체에 `menu`/`review` 필드를 추가(스키마 마이그레이션 불필요, JSONB라 그냥 새 키 추가). `api/episodes/[id].js`의 `cleanRestaurants`가 저장, `public/script.js`의 편집 폼(`restaurantEditRow`)에 입력칸 추가, 조회 화면(`restaurantViewRow`)에도 값 있으면 표시. `table.js`는 API의 `r.menu`/`r.review`를 우선 사용하고, 없으면 기존 스냅샷 매칭값(`rv.menu`/`rv.review`)으로 폴백 — 기존 456개 식당의 메뉴/한줄평은 그대로 보이면서, 새로 편집하면 그 값이 우선하는 구조.
+- **테스트 중 사고**: bash에서 curl로 한글이 포함된 JSON을 `-d` 인자로 직접 넘겼더니 Windows Git Bash 인코딩 문제로 186회 식당명/주소가 깨진 문자로 실제 프로덕션 Supabase에 저장돼버림. 즉시 발견해 Node 스크립트(fetch, UTF-8 안전)로 사전에 백업해둔 원본으로 복구함. **교훈**: 이 환경에서 한글이 포함된 API 테스트는 bash/curl 말고 반드시 Node의 fetch로 할 것(쉘 경유 인코딩 손상 방지). 실제 저장/조회/표로 보기/상세화면 반영까지 Node+Playwright로 재검증 완료.
+- 로그인 시도를 테스트 중 여러 번 반복하다 Upstash rate limit(10분당 5회)에 걸림 — 설계대로 정상 동작, 편집 폼 클릭까지 저장하는 전체 라운드트립 중 마지막 한 번은 rate limit 때문에 브라우저 UI로 직접 확인하지 못했지만, 저장 API 자체와 폼 입력값 반영은 별도로 이미 검증됨.

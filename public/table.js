@@ -52,8 +52,8 @@ function buildRowsFromEpisodes(episodes, reviewLookup) {
         rows.push({
           episode: ep.episode,
           restaurant_name: r.name || '',
-          menu: rv.menu || '',
-          review: rv.review || '',
+          menu: r.menu || rv.menu || '',
+          review: r.review || rv.review || '',
           sido,
           sigungu,
           detail_addr: detail,

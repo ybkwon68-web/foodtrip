@@ -153,10 +153,14 @@ function findEpisode(epNum) {
 
 function restaurantViewRow(r) {
   const addr = r.address;
+  const menuRow = r.menu ? `<p class="spot-field"><strong>소개된 메뉴</strong>${escapeHtml(r.menu)}</p>` : '';
+  const reviewRow = r.review ? `<p class="spot-field"><strong>한줄평</strong>${escapeHtml(r.review)}</p>` : '';
   return `
     <div class="restaurant-row">
       <p class="spot-field"><strong>식당명</strong>${escapeHtml(r.name) || '미확인'}</p>
       <p class="spot-field"><strong>위치</strong>${addr ? escapeHtml(addr) : '미확인'}</p>
+      ${menuRow}
+      ${reviewRow}
       <a class="spot-link" href="${mapUrl(r)}" target="_blank" rel="noopener">네이버맵 ↗</a>
     </div>
   `;
@@ -168,9 +172,15 @@ function restaurantEditRow(r, idx) {
   const origB64 = btoa(unescape(encodeURIComponent(JSON.stringify(r || {}))));
   return `
     <div class="restaurant-edit-row" data-idx="${idx}" data-orig="${origB64}">
-      <label>식당명 <input type="text" class="r-name" value="${escapeHtml(r.name)}"></label>
-      <label>주소 <input type="text" class="r-addr" value="${escapeHtml(r.address)}"></label>
-      <button type="button" class="spot-remove-btn">삭제</button>
+      <div class="r-field-row">
+        <label>식당명 <input type="text" class="r-name" value="${escapeHtml(r.name)}"></label>
+        <label>주소 <input type="text" class="r-addr" value="${escapeHtml(r.address)}"></label>
+        <button type="button" class="spot-remove-btn">삭제</button>
+      </div>
+      <div class="r-field-row">
+        <label>소개된 메뉴 <input type="text" class="r-menu" value="${escapeHtml(r.menu || '')}"></label>
+        <label>한줄평 <input type="text" class="r-review" value="${escapeHtml(r.review || '')}"></label>
+      </div>
     </div>
   `;
 }
@@ -180,6 +190,8 @@ function collectRestaurantRows(container) {
     .map((row) => {
       const name = row.querySelector('.r-name').value.trim();
       const address = row.querySelector('.r-addr').value.trim();
+      const menu = row.querySelector('.r-menu').value.trim();
+      const review = row.querySelector('.r-review').value.trim();
       let orig = {};
       try {
         orig = JSON.parse(decodeURIComponent(escape(atob(row.dataset.orig || ''))));
@@ -190,6 +202,8 @@ function collectRestaurantRows(container) {
       return {
         name,
         address,
+        menu,
+        review,
         tel: addressUnchanged ? orig.tel ?? null : null,
         lat: addressUnchanged ? orig.lat ?? null : null,
         lng: addressUnchanged ? orig.lng ?? null : null,

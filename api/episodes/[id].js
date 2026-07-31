@@ -1,19 +1,36 @@
 // 회차 상세 조회(GET) 및 식당 정보 수정(PUT, 관리자 인증 필요)
 const { getSupabase } = require('../../lib/supabase');
 const { verifyToken } = require('../../lib/auth');
+const { geocodeAddress } = require('../../lib/geocode');
 
-function cleanRestaurants(input) {
+async function cleanRestaurants(input) {
   if (!Array.isArray(input)) return null;
-  return input
+  const cleaned = input
     .filter((r) => r && typeof r.name === 'string' && r.name.trim())
     .map((r) => ({
       name: r.name.trim(),
       address: typeof r.address === 'string' ? r.address.trim() : '',
+      menu: typeof r.menu === 'string' ? r.menu.trim() : '',
+      review: typeof r.review === 'string' ? r.review.trim() : '',
       tel: r.tel || null,
       lat: typeof r.lat === 'number' ? r.lat : null,
       lng: typeof r.lng === 'number' ? r.lng : null,
       place_id: r.place_id || null,
     }));
+
+  // 좌표가 없는(신규 등록·주소 변경) 식당은 저장 전에 자동으로 지오코딩을 시도한다.
+  await Promise.all(
+    cleaned.map(async (r) => {
+      if (r.lat !== null || r.lng !== null || !r.address) return;
+      const coords = await geocodeAddress(r.address);
+      if (coords) {
+        r.lat = coords.lat;
+        r.lng = coords.lng;
+      }
+    })
+  );
+
+  return cleaned;
 }
 
 module.exports = async function handler(req, res) {
@@ -42,7 +59,7 @@ module.exports = async function handler(req, res) {
       return;
     }
 
-    const restaurants = cleanRestaurants((req.body || {}).restaurants);
+    const restaurants = await cleanRestaurants((req.body || {}).restaurants);
     if (restaurants === null) {
       res.status(400).json({ error: 'restaurants는 배열이어야 합니다.' });
       return;
