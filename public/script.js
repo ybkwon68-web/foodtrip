@@ -152,7 +152,7 @@ function findEpisode(epNum) {
 }
 
 function restaurantViewRow(r) {
-  const addr = truncateAddress(r.address);
+  const addr = r.address;
   return `
     <div class="restaurant-row">
       <p class="spot-field"><strong>식당명</strong>${escapeHtml(r.name) || '미확인'}</p>
