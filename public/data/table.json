@@ -2707,14 +2707,36 @@
   },
   {
     "episode": 260,
+    "restaurant_name": "물레방아",
+    "menu": "",
+    "review": "",
+    "sido": "인천광역시",
+    "sigungu": "제물포구",
+    "detail_addr": "화수로 80-1",
+    "address": "인천광역시 제물포구 화수로 80-1",
+    "place_id": null
+  },
+  {
+    "episode": 260,
     "restaurant_name": "일미정",
     "menu": "",
     "review": "",
     "sido": "인천광역시",
-    "sigungu": "중구",
+    "sigungu": "제물포구",
     "detail_addr": "신포로23번길 5",
-    "address": "인천광역시 중구 신포로23번길 5",
-    "place_id": "36004465"
+    "address": "인천광역시 제물포구 신포로23번길 5",
+    "place_id": null
+  },
+  {
+    "episode": 260,
+    "restaurant_name": "현대원조닭알탕",
+    "menu": "",
+    "review": "",
+    "sido": "인천광역시",
+    "sigungu": "제물포구",
+    "detail_addr": "샛골로 169",
+    "address": "인천광역시 제물포구 샛골로 169",
+    "place_id": null
   },
   {
     "episode": 259,
