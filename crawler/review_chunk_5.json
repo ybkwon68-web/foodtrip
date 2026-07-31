@@ -112,5 +112,95 @@
     "restaurant_name": "고향식당",
     "menu": "",
     "review": "성동 골목 노포 밥상"
+  },
+  {
+    "restaurant_name": "광주식당",
+    "menu": "백반, 팥죽",
+    "review": "강진읍 시장 골목의 정겨운 백반과 동지팥죽",
+    "episode": 1
+  },
+  {
+    "restaurant_name": "우리식당",
+    "menu": "백반, 한정식",
+    "review": "도암면에서 오래 자리를 지킨 남도 백반상",
+    "episode": 1
+  },
+  {
+    "restaurant_name": "탐진대중음식점",
+    "menu": "돼지머리고기, 메추리구이",
+    "review": "강진 재래시장 인근 서민 음식점의 푸짐한 한 상",
+    "episode": 1
+  },
+  {
+    "restaurant_name": "쉼터식당",
+    "menu": "9첩 백반",
+    "review": "깻묵된장·등뼈김칫국·무수짠지 지짐 등 9가지 토속 반찬을 7천원에 내는 서산 토박이 밥상",
+    "episode": 2
+  },
+  {
+    "restaurant_name": "명월집",
+    "menu": "백반, 김치찌개",
+    "review": "메뉴판 없이 인원수만 말하면 상이 나오는 인천 개항장거리 노포",
+    "episode": 13
+  },
+  {
+    "restaurant_name": "토시살숯불구이",
+    "menu": "차돌박이, 치마살, 토시살, 제비추리",
+    "review": "47년 역사, 살살 녹는 소고기 특수부위를 맛보는 노포",
+    "episode": 13
+  },
+  {
+    "restaurant_name": "시장비빔밥",
+    "menu": "육회비빔밥",
+    "review": "황등시장 안 9천원 육회비빔밥으로 소문난 익산 향토 맛집",
+    "episode": 93
+  },
+  {
+    "restaurant_name": "다가포가든",
+    "menu": "",
+    "review": "",
+    "episode": 93
+  },
+  {
+    "restaurant_name": "연잎담",
+    "menu": "연잎밥",
+    "review": "은은한 연향이 밴 부여 연잎밥 한 상",
+    "episode": 115
+  },
+  {
+    "restaurant_name": "태능배밭갈비",
+    "menu": "태릉 갈비",
+    "review": "도시 개발로 갈빗집들이 떠난 태릉에서 30년째 자리를 지킨 명물 갈비",
+    "episode": 117
+  },
+  {
+    "restaurant_name": "돌다리집",
+    "menu": "",
+    "review": "",
+    "episode": 131
+  },
+  {
+    "restaurant_name": "송학반점",
+    "menu": "",
+    "review": "60년 전통 붉은 벽돌 건물의 제천 노포 중식당",
+    "episode": 133
+  },
+  {
+    "restaurant_name": "왕십리 갈비탕집(간판 없음)",
+    "menu": "갈비탕",
+    "review": "40년 넘게 간판 없이 장사해온 마장동 골목 할머니 갈비탕집",
+    "episode": 137
+  },
+  {
+    "restaurant_name": "마당집 추어탕",
+    "menu": "추어탕",
+    "review": "30년 전통 전골식 추어탕 전문점",
+    "episode": 139
+  },
+  {
+    "restaurant_name": "김서방네닭갈비",
+    "menu": "물닭갈비",
+    "review": "육수에 끓여내는 태백 별미 물닭갈비",
+    "episode": 141
   }
 ]

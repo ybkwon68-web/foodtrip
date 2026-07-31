@@ -4632,13 +4632,13 @@
   },
   {
     "episode": 141,
-    "restaurant_name": "",
-    "menu": "",
-    "review": "",
+    "restaurant_name": "김서방네닭갈비",
+    "menu": "물닭갈비",
+    "review": "육수에 끓여내는 태백 별미 물닭갈비",
     "sido": "강원특별자치도",
     "sigungu": "태백시",
     "detail_addr": "",
-    "address": "",
+    "address": "강원특별자치도 태백시",
     "place_id": null
   },
   {
@@ -4676,13 +4676,13 @@
   },
   {
     "episode": 139,
-    "restaurant_name": "",
-    "menu": "",
-    "review": "",
+    "restaurant_name": "마당집 추어탕",
+    "menu": "추어탕",
+    "review": "30년 전통 전골식 추어탕 전문점",
     "sido": "경기도",
     "sigungu": "여주시",
     "detail_addr": "",
-    "address": "",
+    "address": "경기도 여주시",
     "place_id": null
   },
   {
@@ -4698,13 +4698,13 @@
   },
   {
     "episode": 137,
-    "restaurant_name": "",
-    "menu": "",
-    "review": "",
+    "restaurant_name": "왕십리 갈비탕집(간판 없음)",
+    "menu": "갈비탕",
+    "review": "40년 넘게 간판 없이 장사해온 마장동 골목 할머니 갈비탕집",
     "sido": "서울특별시",
-    "sigungu": "",
-    "detail_addr": "",
-    "address": "",
+    "sigungu": "성동구",
+    "detail_addr": "마장동",
+    "address": "서울특별시 성동구 마장동",
     "place_id": null
   },
   {
@@ -4742,13 +4742,13 @@
   },
   {
     "episode": 133,
-    "restaurant_name": "",
+    "restaurant_name": "송학반점",
     "menu": "",
-    "review": "",
+    "review": "60년 전통 붉은 벽돌 건물의 제천 노포 중식당",
     "sido": "충청북도",
     "sigungu": "제천시",
     "detail_addr": "",
-    "address": "",
+    "address": "충청북도 제천시",
     "place_id": null
   },
   {
@@ -4764,13 +4764,13 @@
   },
   {
     "episode": 131,
-    "restaurant_name": "",
+    "restaurant_name": "돌다리집",
     "menu": "",
     "review": "",
     "sido": "경기도",
     "sigungu": "구리시",
     "detail_addr": "",
-    "address": "",
+    "address": "경기도 구리시",
     "place_id": null
   },
   {
@@ -5050,13 +5050,13 @@
   },
   {
     "episode": 117,
-    "restaurant_name": "",
-    "menu": "",
-    "review": "",
-    "sido": "",
-    "sigungu": "",
-    "detail_addr": "",
-    "address": "",
+    "restaurant_name": "태능배밭갈비",
+    "menu": "태릉 갈비",
+    "review": "도시 개발로 갈빗집들이 떠난 태릉에서 30년째 자리를 지킨 명물 갈비",
+    "sido": "서울특별시",
+    "sigungu": "중랑구",
+    "detail_addr": "묵동",
+    "address": "서울특별시 중랑구 묵동",
     "place_id": null
   },
   {
@@ -5072,13 +5072,13 @@
   },
   {
     "episode": 115,
-    "restaurant_name": "",
-    "menu": "",
-    "review": "",
+    "restaurant_name": "연잎담",
+    "menu": "연잎밥",
+    "review": "은은한 연향이 밴 부여 연잎밥 한 상",
     "sido": "충청남도",
     "sigungu": "부여군",
     "detail_addr": "",
-    "address": "",
+    "address": "충청남도 부여군",
     "place_id": null
   },
   {
@@ -5380,13 +5380,24 @@
   },
   {
     "episode": 93,
-    "restaurant_name": "",
+    "restaurant_name": "시장비빔밥",
+    "menu": "육회비빔밥",
+    "review": "황등시장 안 9천원 육회비빔밥으로 소문난 익산 향토 맛집",
+    "sido": "전라북도",
+    "sigungu": "익산시",
+    "detail_addr": "황등면 황등7길 25",
+    "address": "전라북도 익산시 황등면 황등7길 25",
+    "place_id": null
+  },
+  {
+    "episode": 93,
+    "restaurant_name": "다가포가든",
     "menu": "",
     "review": "",
-    "sido": "전북특별자치도",
+    "sido": "전라북도",
     "sigungu": "익산시",
     "detail_addr": "",
-    "address": "",
+    "address": "전라북도 익산시",
     "place_id": null
   },
   {
@@ -6854,13 +6865,24 @@
   },
   {
     "episode": 13,
-    "restaurant_name": "",
-    "menu": "",
-    "review": "",
-    "sido": "",
-    "sigungu": "",
-    "detail_addr": "",
-    "address": "",
+    "restaurant_name": "명월집",
+    "menu": "백반, 김치찌개",
+    "review": "메뉴판 없이 인원수만 말하면 상이 나오는 인천 개항장거리 노포",
+    "sido": "인천광역시",
+    "sigungu": "중구",
+    "detail_addr": "신포로23번길 41",
+    "address": "인천광역시 중구 신포로23번길 41",
+    "place_id": null
+  },
+  {
+    "episode": 13,
+    "restaurant_name": "토시살숯불구이",
+    "menu": "차돌박이, 치마살, 토시살, 제비추리",
+    "review": "47년 역사, 살살 녹는 소고기 특수부위를 맛보는 노포",
+    "sido": "인천광역시",
+    "sigungu": "동구",
+    "detail_addr": "송림로 10-1",
+    "address": "인천광역시 동구 송림로 10-1",
     "place_id": null
   },
   {
@@ -6975,24 +6997,46 @@
   },
   {
     "episode": 2,
-    "restaurant_name": "",
-    "menu": "",
-    "review": "",
+    "restaurant_name": "쉼터식당",
+    "menu": "9첩 백반",
+    "review": "깻묵된장·등뼈김칫국·무수짠지 지짐 등 9가지 토속 반찬을 7천원에 내는 서산 토박이 밥상",
     "sido": "충청남도",
     "sigungu": "서산시",
-    "detail_addr": "",
-    "address": "",
+    "detail_addr": "부석면 천수만로 658-39",
+    "address": "충청남도 서산시 부석면 천수만로 658-39",
     "place_id": null
   },
   {
     "episode": 1,
-    "restaurant_name": "",
-    "menu": "",
-    "review": "",
+    "restaurant_name": "광주식당",
+    "menu": "백반, 팥죽",
+    "review": "강진읍 시장 골목의 정겨운 백반과 동지팥죽",
     "sido": "전라남도",
     "sigungu": "강진군",
-    "detail_addr": "",
-    "address": "",
+    "detail_addr": "강진읍 시장길 17-14",
+    "address": "전라남도 강진군 강진읍 시장길 17-14",
+    "place_id": null
+  },
+  {
+    "episode": 1,
+    "restaurant_name": "우리식당",
+    "menu": "백반, 한정식",
+    "review": "도암면에서 오래 자리를 지킨 남도 백반상",
+    "sido": "전라남도",
+    "sigungu": "강진군",
+    "detail_addr": "도암면 도암중앙로 81",
+    "address": "전라남도 강진군 도암면 도암중앙로 81",
+    "place_id": null
+  },
+  {
+    "episode": 1,
+    "restaurant_name": "탐진대중음식점",
+    "menu": "돼지머리고기, 메추리구이",
+    "review": "강진 재래시장 인근 서민 음식점의 푸짐한 한 상",
+    "sido": "전라남도",
+    "sigungu": "강진군",
+    "detail_addr": "강진읍 보은로 149",
+    "address": "전라남도 강진군 강진읍 보은로 149",
     "place_id": null
   }
 ]
