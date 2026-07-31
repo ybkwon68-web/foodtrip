@@ -167,8 +167,10 @@ document.addEventListener('click', (e) => {
   if (colFilterMenu.contains(e.target) || e.target.classList.contains('col-filter-btn')) return;
   closeColFilterMenu();
 });
-document.addEventListener('scroll', () => {
-  if (!colFilterMenu.hidden) closeColFilterMenu();
+document.addEventListener('scroll', (e) => {
+  if (colFilterMenu.hidden) return;
+  if (colFilterMenu.contains(e.target)) return; // 필터 목록 내부 스크롤은 닫지 않는다
+  closeColFilterMenu();
 }, true);
 
 async function load() {
