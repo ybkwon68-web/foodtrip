@@ -6,8 +6,8 @@ const tableCount = document.getElementById('tableCount');
 const tableSearch = document.getElementById('tableSearch');
 
 let rows = [];
-const selectedSido = new Set();
-const selectedSigungu = new Set();
+// null이면 필터 비활성(전체 표시), Set이면 그 값들만 표시. 빈 값은 '' 로 표현.
+const filterState = { sido: null, sigungu: null };
 
 function escapeHtml(str) {
   const div = document.createElement('div');
@@ -48,8 +48,8 @@ function rowTemplate(r) {
 }
 
 function matches(r, query) {
-  if (selectedSido.size && !selectedSido.has(r.sido)) return false;
-  if (selectedSigungu.size && !selectedSigungu.has(r.sigungu)) return false;
+  if (filterState.sido && !filterState.sido.has(r.sido || '')) return false;
+  if (filterState.sigungu && !filterState.sigungu.has(r.sigungu || '')) return false;
   if (!query) return true;
   const haystack = [r.episode, r.restaurant_name, r.menu, r.review, r.sido, r.sigungu, r.detail_addr]
     .filter(Boolean)
@@ -65,52 +65,120 @@ function render() {
   tableBody.innerHTML = filtered.map(rowTemplate).join('');
 }
 
-function buildFilterOptions(containerId, countId, field, selectedSet) {
-  const container = document.getElementById(containerId);
-  const countEl = document.getElementById(countId);
-  const values = [...new Set(rows.map((r) => r[field]).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'ko'));
+// 엑셀 자동필터 스타일 컬럼 헤더 드롭다운 (검색 + 모두 선택 + 확인/취소)
+const colFilterMenu = document.getElementById('colFilterMenu');
+const colFilterSearch = document.getElementById('colFilterSearch');
+const colFilterAll = document.getElementById('colFilterAll');
+const colFilterList = document.getElementById('colFilterList');
+const colFilterOk = document.getElementById('colFilterOk');
+const colFilterCancel = document.getElementById('colFilterCancel');
 
-  container.innerHTML = values
-    .map((v) => `<label><input type="checkbox" value="${escapeHtml(v)}"> ${escapeHtml(v)}</label>`)
+let activeField = null;
+let activeValues = [];
+let pendingChecked = null; // 확인을 누르기 전까지는 filterState에 반영하지 않는다.
+
+function fieldValues(field) {
+  const set = new Set(rows.map((r) => r[field] || ''));
+  return [...set].sort((a, b) => {
+    if (a === '' || b === '') return a === b ? 0 : a === '' ? -1 : 1;
+    return a.localeCompare(b, 'ko');
+  });
+}
+
+function renderColFilterList(query) {
+  const q = query.trim().toLowerCase();
+  const visible = activeValues.filter((v) => !q || (v === '' ? '(비어 있음)' : v).toLowerCase().includes(q));
+  colFilterList.innerHTML = visible
+    .map((v) => {
+      const label = v === '' ? '(비어 있음)' : escapeHtml(v);
+      const checked = pendingChecked.has(v) ? 'checked' : '';
+      return `<label><input type="checkbox" value="${escapeHtml(v)}" ${checked}> ${label}</label>`;
+    })
     .join('');
-
-  container.addEventListener('change', (e) => {
-    if (e.target.tagName !== 'INPUT') return;
-    if (e.target.checked) selectedSet.add(e.target.value);
-    else selectedSet.delete(e.target.value);
-    countEl.textContent = selectedSet.size ? ` (${selectedSet.size})` : '';
-    render();
-  });
+  colFilterAll.checked = pendingChecked.size === activeValues.length;
 }
 
-function setupFilterClear(buttonSelector, containerId, countId, selectedSet) {
-  document.querySelector(buttonSelector).addEventListener('click', () => {
-    selectedSet.clear();
-    document.querySelectorAll(`#${containerId} input:checked`).forEach((el) => { el.checked = false; });
-    document.getElementById(countId).textContent = '';
-    render();
-  });
+function positionColFilterMenu(btn) {
+  const rect = btn.getBoundingClientRect();
+  const menuWidth = 220;
+  let left = rect.left;
+  if (left + menuWidth > window.innerWidth - 8) left = Math.max(8, window.innerWidth - menuWidth - 8);
+  colFilterMenu.style.top = `${rect.bottom + 4}px`;
+  colFilterMenu.style.left = `${left}px`;
 }
 
-// details 드롭다운 바깥을 클릭하면 닫히도록 처리 (details 기본 동작에는 없음)
-document.addEventListener('click', (e) => {
-  document.querySelectorAll('.filter-dropdown[open]').forEach((el) => {
-    if (!el.contains(e.target)) el.removeAttribute('open');
+function closeColFilterMenu() {
+  colFilterMenu.hidden = true;
+  activeField = null;
+  pendingChecked = null;
+}
+
+function openColFilterMenu(field, btn) {
+  activeField = field;
+  activeValues = fieldValues(field);
+  const current = filterState[field];
+  pendingChecked = new Set(current ? current : activeValues);
+  colFilterSearch.value = '';
+  renderColFilterList('');
+  positionColFilterMenu(btn);
+  colFilterMenu.hidden = false;
+  colFilterSearch.focus();
+}
+
+document.querySelectorAll('.col-filter-btn').forEach((btn) => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const field = btn.dataset.field;
+    if (activeField === field && !colFilterMenu.hidden) {
+      closeColFilterMenu();
+      return;
+    }
+    openColFilterMenu(field, btn);
   });
 });
+
+colFilterSearch.addEventListener('input', () => renderColFilterList(colFilterSearch.value));
+
+colFilterList.addEventListener('change', (e) => {
+  if (e.target.tagName !== 'INPUT') return;
+  if (e.target.checked) pendingChecked.add(e.target.value);
+  else pendingChecked.delete(e.target.value);
+  colFilterAll.checked = pendingChecked.size === activeValues.length;
+});
+
+colFilterAll.addEventListener('change', () => {
+  pendingChecked = colFilterAll.checked ? new Set(activeValues) : new Set();
+  renderColFilterList(colFilterSearch.value);
+});
+
+colFilterOk.addEventListener('click', () => {
+  const field = activeField;
+  const allSelected = pendingChecked.size === activeValues.length;
+  filterState[field] = allSelected ? null : new Set(pendingChecked);
+  document.querySelector(`.col-filter-btn[data-field="${field}"]`).classList.toggle('active', !allSelected);
+  closeColFilterMenu();
+  render();
+});
+
+colFilterCancel.addEventListener('click', closeColFilterMenu);
+
+document.addEventListener('click', (e) => {
+  if (colFilterMenu.hidden) return;
+  if (colFilterMenu.contains(e.target) || e.target.classList.contains('col-filter-btn')) return;
+  closeColFilterMenu();
+});
+document.addEventListener('scroll', () => {
+  if (!colFilterMenu.hidden) closeColFilterMenu();
+}, true);
 
 async function load() {
   const res = await fetch(TABLE_DATA_URL);
   if (!res.ok) throw new Error(`데이터를 불러오지 못했습니다 (${res.status})`);
   rows = await res.json();
-  buildFilterOptions('sidoFilterOptions', 'sidoFilterCount', 'sido', selectedSido);
-  buildFilterOptions('sigunguFilterOptions', 'sigunguFilterCount', 'sigungu', selectedSigungu);
   render();
 }
 
 tableSearch.addEventListener('input', render);
-setupFilterClear('[data-filter-clear="sido"]', 'sidoFilterOptions', 'sidoFilterCount', selectedSido);
-setupFilterClear('[data-filter-clear="sigungu"]', 'sigunguFilterOptions', 'sigunguFilterCount', selectedSigungu);
 
 load().catch((err) => {
   tableBody.innerHTML = `<tr><td colspan="8">${escapeHtml(err.message)}</td></tr>`;

@@ -127,66 +127,79 @@ button, input, select { font-family: inherit; }
 .edit-toggle.active { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
 .edit-toggle svg { width: 13px; height: 13px; }
 
-.filter-dropdown { position: relative; }
-.filter-summary {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-card);
-  padding: 7px 10px;
-  background: var(--paper-raised);
-  color: var(--ink);
-  font-size: 13px;
-  cursor: pointer;
-  user-select: none;
-  list-style: none;
-}
-.filter-summary::-webkit-details-marker { display: none; }
-.filter-summary::after { content: '\25be'; font-size: 10px; color: var(--ink-soft); }
-.filter-dropdown[open] .filter-summary { border-color: var(--accent); color: var(--accent); }
-.filter-count { color: var(--accent); font-weight: 700; }
-.filter-menu {
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  z-index: 20;
-  background: var(--paper-raised);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-card);
-  padding: 8px;
-  min-width: 200px;
-  max-height: 280px;
-  overflow-y: auto;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
-}
-.filter-menu-actions {
-  display: flex;
-  justify-content: flex-end;
-  padding-bottom: 6px;
-  margin-bottom: 6px;
-  border-bottom: 1px solid var(--line);
-}
-.filter-menu-actions button {
+/* 요약표 컬럼 헤더의 엑셀식 자동필터 드롭다운 */
+.filterable-th { position: relative; }
+.col-filter-btn {
+  margin-left: 4px;
   background: none;
   border: none;
   color: var(--ink-soft);
-  font-size: 12px;
-  text-decoration: underline;
+  font-size: 28px;
+  line-height: 1;
   cursor: pointer;
-  padding: 0;
+  padding: 2px;
+  vertical-align: middle;
 }
-.filter-menu-actions button:hover { color: var(--accent); }
-.filter-menu label {
+.col-filter-btn:hover { color: var(--accent); }
+.col-filter-btn.active { color: var(--accent); font-weight: 700; }
+.col-filter-menu {
+  position: fixed;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  width: 220px;
+  max-height: 320px;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+}
+.col-filter-menu[hidden] { display: none; }
+.col-filter-search { padding: 8px; border-bottom: 1px solid var(--line); }
+.col-filter-search input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 5px 8px;
+  font-size: 12.5px;
+  background: var(--paper);
+  color: var(--ink);
+}
+.col-filter-selectall {
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--line);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.col-filter-list { overflow-y: auto; padding: 6px 10px; flex: 1; }
+.col-filter-list label,
+.col-filter-selectall label {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 2px;
-  font-size: 13px;
+  padding: 3px 0;
+  font-size: 12.5px;
+  font-weight: 400;
   white-space: nowrap;
   cursor: pointer;
+  color: var(--ink);
 }
-.filter-menu label:hover { color: var(--accent); }
+.col-filter-actions {
+  display: flex;
+  gap: 6px;
+  padding: 8px 10px;
+  border-top: 1px solid var(--line);
+}
+.col-filter-actions button {
+  flex: 1;
+  border-radius: 3px;
+  padding: 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+#colFilterOk { background: var(--accent); color: var(--paper); border: none; font-weight: 600; }
+#colFilterCancel { background: none; border: 1px solid var(--line); color: var(--ink-soft); }
 
 /* 목록 */
 .result-count {
