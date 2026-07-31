@@ -5,7 +5,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SEED_PATH = ROOT / "seed" / "episodes.json"
 OUT_PATH = ROOT / "public" / "data" / "table.json"
-REVIEW_CHUNKS = [ROOT / "crawler" / f"review_chunk_{i}.json" for i in range(1, 5)]
+REVIEW_CHUNKS = sorted((ROOT / "crawler").glob("review_chunk_*.json"))
 
 # 해외 특집(캐나다/홍콩/일본 등) 주소는 "시도 시군구 상세주소" 형식이 아니라서
 # 앞 2토큰을 그대로 시도/시군구로 잘라내면 깨진 값이 나온다. 알려진 국내 시도명만 허용.
