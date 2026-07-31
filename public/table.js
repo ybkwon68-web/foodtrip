@@ -1,5 +1,84 @@
 // 회차별 요약표(식당명/메뉴/한줄평/주소) 렌더링과 검색을 담당하는 스크립트
 const TABLE_DATA_URL = './data/table.json';
+const API_URL = '/api/episodes';
+
+// public/data/table.json은 crawler/build_table.py가 seed/episodes.json으로부터
+// 오프라인으로 미리 만들어두는 스냅샷이라, 편집 화면에서 저장한 최신 식당명/주소가
+// 반영되지 않는다. 소개된메뉴·한줄평은 DB에 없는 정보라 이 스냅샷에서만 가져오고,
+// 식당명/주소/지역은 라이브 API 데이터를 우선 사용해 최신 상태를 보여준다.
+const KNOWN_SIDO = new Set([
+  '서울특별시', '부산광역시', '대구광역시', '인천광역시', '광주광역시',
+  '대전광역시', '울산광역시', '세종특별자치시',
+  '경기도', '강원도', '강원특별자치도',
+  '충청북도', '충청남도', '전라북도', '전북특별자치도', '전라남도',
+  '경상북도', '경상남도', '제주특별자치도', '제주도',
+]);
+
+function splitN(str, sep, maxSplit) {
+  const parts = [];
+  let rest = str;
+  for (let i = 0; i < maxSplit; i++) {
+    const idx = rest.indexOf(sep);
+    if (idx === -1) break;
+    parts.push(rest.slice(0, idx));
+    rest = rest.slice(idx + sep.length);
+  }
+  parts.push(rest);
+  return parts;
+}
+
+function splitAddress(addr) {
+  if (!addr) return { sido: '', sigungu: '', detail: '' };
+  const [sido = '', sigungu = '', detail = ''] = splitN(addr, ' ', 2);
+  if (!KNOWN_SIDO.has(sido)) return { sido: '', sigungu: '', detail: addr };
+  return { sido, sigungu, detail };
+}
+
+function splitRegion(region) {
+  if (!region) return { sido: '', sigungu: '' };
+  const [sido = '', sigungu = ''] = splitN(region, ' ', 1);
+  if (!KNOWN_SIDO.has(sido)) return { sido: '', sigungu: '' };
+  return { sido, sigungu };
+}
+
+function buildRowsFromEpisodes(episodes, reviewLookup) {
+  const rows = [];
+  episodes.forEach((ep) => {
+    const restaurants = ep.restaurants || [];
+    if (restaurants.length) {
+      restaurants.forEach((r) => {
+        const { sido, sigungu, detail } = splitAddress(r.address || '');
+        const rv = reviewLookup.get(`${ep.episode}::${r.name || ''}`) || {};
+        rows.push({
+          episode: ep.episode,
+          restaurant_name: r.name || '',
+          menu: rv.menu || '',
+          review: rv.review || '',
+          sido,
+          sigungu,
+          detail_addr: detail,
+          address: r.address || '',
+          place_id: r.place_id || null,
+        });
+      });
+    } else {
+      const { sido, sigungu } = splitRegion(ep.region || '');
+      rows.push({
+        episode: ep.episode,
+        restaurant_name: '',
+        menu: '',
+        review: '',
+        sido,
+        sigungu,
+        detail_addr: '',
+        address: '',
+        place_id: null,
+      });
+    }
+  });
+  rows.sort((a, b) => b.episode - a.episode);
+  return rows;
+}
 
 const tableBody = document.getElementById('tableBody');
 const tableCount = document.getElementById('tableCount');
@@ -180,9 +259,26 @@ document.addEventListener('scroll', (e) => {
 }, true);
 
 async function load() {
-  const res = await fetch(TABLE_DATA_URL);
-  if (!res.ok) throw new Error(`데이터를 불러오지 못했습니다 (${res.status})`);
-  rows = await res.json();
+  const snapshotRes = await fetch(TABLE_DATA_URL);
+  if (!snapshotRes.ok) throw new Error(`데이터를 불러오지 못했습니다 (${snapshotRes.status})`);
+  const snapshotRows = await snapshotRes.json();
+
+  let episodes = null;
+  try {
+    const res = await fetch(API_URL);
+    if (res.ok) episodes = await res.json();
+  } catch (err) {
+    // /api 서버리스 함수가 없는 환경(로컬 정적 서버 등) — 정적 스냅샷으로 폴백
+  }
+
+  if (episodes) {
+    const reviewLookup = new Map(
+      snapshotRows.map((r) => [`${r.episode}::${r.restaurant_name}`, { menu: r.menu, review: r.review }])
+    );
+    rows = buildRowsFromEpisodes(episodes, reviewLookup);
+  } else {
+    rows = snapshotRows;
+  }
   render();
 }
 

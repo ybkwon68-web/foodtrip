@@ -166,3 +166,20 @@
   2. 표로 보기의 "전라북도"/"전북특별자치도" 표기 통일 여부 결정(사소한 이슈, 사용자 확인 필요)
   3. `구축계획.md` 121번째 줄의 "rate limit 보류" 문구가 현재 상태(Upstash로 구현 완료)와 안 맞으니 다음에 손댈 일 있으면 같이 정리
 - 미해결 이슈 없음. 로컬 정적 서버(`http://localhost:8000`)가 백그라운드에 떠 있을 수 있음 — 다음 세션에서 새로 띄우면 됨.
+
+## 2026-07-31 PC 이전 후 로컬 개발 환경 복구
+
+- 다른 PC로 작업 환경을 옮기면서 `.env.local`(gitignore 대상이라 git에는 없음), `node_modules`(`@upstash/redis` 누락), `.vercel/`(프로젝트 미연결) 세 가지가 로컬에 없는 상태로 시작함.
+- `.env.local`은 수작업으로 값을 다시 모으는 대신, Vercel 프로젝트에 이미 등록된 환경변수를 그대로 활용: `npx vercel link --yes`로 기존 프로젝트(`ybkwon68-5258s-projects/foodtrip`) 연결 → `npx vercel env pull .env.local`로 6개 변수(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, ADMIN_PASSWORD, SESSION_SECRET, UPSTASH_REDIS_REST_URL/TOKEN) 전부 자동 복구. `npm install`로 의존성도 정상화.
+- **`vercel dev`는 반드시 `--listen 8000`으로 띄울 것** — 네이버 지도 API Client ID(`kph5ji8tv4`)에 등록된 Web 서비스 URL이 `http://localhost:8000`뿐이라, 다른 포트(예: 3000)로 띄우면 지도 페이지(`map.html`)만 인증 실패로 깨짐. 카드/표 페이지는 포트에 상관없이 정상 동작하므로 지도 페이지를 열어보기 전까지는 문제가 드러나지 않아 헷갈리기 쉬움.
+
+## 2026-07-31 표로 보기 라이브 데이터 미반영 버그 수정 + 지도 좌표 자동조회 시도(NCP 이슈로 보류)
+
+- 사용자가 카드 화면(편집 모드)에서 186회 식당 정보를 수정했는데 표로 보기·지도로 보기에 반영이 안 된다고 리포트함. 원인 두 가지를 각각 확인:
+  1. **표로 보기(`table.js`)**: API를 전혀 호출하지 않고 `public/data/table.json`(정적 스냅샷, `crawler/build_table.py`가 `seed/episodes.json`으로부터 오프라인 생성)만 읽는 구조였음 — 라이브 편집이 반영될 방법 자체가 없었음. `table.js`가 `/api/episodes`를 우선 호출하도록 수정(`buildRowsFromEpisodes`, `splitAddress`/`splitRegion`을 `build_table.py`와 동일 로직으로 JS 이식), 소개된메뉴·한줄평은 DB에 없는 정보라 기존 정적 스냅샷에서 `(episode, restaurant_name)` 키로 매칭해 계속 가져오는 하이브리드 구조로 변경. API 없는 환경(로컬 정적 서버 등)에서는 기존처럼 스냅샷 전체를 그대로 사용. Playwright로 186회 검색 결과가 즉시 반영됨을 확인함.
+  2. **지도로 보기(`map.js`)**: 이미 API를 우선 호출하는 구조라 라이브 데이터는 제대로 받아오고 있었음. 실제 원인은 편집 폼에 이름/주소 입력칸만 있고 좌표 입력칸이 없어서, 주소를 새로 입력한 식당은 `lat/lng`이 `null`로 저장되어 지도에 마커가 안 생기는 것이었음(에러 없이 조용히 스킵). 프로덕션 API로 186회를 직접 조회해 신규 등록한 두 곳(처음처럼/전주식당)이 `lat: null`임을 확인해 원인 확정.
+- 지도 좌표 문제 해결책으로 "주소 저장 시 네이버 Geocoding API 자동 조회"를 사용자가 선택함 → `lib/geocode.js` 신설(좌표 없는 식당만 대상, 실패 시 fail-open으로 좌표 없이 저장 계속), `api/episodes/[id].js`의 `cleanRestaurants`를 async로 바꿔 저장 전 자동 지오코딩하도록 연결. `.env.local.example`에 `NAVER_GEOCODE_CLIENT_ID`/`NAVER_GEOCODE_CLIENT_SECRET` 추가.
+- 사용자가 NCP 콘솔에서 기존 Maps 애플리케이션(`kph5ji8tv4`)에 Geocoding을 체크해 키를 줬으나, 실제 호출 시 `401 Permission Denied — "A subscription to the API is required."` (errorCode 210)가 계속 발생함. Application 수정 화면에서 Geocoding 체크박스가 이미 체크된 상태였고, 재저장도 해봤지만 동일 에러 지속.
+  - 조사 결과 NCP 공지 "[AI NAVER API ▶ 지도 API 신규 이용 신청 차단 및 무료 이용량 제공 중단 예정 안내](https://www.ncloud.com/support/notice/all/1930)"(2025-03-24 등록, 2025-06-24 수정)를 발견함 — 제목상 지도 API의 **신규 이용 신청 자체를 정책적으로 차단**하는 조치가 있었던 것으로 보임(본문 전체는 JS 렌더링이라 못 읽음). NCP 포럼에도 동일 증상(체크박스 켜고 저장했는데 210 에러)을 문의한 사례가 있었으나 NCP 측이 "공식 문의 채널로 접수" 안내만 하고 공개된 해결책은 없었음.
+  - 사용자가 NCP 고객센터에 정식 문의를 넣기로 하고, 그동안은 보류하기로 결정함. 코드는 fail-open이라 그대로 둬도 안전(키가 안 통하면 좌표 없이 저장되는 기존 동작과 동일) — NCP 쪽 문제가 풀리면 추가 코드 변경 없이 바로 동작함.
+- **다음 세션에서 재개 시**: 사용자가 NCP 답변을 받으면, `.env.local`에 이미 넣어둔 `NAVER_GEOCODE_CLIENT_ID`/`SECRET`(`kph5ji8tv4` / `wPm4aryYzhz3waosuh2i5jODBgQfjK6CEKhJdtOh`)으로 재테스트만 하면 됨. Vercel 프로덕션 환경변수 등록과 표로 보기 수정 배포는 아직 안 한 상태 — 다음에 이어서 진행.
