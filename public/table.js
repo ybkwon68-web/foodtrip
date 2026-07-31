@@ -77,8 +77,13 @@ let activeField = null;
 let activeValues = [];
 let pendingChecked = null; // 확인을 누르기 전까지는 filterState에 반영하지 않는다.
 
+// 도/특별시/광역시와 시/군/구는 상호 종속 관계 — 한쪽이 선택되어 있으면
+// 다른 쪽 드롭다운에는 그 선택에 해당하는 값만 나오게 한다.
 function fieldValues(field) {
-  const set = new Set(rows.map((r) => r[field] || ''));
+  const otherField = field === 'sido' ? 'sigungu' : 'sido';
+  const otherFilter = filterState[otherField];
+  const base = otherFilter ? rows.filter((r) => otherFilter.has(r[otherField] || '')) : rows;
+  const set = new Set(base.map((r) => r[field] || ''));
   return [...set].sort((a, b) => {
     if (a === '' || b === '') return a === b ? 0 : a === '' ? -1 : 1;
     return a.localeCompare(b, 'ko');
@@ -117,7 +122,8 @@ function openColFilterMenu(field, btn) {
   activeField = field;
   activeValues = fieldValues(field);
   const current = filterState[field];
-  pendingChecked = new Set(current ? current : activeValues);
+  // 다른 필터 변경으로 더 이상 존재하지 않게 된 선택값은 화면 표시에서만 제외한다.
+  pendingChecked = new Set(current ? [...current].filter((v) => activeValues.includes(v)) : activeValues);
   colFilterSearch.value = '';
   renderColFilterList('');
   positionColFilterMenu(btn);
