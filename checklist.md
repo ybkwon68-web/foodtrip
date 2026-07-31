@@ -50,10 +50,11 @@
 - [ ] 배포된 URL에서 최종 동작 확인
 
 ## 5단계: Supabase 연동 (사용자 계정 필요, 다음 단계)
-- [ ] Supabase 프로젝트 생성
-- [ ] `supabase/migrations/0001_init.sql` 실행 (SQL 에디터에 붙여넣기)
-- [ ] `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` 확인
-- [ ] `ADMIN_PASSWORD`(원하는 편집 비밀번호), `SESSION_SECRET`(임의의 긴 문자열) 정하기
-- [ ] `crawler/seed_supabase.py` 실행해 초기 데이터 적재
-- [ ] Vercel 프로젝트에 위 4개 환경변수 등록
-- [ ] 배포 후 실제 로그인 → 식당 정보 수정 → 저장이 반영되는지 종단 간 테스트
+- [x] Supabase 프로젝트 생성 (`acshmogxwmoluuvjcytn`)
+- [x] `supabase/migrations/0001_init.sql` 실행 (SQL 에디터에 붙여넣기)
+- [x] `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` 확인 → `.env.local`에 저장(gitignore 대상, 커밋 안 됨)
+- [x] `ADMIN_PASSWORD`(원하는 편집 비밀번호), `SESSION_SECRET`(임의의 긴 문자열) 정하기
+- [x] `crawler/seed_supabase.py` 실행해 초기 데이터 적재 — 352/352건 성공, REST API로 건수 재확인 완료
+- [x] 로컬에서 `/api/auth`·`/api/episodes`·`/api/episodes/[id]` 핸들러를 실제 프로덕션 Supabase에 직접 호출해 로그인/인증거부/목록조회/PUT수정/원상복구 종단 간 검증 (7단계 전부 통과)
+- [ ] Vercel 프로젝트에 위 4개 환경변수 등록 (사용자 Vercel 계정 필요)
+- [ ] 배포된 실제 URL(브라우저)에서 로그인 → 식당 정보 수정 → 저장 반영 최종 확인

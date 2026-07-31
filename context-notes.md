@@ -93,3 +93,11 @@
   - 받으면: `.env.local` 생성 → `supabase/migrations/0001_init.sql` 적용 → `crawler/seed_supabase.py`로 데이터 적재 → `vercel dev`(또는 실배포)로 로그인/저장 종단 간 테스트 → Vercel 프로젝트 연결 및 배포.
 - 로컬 정적 서버가 `http://localhost:8000`에서 백그라운드로 계속 돌고 있었음(세션 종료 후에는 사용자 컴퓨터 재부팅/터미널 종료 전까지 남아있을 수 있음 — 다음 세션에서 새로 띄우면 됨, 신경 안 써도 무방).
 - 미해결 이슈 없음. 체크리스트는 `checklist.md`, 아키텍처/의사결정은 `구축계획.md` 최신 상태.
+
+## 2026-07-31 Supabase 실제 연동 완료
+
+- 사용자가 Supabase 프로젝트(`acshmogxwmoluuvjcytn`)와 service_role 키, 관리자 비밀번호를 제공해 `.env.local` 생성함(SESSION_SECRET은 `crypto.randomBytes(32)`로 직접 생성).
+- `0001_init.sql`은 service_role 키로는 실행 불가(REST API는 DDL을 지원하지 않고, DB 직접 연결에는 별도 DB 비밀번호가 필요해 service_role 키와 다름) → 사용자가 Supabase SQL 에디터에 직접 붙여넣어 실행하는 방식으로 진행(원래 계획대로).
+- `crawler/seed_supabase.py` 실행 → 352/352건 upsert 성공. 터미널 인코딩 문제로 한글 로그가 깨져 보였으나 REST API로 `Content-Range: 0-351/352` 확인해 실제 적재 건수 검증함.
+- **배포 전 종단 간 검증**: Vercel 배포나 `vercel dev` 없이도, `api/auth.js`·`api/episodes.js`·`api/episodes/[id].js` 핸들러를 Node 스크립트에서 req/res 객체를 흉내내어 직접 호출하는 방식으로 실제 프로덕션 Supabase에 대고 테스트함(임시 스크립트, 저장소에는 없음). 잘못된 비밀번호 거부 → 로그인 성공 → 목록 352건 조회 → 1회 원본 백업 → 토큰 없는 PUT 거부(401) → 토큰 있는 PUT으로 verified 토글 → 원상복구, 총 7단계 전부 통과. 이 방식은 실제 배포 환경의 HTTP 라우팅/CORS까지는 검증하지 못하므로 Vercel 배포 후 브라우저에서의 최종 확인은 여전히 필요함(checklist.md 5단계 마지막 항목 참고).
+- 남은 것은 Vercel 프로젝트 연결·환경변수 등록·배포뿐이며, 이 역시 사용자 Vercel 계정이 필요해 다음 세션(또는 사용자 직접 진행)에서 이어감.
