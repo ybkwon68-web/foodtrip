@@ -94,10 +94,25 @@ def extract_keywords(episode_title: str) -> list[str]:
     return [t for t in tokens if t not in STOPWORDS]
 
 
+EPISODE_NUM_RE = re.compile(r"(\d{1,4})회")
+
+
 def title_matches_episode(post_title: str, episode: int, keywords: list[str]) -> bool:
     if "백반기행" not in post_title:
         return False
-    if f"{episode}회" in post_title:
+    mentioned = [int(n) for n in EPISODE_NUM_RE.findall(post_title)]
+    if mentioned:
+        # 제목에 회차 번호가 명시돼 있으면 그 번호로만 판단한다.
+        # (예전엔 "44회" in "344회 ..." 처럼 부분 문자열로 오매칭되는 버그가 있었음 —
+        # 정규식으로 전체 숫자를 추출해 비교하면 이 문제가 사라지고, 제목에 다른
+        # 회차 번호가 명시된 경우 키워드가 겹치더라도 오매칭을 막을 수 있다.)
+        if episode not in mentioned:
+            return False
+        # 번호가 맞아도 블로거가 회차 번호를 잘못 적었을 가능성이 있다(실측: 261회
+        # 사례 — 실제로는 262회 내용인데 제목에 "261회"라고 적어놓음). 방송 공식
+        # 제목의 키워드가 하나도 안 겹치면 이 매칭은 버린다.
+        if keywords and not any(kw in post_title for kw in keywords):
+            return False
         return True
     return any(kw in post_title for kw in keywords)
 
@@ -119,12 +134,24 @@ def region_conflicts(places: list[dict], expected_sido: str | None) -> bool:
 
 
 def find_restaurants_for_episode(
-    episode: int, episode_title: str, session: requests.Session, expected_region: str | None = None
+    episode: int,
+    episode_title: str,
+    session: requests.Session,
+    expected_region: str | None = None,
+    candidate_limit: int = 6,
+    used_sources: set[tuple[str, str]] | None = None,
+    used_place_ids: set[str] | None = None,
 ) -> tuple[list[dict], str | None]:
     """회차 번호+제목으로 네이버 블로그를 검색해 장소 위젯이 있는 첫 후보를 채택.
 
     expected_region: regions.py로 추정한 "시도 시군구" 문자열(있으면). 식당 주소의
     시/도가 이와 전부 어긋나면 오매칭으로 보고 건너뛴다.
+    used_sources: 이미 다른 회차가 채택한 (blogId, logNo) 집합. 같은 글이 서로 다른
+    회차에 중복 채택되는 걸 막기 위한 전역 가드(과거 실측에서 발견된 재발 사례).
+    used_place_ids: 이미 다른 회차가 채택한 식당 place_id 집합. 서로 다른 블로그 글이
+    같은 식당을 언급해도(예: 유명 맛집이 여러 "지역 맛집 총정리" 글에 반복 등장) 그
+    식당이 이미 다른 회차에 채택돼 있으면 이 매칭은 건너뛴다 — 회차 번호가 겹치는
+    작은 지역명(예: "양평")에서 다른 회차의 식당을 잘못 채택하는 사례가 실측됨.
 
     반환값: (식당 목록, 근거 블로그 URL). 못 찾으면 ([], None).
     """
@@ -132,11 +159,13 @@ def find_restaurants_for_episode(
     expected_sido = expected_region.split(" ")[0] if expected_region else None
     query = f"허영만의 백반기행 {episode}회"
     try:
-        candidates = search_blog_candidates(query, session)
+        candidates = search_blog_candidates(query, session, limit=candidate_limit)
     except requests.RequestException:
         return [], None
 
     for blog_id, log_no in candidates:
+        if used_sources is not None and (blog_id, log_no) in used_sources:
+            continue
         time.sleep(CANDIDATE_SLEEP_SEC)
         try:
             post_title, places = fetch_post(blog_id, log_no, session)
@@ -144,7 +173,15 @@ def find_restaurants_for_episode(
             continue
         if not title_matches_episode(post_title, episode, keywords):
             continue
-        if places and not region_conflicts(places, expected_sido):
-            return places, f"https://blog.naver.com/{blog_id}/{log_no}"
+        if not places or region_conflicts(places, expected_sido):
+            continue
+        candidate_ids = {p["place_id"] for p in places if p.get("place_id")}
+        if used_place_ids is not None and candidate_ids & used_place_ids:
+            continue
+        if used_sources is not None:
+            used_sources.add((blog_id, log_no))
+        if used_place_ids is not None:
+            used_place_ids.update(candidate_ids)
+        return places, f"https://blog.naver.com/{blog_id}/{log_no}"
 
     return [], None
