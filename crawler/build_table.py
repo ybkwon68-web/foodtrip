@@ -7,13 +7,26 @@ SEED_PATH = ROOT / "seed" / "episodes.json"
 OUT_PATH = ROOT / "public" / "data" / "table.json"
 REVIEW_CHUNKS = [ROOT / "crawler" / f"review_chunk_{i}.json" for i in range(1, 5)]
 
+# 해외 특집(캐나다/홍콩/일본 등) 주소는 "시도 시군구 상세주소" 형식이 아니라서
+# 앞 2토큰을 그대로 시도/시군구로 잘라내면 깨진 값이 나온다. 알려진 국내 시도명만 허용.
+KNOWN_SIDO = {
+    "서울특별시", "부산광역시", "대구광역시", "인천광역시", "광주광역시",
+    "대전광역시", "울산광역시", "세종특별자치시",
+    "경기도", "강원도", "강원특별자치도",
+    "충청북도", "충청남도", "전라북도", "전북특별자치도", "전라남도",
+    "경상북도", "경상남도", "제주특별자치도", "제주도",
+}
+
 
 def split_address(addr: str) -> tuple[str, str, str]:
-    """'서울특별시 강동구 성내로 52 성원빌딩' -> (시도, 시군구, 상세주소)"""
+    """'서울특별시 강동구 성내로 52 성원빌딩' -> (시도, 시군구, 상세주소)
+    국내 시도명이 아니면(해외 주소 등) 분리하지 않고 원문 전체를 상세주소로 둔다."""
     if not addr:
         return "", "", ""
     parts = addr.split(" ", 2)
     sido = parts[0] if len(parts) > 0 else ""
+    if sido not in KNOWN_SIDO:
+        return "", "", addr
     sigungu = parts[1] if len(parts) > 1 else ""
     detail = parts[2] if len(parts) > 2 else ""
     return sido, sigungu, detail
@@ -25,6 +38,8 @@ def split_region(region: str) -> tuple[str, str]:
         return "", ""
     parts = region.split(" ", 1)
     sido = parts[0]
+    if sido not in KNOWN_SIDO:
+        return "", ""
     sigungu = parts[1] if len(parts) > 1 else ""
     return sido, sigungu
 
