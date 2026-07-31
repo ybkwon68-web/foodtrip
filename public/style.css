@@ -127,6 +127,67 @@ button, input, select { font-family: inherit; }
 .edit-toggle.active { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
 .edit-toggle svg { width: 13px; height: 13px; }
 
+.filter-dropdown { position: relative; }
+.filter-summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 7px 10px;
+  background: var(--paper-raised);
+  color: var(--ink);
+  font-size: 13px;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+}
+.filter-summary::-webkit-details-marker { display: none; }
+.filter-summary::after { content: '\25be'; font-size: 10px; color: var(--ink-soft); }
+.filter-dropdown[open] .filter-summary { border-color: var(--accent); color: var(--accent); }
+.filter-count { color: var(--accent); font-weight: 700; }
+.filter-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 20;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 8px;
+  min-width: 200px;
+  max-height: 280px;
+  overflow-y: auto;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+}
+.filter-menu-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 6px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--line);
+}
+.filter-menu-actions button {
+  background: none;
+  border: none;
+  color: var(--ink-soft);
+  font-size: 12px;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+.filter-menu-actions button:hover { color: var(--accent); }
+.filter-menu label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 2px;
+  font-size: 13px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.filter-menu label:hover { color: var(--accent); }
+
 /* 목록 */
 .result-count {
   max-width: 1200px;

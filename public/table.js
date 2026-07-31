@@ -6,6 +6,8 @@ const tableCount = document.getElementById('tableCount');
 const tableSearch = document.getElementById('tableSearch');
 
 let rows = [];
+const selectedSido = new Set();
+const selectedSigungu = new Set();
 
 function escapeHtml(str) {
   const div = document.createElement('div');
@@ -46,6 +48,8 @@ function rowTemplate(r) {
 }
 
 function matches(r, query) {
+  if (selectedSido.size && !selectedSido.has(r.sido)) return false;
+  if (selectedSigungu.size && !selectedSigungu.has(r.sigungu)) return false;
   if (!query) return true;
   const haystack = [r.episode, r.restaurant_name, r.menu, r.review, r.sido, r.sigungu, r.detail_addr]
     .filter(Boolean)
@@ -57,18 +61,56 @@ function matches(r, query) {
 function render() {
   const query = tableSearch.value.trim();
   const filtered = rows.filter((r) => matches(r, query));
-  tableCount.textContent = `총 ${filtered.length}개 행 (회차 ${rows.length ? new Set(rows.map(r => r.episode)).size : 0}개)`;
+  tableCount.textContent = `총 ${filtered.length}개 행 (회차 ${filtered.length ? new Set(filtered.map(r => r.episode)).size : 0}개)`;
   tableBody.innerHTML = filtered.map(rowTemplate).join('');
 }
+
+function buildFilterOptions(containerId, countId, field, selectedSet) {
+  const container = document.getElementById(containerId);
+  const countEl = document.getElementById(countId);
+  const values = [...new Set(rows.map((r) => r[field]).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'ko'));
+
+  container.innerHTML = values
+    .map((v) => `<label><input type="checkbox" value="${escapeHtml(v)}"> ${escapeHtml(v)}</label>`)
+    .join('');
+
+  container.addEventListener('change', (e) => {
+    if (e.target.tagName !== 'INPUT') return;
+    if (e.target.checked) selectedSet.add(e.target.value);
+    else selectedSet.delete(e.target.value);
+    countEl.textContent = selectedSet.size ? ` (${selectedSet.size})` : '';
+    render();
+  });
+}
+
+function setupFilterClear(buttonSelector, containerId, countId, selectedSet) {
+  document.querySelector(buttonSelector).addEventListener('click', () => {
+    selectedSet.clear();
+    document.querySelectorAll(`#${containerId} input:checked`).forEach((el) => { el.checked = false; });
+    document.getElementById(countId).textContent = '';
+    render();
+  });
+}
+
+// details 드롭다운 바깥을 클릭하면 닫히도록 처리 (details 기본 동작에는 없음)
+document.addEventListener('click', (e) => {
+  document.querySelectorAll('.filter-dropdown[open]').forEach((el) => {
+    if (!el.contains(e.target)) el.removeAttribute('open');
+  });
+});
 
 async function load() {
   const res = await fetch(TABLE_DATA_URL);
   if (!res.ok) throw new Error(`데이터를 불러오지 못했습니다 (${res.status})`);
   rows = await res.json();
+  buildFilterOptions('sidoFilterOptions', 'sidoFilterCount', 'sido', selectedSido);
+  buildFilterOptions('sigunguFilterOptions', 'sigunguFilterCount', 'sigungu', selectedSigungu);
   render();
 }
 
 tableSearch.addEventListener('input', render);
+setupFilterClear('[data-filter-clear="sido"]', 'sidoFilterOptions', 'sidoFilterCount', selectedSido);
+setupFilterClear('[data-filter-clear="sigungu"]', 'sigunguFilterOptions', 'sigunguFilterCount', selectedSigungu);
 
 load().catch((err) => {
   tableBody.innerHTML = `<tr><td colspan="8">${escapeHtml(err.message)}</td></tr>`;

@@ -18,14 +18,34 @@
     <span class="wordmark">백반기행 아카이브<small>회차별 요약표</small></span>
   </a>
   <div class="controls">
-    <div class="search-box">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg>
-      <input type="text" id="tableSearch" placeholder="회차, 식당명, 지역으로 검색">
+    <div class="controls-row">
+      <div class="search-box">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        <input type="text" id="tableSearch" placeholder="회차, 식당명, 지역으로 검색">
+      </div>
+      <details class="filter-dropdown" id="sidoFilter">
+        <summary class="filter-summary">도/특별시/광역시<span class="filter-count" id="sidoFilterCount"></span></summary>
+        <div class="filter-menu">
+          <div class="filter-menu-actions">
+            <button type="button" data-filter-clear="sido">선택 해제</button>
+          </div>
+          <div id="sidoFilterOptions"></div>
+        </div>
+      </details>
+      <details class="filter-dropdown" id="sigunguFilter">
+        <summary class="filter-summary">시/군/구<span class="filter-count" id="sigunguFilterCount"></span></summary>
+        <div class="filter-menu">
+          <div class="filter-menu-actions">
+            <button type="button" data-filter-clear="sigungu">선택 해제</button>
+          </div>
+          <div id="sigunguFilterOptions"></div>
+        </div>
+      </details>
+      <a class="edit-toggle" href="./index.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11a8 8 0 0 0 16 0Z"></path><path d="M4 11h16"></path></svg>
+        카드로 보기
+      </a>
     </div>
-    <a class="edit-toggle" href="./index.html">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11a8 8 0 0 0 16 0Z"></path><path d="M4 11h16"></path></svg>
-      카드로 보기
-    </a>
   </div>
 </header>
 
