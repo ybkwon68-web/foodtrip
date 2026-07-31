@@ -510,6 +510,8 @@ button, input, select { font-family: inherit; }
 }
 .table-scroll {
   overflow-x: auto;
+  overflow-y: auto;
+  max-height: calc(100vh - 132px);
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
   background: var(--paper-raised);
@@ -600,6 +602,7 @@ button, input, select { font-family: inherit; }
   .grid { padding: 12px 16px 28px; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
   .detail-wrap { padding: 22px 18px 44px; }
   .table-page { padding: 14px 16px 40px; }
+  .table-scroll { max-height: calc(100vh - 217px); }
   .map-page { padding: 14px 16px 40px; }
   #map { height: 65vh; }
 }
