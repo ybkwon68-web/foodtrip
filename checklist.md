@@ -46,8 +46,8 @@
 ## 4단계: 배포
 - [x] `git init` 및 최초 커밋
 - [x] GitHub 원격 저장소 push (`ybkwon68-web/foodtrip`, main 브랜치)
-- [ ] Vercel 프로젝트 연결 (정적 사이트, output=`public/`) — 사용자 준비되면 진행
-- [ ] 배포된 URL에서 최종 동작 확인
+- [x] Vercel 프로젝트 연결 (`ybkwon68-5258s-projects/foodtrip`, `vercel link`)
+- [x] 배포된 URL에서 최종 동작 확인 — 프로덕션(`https://foodtrip-six.vercel.app`)에서 목록/episodes API/로그인/인증거부/PUT저장/원상복구 curl로 전부 확인
 
 ## 5단계: Supabase 연동 (사용자 계정 필요, 다음 단계)
 - [x] Supabase 프로젝트 생성 (`acshmogxwmoluuvjcytn`)
@@ -56,5 +56,5 @@
 - [x] `ADMIN_PASSWORD`(원하는 편집 비밀번호), `SESSION_SECRET`(임의의 긴 문자열) 정하기
 - [x] `crawler/seed_supabase.py` 실행해 초기 데이터 적재 — 352/352건 성공, REST API로 건수 재확인 완료
 - [x] 로컬에서 `/api/auth`·`/api/episodes`·`/api/episodes/[id]` 핸들러를 실제 프로덕션 Supabase에 직접 호출해 로그인/인증거부/목록조회/PUT수정/원상복구 종단 간 검증 (7단계 전부 통과)
-- [ ] Vercel 프로젝트에 위 4개 환경변수 등록 (사용자 Vercel 계정 필요)
-- [ ] 배포된 실제 URL(브라우저)에서 로그인 → 식당 정보 수정 → 저장 반영 최종 확인
+- [x] Vercel 프로젝트에 위 4개 환경변수 등록 (Production/Preview/Development 3개 환경 모두)
+- [x] 배포된 실제 URL(curl)에서 로그인 → 식당 정보 수정 → 저장 반영 최종 확인

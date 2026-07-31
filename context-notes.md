@@ -101,3 +101,12 @@
 - `crawler/seed_supabase.py` 실행 → 352/352건 upsert 성공. 터미널 인코딩 문제로 한글 로그가 깨져 보였으나 REST API로 `Content-Range: 0-351/352` 확인해 실제 적재 건수 검증함.
 - **배포 전 종단 간 검증**: Vercel 배포나 `vercel dev` 없이도, `api/auth.js`·`api/episodes.js`·`api/episodes/[id].js` 핸들러를 Node 스크립트에서 req/res 객체를 흉내내어 직접 호출하는 방식으로 실제 프로덕션 Supabase에 대고 테스트함(임시 스크립트, 저장소에는 없음). 잘못된 비밀번호 거부 → 로그인 성공 → 목록 352건 조회 → 1회 원본 백업 → 토큰 없는 PUT 거부(401) → 토큰 있는 PUT으로 verified 토글 → 원상복구, 총 7단계 전부 통과. 이 방식은 실제 배포 환경의 HTTP 라우팅/CORS까지는 검증하지 못하므로 Vercel 배포 후 브라우저에서의 최종 확인은 여전히 필요함(checklist.md 5단계 마지막 항목 참고).
 - 남은 것은 Vercel 프로젝트 연결·환경변수 등록·배포뿐이며, 이 역시 사용자 Vercel 계정이 필요해 다음 세션(또는 사용자 직접 진행)에서 이어감.
+
+## 2026-07-31 Vercel 배포 완료
+
+- `npx vercel whoami` 시도 시 별도 조치 없이 device-flow 로그인이 바로 완료됨(`ybkwon68-5258` 계정) — 이 머신에 이미 인가된 세션/브라우저가 있었던 것으로 보임.
+- `vercel link --yes` 실행 시 이미 존재하는 프로젝트 `ybkwon68-5258s-projects/foodtrip`(사용자가 미리 만들어둠)에 자동으로 연결됨. 이 과정에서 Vercel CLI가 `.env.local`에 `VERCEL_OIDC_TOKEN`을 자동 추가함(gitignore 대상이라 커밋 안 됨, 그대로 둠).
+- `vercel env add`로 4개 환경변수(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, ADMIN_PASSWORD, SESSION_SECRET)를 Production/Preview/Development 3개 환경 각각에 등록(총 12개), `vercel env ls`로 전부 확인.
+- 사용자가 "프리뷰로 먼저" 확인을 원해 `vercel`(프리뷰 배포) 먼저 실행 → curl로 검증하려 했으나 Vercel 기본 Deployment Protection(팀 로그인 필요)에 막혀 401/302만 확인 가능했음. 이는 버그가 아니라 프리뷰 URL의 기본 동작이라고 사용자에게 설명함.
+- 이어서 사용자 승인 받아 `vercel --prod` 실행 → 프로덕션 별칭 `https://foodtrip-six.vercel.app` 확보(보호 없음, 공개 접근 가능). curl로 종단 간 재검증: 목록 200, `/api/episodes` 200(352건), 토큰 없는 PUT 401, 로그인→토큰 발급→PUT으로 1회 `verified` true 전환(200)→false로 원상복구(200) 전부 확인.
+- 이것으로 checklist.md 4단계·5단계 전 항목 완료. 프로젝트의 남은 알려진 한계는 편집 API rate limit 미구현(0단계 체크리스트에 명시)뿐.
