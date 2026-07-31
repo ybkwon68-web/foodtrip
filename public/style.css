@@ -593,6 +593,22 @@ button, input, select { font-family: inherit; }
 .map-info-links { display: flex; gap: 10px; }
 .map-info-links a { font-size: 12px; color: var(--jade); text-decoration: none; border-bottom: 1px solid currentColor; }
 .map-info-links a:hover { color: var(--accent); }
+.map-cluster {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  border: 2px solid var(--paper);
+}
+.map-cluster-sm { font-size: 13px; }
+.map-cluster-md { font-size: 15px; }
+.map-cluster-lg { font-size: 17px; }
 
 @media (max-width: 1180px) {
   .grid { grid-template-columns: repeat(3, 1fr); }

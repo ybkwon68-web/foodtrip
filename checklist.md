@@ -72,5 +72,7 @@
 ## 7단계: 2026-07-31 PC 이전 + 라이브 편집 반영 버그 수정
 - [x] PC 이전 후 로컬 개발 환경 복구 (`.env.local` Vercel에서 pull, `npm install`, `vercel link`)
 - [x] 표로 보기가 편집 화면 저장 내용을 반영하지 않던 버그 수정 (`table.js`가 정적 스냅샷 대신 `/api/episodes` 우선 조회하도록 변경)
-- [ ] 지도로 보기에 신규/주소변경 식당 마커가 안 뜨는 문제 — 좌표 자동조회(Geocoding) 코드는 작성 완료(`lib/geocode.js`), NCP Geocoding 구독이 계속 거부(errorCode 210)돼 보류 중. 사용자가 NCP 고객센터에 문의 접수, 답변 대기
-- [ ] 표로 보기 수정사항 프로덕션 배포 (아직 로컬에서만 테스트함)
+- [x] 지도로 보기에 신규/주소변경 식당 마커가 안 뜨는 문제 해결 — NCP Geocoding 대신 Kakao Local API로 전환하여 좌표 자동조회 연동 완료
+- [x] 표로 보기 수정사항 및 지오코딩 API 변경본 프로덕션 배포 완료 (Vercel GitHub 자동 배포 연동 확인)
+- [x] 지도로 보기 마커 클러스터링 도입 (네이버 공식 `MarkerClustering.js` 자체 호스팅, 밀집 지역 가독성·성능 개선)
+

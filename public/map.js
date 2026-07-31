@@ -8,6 +8,21 @@ let episodes = [];
 let markers = []; // { marker, haystack }
 let activeInfoWindow = null;
 let map;
+let clustering;
+
+// 마커 개수 구간별로 커지는 원형 클러스터 뱃지 (2~9 / 10~49 / 50+)
+function clusterIconDef(size, sizeClass) {
+  return {
+    content: `<div class="map-cluster ${sizeClass}"><span class="map-cluster-count"></span></div>`,
+    size: new naver.maps.Size(size, size),
+    anchor: new naver.maps.Point(size / 2, size / 2),
+  };
+}
+const CLUSTER_ICONS = [
+  clusterIconDef(34, 'map-cluster-sm'),
+  clusterIconDef(42, 'map-cluster-md'),
+  clusterIconDef(52, 'map-cluster-lg'),
+];
 
 function escapeHtml(str) {
   const div = document.createElement('div');
@@ -43,7 +58,8 @@ function buildMarkers() {
       if (typeof r.lat !== 'number' || typeof r.lng !== 'number') return;
 
       const position = new naver.maps.LatLng(r.lat, r.lng);
-      const marker = new naver.maps.Marker({ position, map, title: r.name });
+      // map은 지정하지 않는다 — 클러스터링 인스턴스가 표시 여부를 관리한다.
+      const marker = new naver.maps.Marker({ position, title: r.name });
       const content = `
         <div class="map-info">
           <span class="map-info-ep">제${ep.episode}회</span>
@@ -90,15 +106,36 @@ function fitBounds() {
   map.fitBounds(bounds);
 }
 
+// 검색 필터가 바뀔 때마다 클러스터링 인스턴스를 새로 만든다 —
+// setMarkers()로 마커 목록만 갱신하면 라이브러리 내부 KVO 키 이름 불일치로
+// 재클러스터링이 일어나지 않는 알려진 문제가 있어, destroy 후 재생성이 더 안전하다.
+function applyClustering(activeMarkers) {
+  if (clustering) clustering.setMap(null);
+  clustering = new MarkerClustering({
+    map,
+    markers: activeMarkers,
+    gridSize: 100,
+    maxZoom: 15,
+    minClusterSize: 3,
+    disableClickZoom: false,
+    icons: CLUSTER_ICONS,
+    indexGenerator: [10, 50],
+    stylingFunction: (clusterMarker, count) => {
+      const el = clusterMarker.getElement();
+      const countEl = el && el.querySelector('.map-cluster-count');
+      if (countEl) countEl.textContent = count;
+    },
+  });
+}
+
 function render() {
   const query = mapSearch.value.trim().toLowerCase();
-  let visible = 0;
+  const active = [];
   markers.forEach((m) => {
-    const match = !query || m.haystack.includes(query);
-    m.marker.setMap(match ? map : null);
-    if (match) visible += 1;
+    if (!query || m.haystack.includes(query)) active.push(m.marker);
   });
-  mapCount.textContent = `총 ${visible}개 식당 표시 중 (좌표 확인된 전체 ${markers.length}개)`;
+  applyClustering(active);
+  mapCount.textContent = `총 ${active.length}개 식당 표시 중 (좌표 확인된 전체 ${markers.length}개)`;
 }
 
 function init() {
