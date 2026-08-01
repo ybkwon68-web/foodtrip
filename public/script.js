@@ -213,12 +213,30 @@ function collectRestaurantRows(container) {
     .filter((r) => r.name);
 }
 
-function renderDetail(epNum) {
+// 목록 응답(/api/episodes)에는 용량 절감을 위해 body_html이 빠져 있으므로,
+// 상세보기를 열 때 해당 회차 1건만 /api/episodes/:id로 따로 채워 넣는다.
+// 정적 스냅샷 폴백(로컬 정적 서버 등)은 처음부터 body_html을 포함하므로 재요청하지 않는다.
+async function ensureBodyHtml(ep) {
+  if (ep.body_html !== undefined) return;
+  try {
+    const res = await fetch(`/api/episodes/${ep.episode}`);
+    if (res.ok) {
+      const full = await res.json();
+      Object.assign(ep, full);
+    }
+  } catch (err) {
+    // API 없는 환경 — 아래에서 "본문을 불러오지 못했습니다"로 표시됨
+  }
+}
+
+async function renderDetail(epNum) {
   const ep = findEpisode(epNum);
   if (!ep) {
     detailView.innerHTML = `<div class="detail-wrap"><p>존재하지 않는 회차입니다.</p><a class="back-link" href="#/">← 목록으로</a></div>`;
     return;
   }
+  await ensureBodyHtml(ep);
+  if (String(location.hash) !== `#/episode/${epNum}`) return; // 그 사이 다른 화면으로 이동했으면 중단
 
   const restaurants = ep.restaurants || [];
   const badge = ep.verified

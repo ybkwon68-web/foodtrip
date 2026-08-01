@@ -48,6 +48,7 @@ module.exports = async function handler(req, res) {
       res.status(404).json({ error: '해당 회차를 찾을 수 없습니다.' });
       return;
     }
+    res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
     res.status(200).json(data);
     return;
   }
