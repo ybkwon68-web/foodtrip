@@ -6,40 +6,7 @@ const API_URL = '/api/episodes';
 // 오프라인으로 미리 만들어두는 스냅샷이라, 편집 화면에서 저장한 최신 식당명/주소가
 // 반영되지 않는다. 소개된메뉴·한줄평은 DB에 없는 정보라 이 스냅샷에서만 가져오고,
 // 식당명/주소/지역은 라이브 API 데이터를 우선 사용해 최신 상태를 보여준다.
-const KNOWN_SIDO = new Set([
-  '서울특별시', '부산광역시', '대구광역시', '인천광역시', '광주광역시',
-  '대전광역시', '울산광역시', '세종특별자치시',
-  '경기도', '강원도', '강원특별자치도',
-  '충청북도', '충청남도', '전라북도', '전북특별자치도', '전라남도',
-  '경상북도', '경상남도', '제주특별자치도', '제주도',
-]);
-
-function splitN(str, sep, maxSplit) {
-  const parts = [];
-  let rest = str;
-  for (let i = 0; i < maxSplit; i++) {
-    const idx = rest.indexOf(sep);
-    if (idx === -1) break;
-    parts.push(rest.slice(0, idx));
-    rest = rest.slice(idx + sep.length);
-  }
-  parts.push(rest);
-  return parts;
-}
-
-function splitAddress(addr) {
-  if (!addr) return { sido: '', sigungu: '', detail: '' };
-  const [sido = '', sigungu = '', detail = ''] = splitN(addr, ' ', 2);
-  if (!KNOWN_SIDO.has(sido)) return { sido: '', sigungu: '', detail: addr };
-  return { sido, sigungu, detail };
-}
-
-function splitRegion(region) {
-  if (!region) return { sido: '', sigungu: '' };
-  const [sido = '', sigungu = ''] = splitN(region, ' ', 1);
-  if (!KNOWN_SIDO.has(sido)) return { sido: '', sigungu: '' };
-  return { sido, sigungu };
-}
+const { splitAddress, splitRegion } = window.AddressSplit;
 
 function buildRowsFromEpisodes(episodes, reviewLookup) {
   const rows = [];

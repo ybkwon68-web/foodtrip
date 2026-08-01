@@ -344,13 +344,13 @@
         "menu": "한정식",
         "name": "대원식당",
         "review": "",
-        "address": "전남 순천시 장천2길 30-29",
+        "address": "전라남도 순천시 장천2길 30-29",
         "place_id": null
       }
     ],
     "restaurants_source_url": null,
     "verified": false,
-    "updated_at": "2026-08-01T06:00:55.898918+00:00"
+    "updated_at": "2026-08-01T08:09:12.640113+00:00"
   },
   {
     "episode": 18,
@@ -1356,13 +1356,13 @@
         "menu": "꽃게무침",
         "name": "이화식당",
         "review": "",
-        "address": "전남 진도군 진도읍 남동1길 55",
+        "address": "전라남도 진도군 진도읍 남동1길 55",
         "place_id": null
       }
     ],
     "restaurants_source_url": null,
     "verified": false,
-    "updated_at": "2026-08-01T05:57:29.57987+00:00"
+    "updated_at": "2026-08-01T08:09:12.431185+00:00"
   },
   {
     "episode": 49,
@@ -1668,7 +1668,7 @@
         "menu": "한정식",
         "name": "민속집",
         "review": "",
-        "address": "전북 순창군 순창읍 순창8길 5-1",
+        "address": "전북특별자치도 순창군 순창읍 순창8길 5-1",
         "place_id": null
       },
       {
@@ -1684,7 +1684,7 @@
     ],
     "restaurants_source_url": null,
     "verified": false,
-    "updated_at": "2026-08-01T05:53:24.580361+00:00"
+    "updated_at": "2026-08-01T08:09:18.310444+00:00"
   },
   {
     "episode": 63,
@@ -1749,7 +1749,7 @@
         "lng": 126.980668605391,
         "tel": null,
         "menu": "사골칼국수, 만두",
-        "name": "황색가",
+        "name": "황생가",
         "review": "한 입만 먹어도 양반이 된 기분을 느끼게 해주는곳",
         "address": "서울특별시 종로구 북촌로 5길 78",
         "place_id": null
@@ -1777,7 +1777,7 @@
     ],
     "restaurants_source_url": "https://blog.naver.com/dreamer_drummer/224344729104",
     "verified": true,
-    "updated_at": "2026-08-01T04:48:20.569127+00:00"
+    "updated_at": "2026-08-01T07:14:51.07605+00:00"
   },
   {
     "episode": 66,
@@ -1919,13 +1919,13 @@
         "menu": "갈낙탕",
         "name": "독천식당",
         "review": "",
-        "address": "전남 영암군 학산면 독천로 162-1",
+        "address": "전라남도 영암군 학산면 독천로 162-1",
         "place_id": null
       }
     ],
     "restaurants_source_url": null,
     "verified": false,
-    "updated_at": "2026-08-01T05:51:35.575714+00:00"
+    "updated_at": "2026-08-01T08:09:18.105094+00:00"
   },
   {
     "episode": 72,
@@ -1967,13 +1967,13 @@
         "menu": "물회",
         "name": "해변회식당",
         "review": "",
-        "address": "경북 영덕군 영해면 영덕대게로 2817",
+        "address": "경상북도 영덕군 영해면 영덕대게로 2817",
         "place_id": null
       }
     ],
     "restaurants_source_url": null,
     "verified": false,
-    "updated_at": "2026-08-01T05:51:36.735317+00:00"
+    "updated_at": "2026-08-01T08:09:17.895442+00:00"
   },
   {
     "episode": 74,
@@ -2072,13 +2072,13 @@
         "menu": "해물된장찌개",
         "name": "포항식당",
         "review": "",
-        "address": "강원 철원군 자등로 579",
+        "address": "강원특별자치도 철원군 자등로 579",
         "place_id": null
       }
     ],
     "restaurants_source_url": null,
     "verified": false,
-    "updated_at": "2026-08-01T05:51:37.42703+00:00"
+    "updated_at": "2026-08-01T08:09:17.356565+00:00"
   },
   {
     "episode": 77,
@@ -2262,13 +2262,13 @@
         "menu": "낙지볶음",
         "name": "천지식당",
         "review": "",
-        "address": "서울 마포구 마포대로4가길 54",
+        "address": "서울특별시 마포구 마포대로4가길 54",
         "place_id": null
       }
     ],
     "restaurants_source_url": null,
     "verified": false,
-    "updated_at": "2026-08-01T05:51:38.115985+00:00"
+    "updated_at": "2026-08-01T08:09:11.640916+00:00"
   },
   {
     "episode": 83,
@@ -2287,13 +2287,13 @@
         "menu": "보리굴비정식",
         "name": "아리랑가든",
         "review": "",
-        "address": "충북 영동군 학산영동로 1039-20",
+        "address": "충청북도 영동군 학산영동로 1039-20",
         "place_id": null
       }
     ],
     "restaurants_source_url": null,
     "verified": false,
-    "updated_at": "2026-08-01T05:51:38.807921+00:00"
+    "updated_at": "2026-08-01T08:09:11.335467+00:00"
   },
   {
     "episode": 84,
@@ -2449,13 +2449,13 @@
         "menu": "조기매운탕",
         "name": "봉정식당",
         "review": "",
-        "address": "전남 여수시 교동 563",
+        "address": "전라남도 여수시 교동 563",
         "place_id": null
       }
     ],
     "restaurants_source_url": null,
     "verified": false,
-    "updated_at": "2026-08-01T05:51:39.510245+00:00"
+    "updated_at": "2026-08-01T08:09:17.135303+00:00"
   },
   {
     "episode": 92,
@@ -2608,13 +2608,13 @@
         "menu": "생고기(육회)",
         "name": "빠박이",
         "review": "",
-        "address": "경기 안성시 중앙로399번길 42",
+        "address": "경기도 안성시 중앙로399번길 42",
         "place_id": null
       }
     ],
     "restaurants_source_url": null,
     "verified": false,
-    "updated_at": "2026-08-01T05:47:50.252827+00:00"
+    "updated_at": "2026-08-01T08:09:15.794692+00:00"
   },
   {
     "episode": 99,
@@ -2857,7 +2857,7 @@
         "menu": "국밥",
         "name": "60년전통예산장터국밥",
         "review": "",
-        "address": "충남 예산군 예산읍 관양산길 12-1",
+        "address": "충청남도 예산군 예산읍 관양산길 12-1",
         "place_id": null
       },
       {
@@ -2867,13 +2867,13 @@
         "menu": "한우갈비",
         "name": "소복갈비",
         "review": "",
-        "address": "충남 예산군 예산읍 천변로195번길 9",
+        "address": "충청남도 예산군 예산읍 천변로195번길 9",
         "place_id": null
       }
     ],
     "restaurants_source_url": null,
     "verified": false,
-    "updated_at": "2026-08-01T05:47:51.373308+00:00"
+    "updated_at": "2026-08-01T08:09:16.566963+00:00"
   },
   {
     "episode": 108,
@@ -2931,13 +2931,13 @@
         "menu": "순두부, 감자전",
         "name": "산들애 건강밥상",
         "review": "",
-        "address": "서울 은평구 대서문길 43-16 1층",
+        "address": "서울특별시 은평구 대서문길 43-16 1층",
         "place_id": null
       }
     ],
     "restaurants_source_url": null,
     "verified": false,
-    "updated_at": "2026-08-01T05:47:52.080632+00:00"
+    "updated_at": "2026-08-01T08:09:16.364485+00:00"
   },
   {
     "episode": 111,
@@ -3101,13 +3101,13 @@
         "menu": "오이소박이냉국수",
         "name": "개성집",
         "review": "",
-        "address": "경기 남양주시 와부읍 경강로 876",
+        "address": "경기도 남양주시 와부읍 경강로 876",
         "place_id": null
       }
     ],
     "restaurants_source_url": null,
     "verified": false,
-    "updated_at": "2026-08-01T05:47:53.89395+00:00"
+    "updated_at": "2026-08-01T08:09:13.399393+00:00"
   },
   {
     "episode": 117,
@@ -3225,13 +3225,13 @@
         "menu": "뭉티기, 특수부위 모둠구이",
         "name": "너구리식당",
         "review": "",
-        "address": "경북 상주시 서성3길 9 1층",
+        "address": "경상북도 상주시 서성3길 9 1층",
         "place_id": null
       }
     ],
     "restaurants_source_url": null,
     "verified": false,
-    "updated_at": "2026-08-01T05:45:44.94705+00:00"
+    "updated_at": "2026-08-01T08:09:15.596361+00:00"
   },
   {
     "episode": 122,
@@ -3615,13 +3615,13 @@
         "menu": "장흥삼합",
         "name": "만나 숯불갈비",
         "review": "",
-        "address": "전남 장흥군 장흥읍 물레방앗간길 4",
+        "address": "전라남도 장흥군 장흥읍 물레방앗간길 4",
         "place_id": null
       }
     ],
     "restaurants_source_url": null,
     "verified": false,
-    "updated_at": "2026-08-01T05:45:47.304043+00:00"
+    "updated_at": "2026-08-01T08:09:15.029615+00:00"
   },
   {
     "episode": 135,
@@ -3996,13 +3996,13 @@
         "menu": "생선구이백반",
         "name": "부두식당",
         "review": "",
-        "address": "강원 고성군 현내면 한나루로 138-1",
+        "address": "강원특별자치도 고성군 현내면 한나루로 138-1",
         "place_id": null
       }
     ],
     "restaurants_source_url": null,
     "verified": false,
-    "updated_at": "2026-08-01T05:45:48.603793+00:00"
+    "updated_at": "2026-08-01T08:09:11.886705+00:00"
   },
   {
     "episode": 149,
@@ -4660,13 +4660,13 @@
         "menu": "낙지(신안갯벌낙지)",
         "name": "앵무동",
         "review": "",
-        "address": "광주 남구 봉선로79번길 2 1층",
+        "address": "광주광역시 남구 봉선로79번길 2 1층",
         "place_id": null
       }
     ],
     "restaurants_source_url": null,
     "verified": false,
-    "updated_at": "2026-08-01T05:42:59.426152+00:00"
+    "updated_at": "2026-08-01T08:09:14.817006+00:00"
   },
   {
     "episode": 171,
@@ -4904,13 +4904,13 @@
         "menu": "한우스지된장전골",
         "name": "우정",
         "review": "",
-        "address": "서울 강남구 도산대로55길 23 1층",
+        "address": "서울특별시 강남구 도산대로55길 23 1층",
         "place_id": null
       }
     ],
     "restaurants_source_url": null,
     "verified": false,
-    "updated_at": "2026-08-01T05:43:00.132822+00:00"
+    "updated_at": "2026-08-01T08:09:14.629651+00:00"
   },
   {
     "episode": 180,
@@ -4943,13 +4943,13 @@
         "menu": "뭉티기(육사시미)",
         "name": "한우생고기",
         "review": "",
-        "address": "경북 경산시 성암로21길 11-8",
+        "address": "경상북도 경산시 성암로21길 11-8",
         "place_id": null
       }
     ],
     "restaurants_source_url": null,
     "verified": false,
-    "updated_at": "2026-08-01T05:43:01.258035+00:00"
+    "updated_at": "2026-08-01T08:09:13.594229+00:00"
   },
   {
     "episode": 182,
@@ -4968,7 +4968,7 @@
         "menu": "비건 사찰음식(우엉잡채 등)",
         "name": "마지",
         "review": "",
-        "address": "서울 종로구 자하문로5길 19",
+        "address": "서울특별시 종로구 자하문로5길 19",
         "place_id": null
       },
       {
@@ -4978,13 +4978,13 @@
         "menu": "주인장 맘대로 코스(아귀간, 가오리찜)",
         "name": "가향",
         "review": "",
-        "address": "서울 종로구 삼일대로 390-10",
+        "address": "서울특별시 종로구 삼일대로 390-10",
         "place_id": null
       }
     ],
     "restaurants_source_url": null,
     "verified": false,
-    "updated_at": "2026-08-01T05:39:56.9098+00:00"
+    "updated_at": "2026-08-01T08:09:14.404265+00:00"
   },
   {
     "episode": 183,
@@ -5028,13 +5028,13 @@
         "menu": "시래기코다리조림",
         "name": "박서방네코다리",
         "review": "",
-        "address": "경기 김포시 양촌읍 석모로 85 1층",
+        "address": "경기도 김포시 양촌읍 석모로 85 1층",
         "place_id": null
       }
     ],
     "restaurants_source_url": null,
     "verified": false,
-    "updated_at": "2026-08-01T05:39:58.10405+00:00"
+    "updated_at": "2026-08-01T08:09:14.201225+00:00"
   },
   {
     "episode": 185,
@@ -5246,7 +5246,7 @@
         "menu": "우삼겹쌈밥",
         "name": "무한쌈밥집",
         "review": "",
-        "address": "서울 서초구 잠원동 36-27",
+        "address": "서울특별시 서초구 잠원동 36-27",
         "place_id": null
       },
       {
@@ -5256,7 +5256,7 @@
         "menu": "돔베고기",
         "name": "돈불리제담",
         "review": "",
-        "address": "서울 강남구 압구정로2길 46",
+        "address": "서울특별시 강남구 압구정로2길 46",
         "place_id": null
       },
       {
@@ -5266,13 +5266,13 @@
         "menu": "숯불닭구이",
         "name": "꼬끄더그릴",
         "review": "",
-        "address": "서울 강남구 강남대로154길 10 금호빌딩 1층",
+        "address": "서울특별시 강남구 강남대로154길 10 금호빌딩 1층",
         "place_id": null
       }
     ],
     "restaurants_source_url": null,
     "verified": false,
-    "updated_at": "2026-08-01T05:39:59.216429+00:00"
+    "updated_at": "2026-08-01T08:09:13.995385+00:00"
   },
   {
     "episode": 193,
@@ -5567,13 +5567,13 @@
         "menu": "푸틴(수제 생치즈)",
         "name": "베쓰 푸틴",
         "review": "",
-        "address": "서울 용산구 보광로 72 1층 102호",
+        "address": "서울특별시 용산구 보광로 72 1층 102호",
         "place_id": null
       }
     ],
     "restaurants_source_url": null,
     "verified": false,
-    "updated_at": "2026-08-01T05:39:59.904719+00:00"
+    "updated_at": "2026-08-01T08:09:13.197174+00:00"
   },
   {
     "episode": 204,
@@ -5617,13 +5617,13 @@
         "menu": "물쫄면",
         "name": "풍미당",
         "review": "",
-        "address": "충북 옥천군 옥천읍 중앙로 23-1",
+        "address": "충청북도 옥천군 옥천읍 중앙로 23-1",
         "place_id": null
       }
     ],
     "restaurants_source_url": null,
     "verified": false,
-    "updated_at": "2026-08-01T05:40:01.271016+00:00"
+    "updated_at": "2026-08-01T08:09:13.80466+00:00"
   },
   {
     "episode": 206,
@@ -7541,16 +7541,36 @@
         "lat": 36.6040054,
         "lng": 126.8696252,
         "tel": "041-333-7042",
-        "menu": "소머리국밥, 머릿고기",
+        "menu": "새우찌개",
         "name": "시골집",
-        "review": "암소 머리만 넣어 진하게 끓인, 가난을 대물림 않으려던 정성",
+        "review": "충남 밥상이라는 생각이 들 정도로 무엇하나 튀지 않고 하나하나 음식이 정갈하고 순박한 맛",
         "address": "충청남도 예산군 신양면 청신로 395-10",
         "place_id": "17443321"
+      },
+      {
+        "lat": 36.6865907684148,
+        "lng": 126.741313175461,
+        "tel": null,
+        "menu": "소머리국밥, 머릿고기",
+        "name": "장터소머리국밥",
+        "review": "암소 머리만 넣어 진하게 끓인, 가난을 대물림 않으려던 정성",
+        "address": "충남 예산군 삽교읍 삽교로4길 7-7",
+        "place_id": null
+      },
+      {
+        "lat": 36.5481232478086,
+        "lng": 126.774928317168,
+        "tel": null,
+        "menu": "육회, 차돌된장찌개, 한우허파전",
+        "name": "광시털보신흥식당",
+        "review": "단돈 50,000원으로 즐기는 우(牛)마카세의 끝판왕!",
+        "address": "충남 예산군 광시면 예당로 151",
+        "place_id": null
       }
     ],
     "restaurants_source_url": "https://blog.naver.com/inferno555/223664190741",
-    "verified": false,
-    "updated_at": "2026-07-31T12:41:17.298709+00:00"
+    "verified": true,
+    "updated_at": "2026-08-01T07:30:43.983463+00:00"
   },
   {
     "episode": 271,
@@ -7743,24 +7763,24 @@
     "region": null,
     "restaurants": [
       {
-        "lat": 34.68447,
-        "lng": 125.442991,
-        "tel": "0507-1484-9103",
+        "lat": 34.684461433373,
+        "lng": 125.443025755996,
+        "tel": null,
         "menu": "생홍어회",
-        "name": "뉴남도모텔",
+        "name": "뉴성우정식당",
         "review": "찹쌀밥처럼 쫄깃한 식감, 삭히지 않은 진짜 흑산도 생홍어의 맛",
-        "address": "전라남도 신안군 흑산면 예리1길 14 뉴남도모텔 뉴성우정식당",
-        "place_id": "1586943846"
+        "address": "전라남도 신안군 흑산면 예리1길 14",
+        "place_id": null
       },
       {
-        "lat": 34.6834818,
-        "lng": 125.4421583,
-        "tel": "0507-1309-5529",
+        "lat": 34.6834889156392,
+        "lng": 125.442151115674,
+        "tel": null,
         "menu": "삐뚤이소라, 뿔소라, 섭찜",
         "name": "싱글벙글",
         "review": "흑산도 인근 패류를 생으로 즐기는 달디단 패류 한 상",
-        "address": "전라남도 신안군 흑산면 흑산일주로 20 1층 2호 싱글벙글",
-        "place_id": "1525772670"
+        "address": "전라남도 신안군 흑산면 흑산일주로 20 1층 2호",
+        "place_id": null
       },
       {
         "lat": 34.683475,
@@ -7774,8 +7794,8 @@
       }
     ],
     "restaurants_source_url": "https://blog.naver.com/ssophi_a/223703190133",
-    "verified": false,
-    "updated_at": "2026-07-31T12:41:28.821843+00:00"
+    "verified": true,
+    "updated_at": "2026-08-01T07:19:58.47003+00:00"
   },
   {
     "episode": 276,
