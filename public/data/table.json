@@ -4620,6 +4620,39 @@
     "place_id": "18877668"
   },
   {
+    "episode": 149,
+    "restaurant_name": "쉐누",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "가평군",
+    "detail_addr": "청평면 잠곡로91번길 29",
+    "address": "경기도 가평군 청평면 잠곡로91번길 29",
+    "place_id": null
+  },
+  {
+    "episode": 149,
+    "restaurant_name": "황보네주막",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "가평군",
+    "detail_addr": "설악면 다락재로 8",
+    "address": "경기도 가평군 설악면 다락재로 8",
+    "place_id": null
+  },
+  {
+    "episode": 149,
+    "restaurant_name": "출퇴근",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "가평군",
+    "detail_addr": "가평읍 석봉로 206",
+    "address": "경기도 가평군 가평읍 석봉로 206",
+    "place_id": null
+  },
+  {
     "episode": 148,
     "restaurant_name": "부두식당",
     "menu": "",
@@ -4628,6 +4661,39 @@
     "sigungu": "고성군",
     "detail_addr": "현내면 한나루로 138-1",
     "address": "강원특별자치도 고성군 현내면 한나루로 138-1",
+    "place_id": null
+  },
+  {
+    "episode": 148,
+    "restaurant_name": "베짱이문어국밥",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "고성군",
+    "detail_addr": "토성면 천학정길 12",
+    "address": "강원특별자치도 고성군 토성면 천학정길 12",
+    "place_id": null
+  },
+  {
+    "episode": 148,
+    "restaurant_name": "송암현대떡방앗간",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "고성군",
+    "detail_addr": "죽왕면 동해대로 5623",
+    "address": "강원특별자치도 고성군 죽왕면 동해대로 5623",
+    "place_id": null
+  },
+  {
+    "episode": 148,
+    "restaurant_name": "산북소나무막국수",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "고성군",
+    "detail_addr": "거진읍 산북길 32",
+    "address": "강원특별자치도 고성군 거진읍 산북길 32",
     "place_id": null
   },
   {
@@ -4664,6 +4730,17 @@
     "place_id": null
   },
   {
+    "episode": 147,
+    "restaurant_name": "고미꽃시래",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "성남시",
+    "detail_addr": "분당구 불정로 422",
+    "address": "경기도 성남시 분당구 불정로 422",
+    "place_id": null
+  },
+  {
     "episode": 146,
     "restaurant_name": "거시기식당",
     "menu": "돼지고기백반, 봄나물",
@@ -4673,6 +4750,39 @@
     "detail_addr": "저전길 15",
     "address": "전라남도 순천시 저전길 15",
     "place_id": "1852701806"
+  },
+  {
+    "episode": 146,
+    "restaurant_name": "61호 명태전",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "순천시",
+    "detail_addr": "장평로 60",
+    "address": "전라남도 순천시 장평로 60",
+    "place_id": null
+  },
+  {
+    "episode": 146,
+    "restaurant_name": "텃밭",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "순천시",
+    "detail_addr": "봉화2길 67",
+    "address": "전라남도 순천시 봉화2길 67",
+    "place_id": null
+  },
+  {
+    "episode": 146,
+    "restaurant_name": "대박집",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "순천시",
+    "detail_addr": "대석3길 10",
+    "address": "전라남도 순천시 대석3길 10",
+    "place_id": null
   },
   {
     "episode": 145,
@@ -4686,6 +4796,39 @@
     "place_id": "1282163857"
   },
   {
+    "episode": 145,
+    "restaurant_name": "내호냉면",
+    "menu": "",
+    "review": "",
+    "sido": "부산광역시",
+    "sigungu": "남구",
+    "detail_addr": "우암번영로26번길 17",
+    "address": "부산광역시 남구 우암번영로26번길 17",
+    "place_id": null
+  },
+  {
+    "episode": 145,
+    "restaurant_name": "아저씨대구탕",
+    "menu": "",
+    "review": "",
+    "sido": "부산광역시",
+    "sigungu": "해운대구",
+    "detail_addr": "달맞이길62번가길 31",
+    "address": "부산광역시 해운대구 달맞이길62번가길 31",
+    "place_id": null
+  },
+  {
+    "episode": 145,
+    "restaurant_name": "양가네양곱창",
+    "menu": "",
+    "review": "",
+    "sido": "부산광역시",
+    "sigungu": "해운대구",
+    "detail_addr": "구남로8번길 7-3",
+    "address": "부산광역시 해운대구 구남로8번길 7-3",
+    "place_id": null
+  },
+  {
     "episode": 144,
     "restaurant_name": "혜성정육점식당",
     "menu": "비법소스 생삼겹살",
@@ -4695,6 +4838,39 @@
     "detail_addr": "보은읍 삼산남로 7-1",
     "address": "충청북도 보은군 보은읍 삼산남로 7-1",
     "place_id": "13101950"
+  },
+  {
+    "episode": 144,
+    "restaurant_name": "신라식당",
+    "menu": "",
+    "review": "",
+    "sido": "충청북도",
+    "sigungu": "보은군",
+    "detail_addr": "보은읍 교사삼산길 40",
+    "address": "충청북도 보은군 보은읍 교사삼산길 40",
+    "place_id": null
+  },
+  {
+    "episode": 144,
+    "restaurant_name": "태화루",
+    "menu": "",
+    "review": "",
+    "sido": "충청북도",
+    "sigungu": "보은군",
+    "detail_addr": "마로면 관기송현로 102",
+    "address": "충청북도 보은군 마로면 관기송현로 102",
+    "place_id": null
+  },
+  {
+    "episode": 144,
+    "restaurant_name": "김천식당",
+    "menu": "",
+    "review": "",
+    "sido": "충청북도",
+    "sigungu": "보은군",
+    "detail_addr": "보은읍 삼산로1길 25-4",
+    "address": "충청북도 보은군 보은읍 삼산로1길 25-4",
+    "place_id": null
   },
   {
     "episode": 143,
@@ -4719,6 +4895,61 @@
     "place_id": "12007378"
   },
   {
+    "episode": 143,
+    "restaurant_name": "백수식당",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "영광군",
+    "detail_addr": "백수읍 천마길 9",
+    "address": "전라남도 영광군 백수읍 천마길 9",
+    "place_id": null
+  },
+  {
+    "episode": 143,
+    "restaurant_name": "중앙먹거리",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "영광군",
+    "detail_addr": "영광읍 물무로 106-2",
+    "address": "전라남도 영광군 영광읍 물무로 106-2",
+    "place_id": null
+  },
+  {
+    "episode": 143,
+    "restaurant_name": "사거리식육식당",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "영광군",
+    "detail_addr": "홍농읍 홍농로 458",
+    "address": "전라남도 영광군 홍농읍 홍농로 458",
+    "place_id": null
+  },
+  {
+    "episode": 143,
+    "restaurant_name": "장보고굴비",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "영광군",
+    "detail_addr": "법성면 굴비로1길 46",
+    "address": "전라남도 영광군 법성면 굴비로1길 46",
+    "place_id": null
+  },
+  {
+    "episode": 143,
+    "restaurant_name": "제일식당",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "함평군",
+    "detail_addr": "월야면 전하길 65-1",
+    "address": "전라남도 함평군 월야면 전하길 65-1",
+    "place_id": null
+  },
+  {
     "episode": 142,
     "restaurant_name": "일경식당",
     "menu": "",
@@ -4730,6 +4961,39 @@
     "place_id": "19545888"
   },
   {
+    "episode": 142,
+    "restaurant_name": "산골기사식당",
+    "menu": "",
+    "review": "",
+    "sido": "대구광역시",
+    "sigungu": "동구",
+    "detail_addr": "팔공산로 1666",
+    "address": "대구광역시 동구 팔공산로 1666",
+    "place_id": null
+  },
+  {
+    "episode": 142,
+    "restaurant_name": "송림식당",
+    "menu": "",
+    "review": "",
+    "sido": "대구광역시",
+    "sigungu": "동구",
+    "detail_addr": "동부로 13-1",
+    "address": "대구광역시 동구 동부로 13-1",
+    "place_id": null
+  },
+  {
+    "episode": 142,
+    "restaurant_name": "진미통닭",
+    "menu": "",
+    "review": "",
+    "sido": "대구광역시",
+    "sigungu": "동구",
+    "detail_addr": "아양로9길 10",
+    "address": "대구광역시 동구 아양로9길 10",
+    "place_id": null
+  },
+  {
     "episode": 141,
     "restaurant_name": "김서방네닭갈비",
     "menu": "물닭갈비",
@@ -4738,6 +5002,39 @@
     "sigungu": "태백시",
     "detail_addr": "",
     "address": "강원특별자치도 태백시",
+    "place_id": null
+  },
+  {
+    "episode": 141,
+    "restaurant_name": "한밭식당",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "태백시",
+    "detail_addr": "먹거리길 91",
+    "address": "강원특별자치도 태백시 먹거리길 91",
+    "place_id": null
+  },
+  {
+    "episode": 141,
+    "restaurant_name": "구와우순두부식당",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "태백시",
+    "detail_addr": "구와우길 49-1",
+    "address": "강원특별자치도 태백시 구와우길 49-1",
+    "place_id": null
+  },
+  {
+    "episode": 141,
+    "restaurant_name": "현대실비식당",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "태백시",
+    "detail_addr": "시장북길 11",
+    "address": "강원특별자치도 태백시 시장북길 11",
     "place_id": null
   },
   {
@@ -4785,6 +5082,39 @@
     "place_id": null
   },
   {
+    "episode": 139,
+    "restaurant_name": "걸구쟁이네",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "여주시",
+    "detail_addr": "강천면 강문로 707",
+    "address": "경기도 여주시 강천면 강문로 707",
+    "place_id": null
+  },
+  {
+    "episode": 139,
+    "restaurant_name": "팔남매",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "여주시",
+    "detail_addr": "여흥로11번길 57",
+    "address": "경기도 여주시 여흥로11번길 57",
+    "place_id": null
+  },
+  {
+    "episode": 139,
+    "restaurant_name": "포뜰오리",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "여주시",
+    "detail_addr": "여주남로 300-16",
+    "address": "경기도 여주시 여주남로 300-16",
+    "place_id": null
+  },
+  {
     "episode": 138,
     "restaurant_name": "수라간",
     "menu": "한우불고기 정식(전골식)",
@@ -4796,6 +5126,39 @@
     "place_id": "11831368"
   },
   {
+    "episode": 138,
+    "restaurant_name": "서보냇가",
+    "menu": "",
+    "review": "",
+    "sido": "경상북도",
+    "sigungu": "상주시",
+    "detail_addr": "영남제일로 1971-14",
+    "address": "경상북도 상주시 영남제일로 1971-14",
+    "place_id": null
+  },
+  {
+    "episode": 138,
+    "restaurant_name": "영원식당",
+    "menu": "",
+    "review": "",
+    "sido": "경상북도",
+    "sigungu": "상주시",
+    "detail_addr": "사벌국면 덕담1길 82-10",
+    "address": "경상북도 상주시 사벌국면 덕담1길 82-10",
+    "place_id": null
+  },
+  {
+    "episode": 138,
+    "restaurant_name": "남산가든",
+    "menu": "",
+    "review": "",
+    "sido": "경상북도",
+    "sigungu": "상주시",
+    "detail_addr": "신서문1길 137",
+    "address": "경상북도 상주시 신서문1길 137",
+    "place_id": null
+  },
+  {
     "episode": 137,
     "restaurant_name": "왕십리 갈비탕집(간판 없음)",
     "menu": "갈비탕",
@@ -4804,6 +5167,39 @@
     "sigungu": "성동구",
     "detail_addr": "마장동",
     "address": "서울특별시 성동구 마장동",
+    "place_id": null
+  },
+  {
+    "episode": 137,
+    "restaurant_name": "신명먹거리",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "성동구",
+    "detail_addr": "왕십리로5길 19",
+    "address": "서울특별시 성동구 왕십리로5길 19",
+    "place_id": null
+  },
+  {
+    "episode": 137,
+    "restaurant_name": "왕십리정부네곱창",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "성동구",
+    "detail_addr": "고산자로 287",
+    "address": "서울특별시 성동구 고산자로 287",
+    "place_id": null
+  },
+  {
+    "episode": 137,
+    "restaurant_name": "기분좋은한잔",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "성동구",
+    "detail_addr": "무학봉16길 1",
+    "address": "서울특별시 성동구 무학봉16길 1",
     "place_id": null
   },
   {
@@ -4862,6 +5258,39 @@
     "place_id": "1346666021"
   },
   {
+    "episode": 135,
+    "restaurant_name": "칸티푸르 레스토랑",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "안산시",
+    "detail_addr": "단원구 다문화2길 28",
+    "address": "경기도 안산시 단원구 다문화2길 28",
+    "place_id": null
+  },
+  {
+    "episode": 135,
+    "restaurant_name": "팔곡가든",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "안산시",
+    "detail_addr": "상록구 소학2길 9",
+    "address": "경기도 안산시 상록구 소학2길 9",
+    "place_id": null
+  },
+  {
+    "episode": 135,
+    "restaurant_name": "진도식당",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "안산시",
+    "detail_addr": "단원구 광덕대로 187",
+    "address": "경기도 안산시 단원구 광덕대로 187",
+    "place_id": null
+  },
+  {
     "episode": 134,
     "restaurant_name": "만나 숯불갈비",
     "menu": "",
@@ -4873,6 +5302,39 @@
     "place_id": null
   },
   {
+    "episode": 134,
+    "restaurant_name": "본전식당",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "장흥군",
+    "detail_addr": "회진면 노력도2길 1-1",
+    "address": "전라남도 장흥군 회진면 노력도2길 1-1",
+    "place_id": null
+  },
+  {
+    "episode": 134,
+    "restaurant_name": "남포수산",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "장흥군",
+    "detail_addr": "용산면 접정남포로 763-96",
+    "address": "전라남도 장흥군 용산면 접정남포로 763-96",
+    "place_id": null
+  },
+  {
+    "episode": 134,
+    "restaurant_name": "삭금쭈꾸미",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "장흥군",
+    "detail_addr": "장흥읍 물레방앗간길 14",
+    "address": "전라남도 장흥군 장흥읍 물레방앗간길 14",
+    "place_id": null
+  },
+  {
     "episode": 133,
     "restaurant_name": "송학반점",
     "menu": "",
@@ -4881,6 +5343,50 @@
     "sigungu": "제천시",
     "detail_addr": "",
     "address": "충청북도 제천시",
+    "place_id": null
+  },
+  {
+    "episode": 133,
+    "restaurant_name": "대추나무집",
+    "menu": "",
+    "review": "",
+    "sido": "충청북도",
+    "sigungu": "제천시",
+    "detail_addr": "의병대로12길 15",
+    "address": "충청북도 제천시 의병대로12길 15",
+    "place_id": null
+  },
+  {
+    "episode": 133,
+    "restaurant_name": "외갓집",
+    "menu": "",
+    "review": "",
+    "sido": "충청북도",
+    "sigungu": "제천시",
+    "detail_addr": "풍양로17길 7",
+    "address": "충청북도 제천시 풍양로17길 7",
+    "place_id": null
+  },
+  {
+    "episode": 133,
+    "restaurant_name": "의림만두국",
+    "menu": "",
+    "review": "",
+    "sido": "충청북도",
+    "sigungu": "제천시",
+    "detail_addr": "명륜로6길 7",
+    "address": "충청북도 제천시 명륜로6길 7",
+    "place_id": null
+  },
+  {
+    "episode": 133,
+    "restaurant_name": "석이네숯불구이",
+    "menu": "",
+    "review": "",
+    "sido": "충청북도",
+    "sigungu": "제천시",
+    "detail_addr": "의림대로31길 16",
+    "address": "충청북도 제천시 의림대로31길 16",
     "place_id": null
   },
   {
@@ -4914,6 +5420,39 @@
     "sigungu": "구리시",
     "detail_addr": "",
     "address": "경기도 구리시",
+    "place_id": null
+  },
+  {
+    "episode": 131,
+    "restaurant_name": "동갈전",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "구리시",
+    "detail_addr": "아차산로 411",
+    "address": "경기도 구리시 아차산로 411",
+    "place_id": null
+  },
+  {
+    "episode": 131,
+    "restaurant_name": "우미관",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "구리시",
+    "detail_addr": "아차산로 57",
+    "address": "경기도 구리시 아차산로 57",
+    "place_id": null
+  },
+  {
+    "episode": 131,
+    "restaurant_name": "홍어회찜",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "구리시",
+    "detail_addr": "안골로57번길 14-9",
+    "address": "경기도 구리시 안골로57번길 14-9",
     "place_id": null
   },
   {
@@ -4972,6 +5511,39 @@
     "place_id": null
   },
   {
+    "episode": 129,
+    "restaurant_name": "회랑",
+    "menu": "",
+    "review": "",
+    "sido": "대전광역시",
+    "sigungu": "서구",
+    "detail_addr": "제비네4길 9",
+    "address": "대전광역시 서구 제비네4길 9",
+    "place_id": null
+  },
+  {
+    "episode": 129,
+    "restaurant_name": "홍두깨칼국수",
+    "menu": "",
+    "review": "",
+    "sido": "대전광역시",
+    "sigungu": "중구",
+    "detail_addr": "충무로107번길 15",
+    "address": "대전광역시 중구 충무로107번길 15",
+    "place_id": null
+  },
+  {
+    "episode": 129,
+    "restaurant_name": "경동오징어국수",
+    "menu": "",
+    "review": "",
+    "sido": "대전광역시",
+    "sigungu": "동구",
+    "detail_addr": "계족로 369",
+    "address": "대전광역시 동구 계족로 369",
+    "place_id": null
+  },
+  {
     "episode": 128,
     "restaurant_name": "너울횟집",
     "menu": "전복죽, 물회국수, 조개찜",
@@ -4981,6 +5553,39 @@
     "detail_addr": "소원면 만리포2길 2",
     "address": "충청남도 태안군 소원면 만리포2길 2",
     "place_id": "31004670"
+  },
+  {
+    "episode": 128,
+    "restaurant_name": "원풍식당",
+    "menu": "",
+    "review": "",
+    "sido": "충청남도",
+    "sigungu": "태안군",
+    "detail_addr": "원북면 원이로 841-1",
+    "address": "충청남도 태안군 원북면 원이로 841-1",
+    "place_id": null
+  },
+  {
+    "episode": 128,
+    "restaurant_name": "자연산횟집오대감튀김",
+    "menu": "",
+    "review": "",
+    "sido": "충청남도",
+    "sigungu": "태안군",
+    "detail_addr": "안면읍 백사장1길 117",
+    "address": "충청남도 태안군 안면읍 백사장1길 117",
+    "place_id": null
+  },
+  {
+    "episode": 128,
+    "restaurant_name": "초원식당",
+    "menu": "",
+    "review": "",
+    "sido": "충청남도",
+    "sigungu": "태안군",
+    "detail_addr": "태안읍 군청7길 29-10",
+    "address": "충청남도 태안군 태안읍 군청7길 29-10",
+    "place_id": null
   },
   {
     "episode": 127,
@@ -5027,6 +5632,39 @@
     "place_id": "19413314"
   },
   {
+    "episode": 126,
+    "restaurant_name": "장터식당",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "성남시",
+    "detail_addr": "중원구 둔촌대로83번길 2",
+    "address": "경기도 성남시 중원구 둔촌대로83번길 2",
+    "place_id": null
+  },
+  {
+    "episode": 126,
+    "restaurant_name": "남해소반",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "성남시",
+    "detail_addr": "분당구 내정로165번길 38",
+    "address": "경기도 성남시 분당구 내정로165번길 38",
+    "place_id": null
+  },
+  {
+    "episode": 126,
+    "restaurant_name": "행하령수제비",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "성남시",
+    "detail_addr": "분당구 성남대로144번길 14",
+    "address": "경기도 성남시 분당구 성남대로144번길 14",
+    "place_id": null
+  },
+  {
     "episode": 125,
     "restaurant_name": "소소반",
     "menu": "송아지갈비정식, 배추전",
@@ -5046,6 +5684,28 @@
     "sigungu": "",
     "detail_addr": "강원 횡성군 서원면 석화이리길 25",
     "address": "강원 횡성군 서원면 석화이리길 25",
+    "place_id": null
+  },
+  {
+    "episode": 125,
+    "restaurant_name": "심순녀안흥찐빵",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "횡성군",
+    "detail_addr": "안흥면 서동로 1029",
+    "address": "강원특별자치도 횡성군 안흥면 서동로 1029",
+    "place_id": null
+  },
+  {
+    "episode": 125,
+    "restaurant_name": "새말토종순대",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "횡성군",
+    "detail_addr": "우천면 우항새말길 20-16",
+    "address": "강원특별자치도 횡성군 우천면 우항새말길 20-16",
     "place_id": null
   },
   {
@@ -5079,6 +5739,28 @@
     "sigungu": "",
     "detail_addr": "경기 안양시 동안구 엘에스로45번길 6",
     "address": "경기 안양시 동안구 엘에스로45번길 6",
+    "place_id": null
+  },
+  {
+    "episode": 124,
+    "restaurant_name": "춘하추동",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "안양시",
+    "detail_addr": "만안구 장내로 119",
+    "address": "경기도 안양시 만안구 장내로 119",
+    "place_id": null
+  },
+  {
+    "episode": 124,
+    "restaurant_name": "호계분식",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "안양시",
+    "detail_addr": "동안구 엘에스로45번길 6",
+    "address": "경기도 안양시 동안구 엘에스로45번길 6",
     "place_id": null
   },
   {
@@ -5148,6 +5830,39 @@
     "place_id": "1428828197"
   },
   {
+    "episode": 122,
+    "restaurant_name": "삼성원조양곱창",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "강남구",
+    "detail_addr": "학동로101길 7",
+    "address": "서울특별시 강남구 학동로101길 7",
+    "place_id": null
+  },
+  {
+    "episode": 122,
+    "restaurant_name": "어머니대성집",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "동대문구",
+    "detail_addr": "왕산로11길 4",
+    "address": "서울특별시 동대문구 왕산로11길 4",
+    "place_id": null
+  },
+  {
+    "episode": 122,
+    "restaurant_name": "이식당",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "종로구",
+    "detail_addr": "평창문화로 94",
+    "address": "서울특별시 종로구 평창문화로 94",
+    "place_id": null
+  },
+  {
     "episode": 121,
     "restaurant_name": "너구리식당",
     "menu": "",
@@ -5156,6 +5871,39 @@
     "sigungu": "상주시",
     "detail_addr": "서성3길 9 1층",
     "address": "경상북도 상주시 서성3길 9 1층",
+    "place_id": null
+  },
+  {
+    "episode": 121,
+    "restaurant_name": "이문설렁탕",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "종로구",
+    "detail_addr": "우정국로 38-13",
+    "address": "서울특별시 종로구 우정국로 38-13",
+    "place_id": null
+  },
+  {
+    "episode": 121,
+    "restaurant_name": "한우다이닝 울릉",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "서초구",
+    "detail_addr": "서운로 135",
+    "address": "서울특별시 서초구 서운로 135",
+    "place_id": null
+  },
+  {
+    "episode": 121,
+    "restaurant_name": "보건옥",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "중구",
+    "detail_addr": "창경궁로8길 12",
+    "address": "서울특별시 중구 창경궁로8길 12",
     "place_id": null
   },
   {
@@ -5225,6 +5973,28 @@
     "place_id": "1651381184"
   },
   {
+    "episode": 119,
+    "restaurant_name": "용산양다리",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "용산구",
+    "detail_addr": "원효로41길 15",
+    "address": "서울특별시 용산구 원효로41길 15",
+    "place_id": null
+  },
+  {
+    "episode": 119,
+    "restaurant_name": "영덕식당",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "용산구",
+    "detail_addr": "한강대로62나길 14",
+    "address": "서울특별시 용산구 한강대로62나길 14",
+    "place_id": null
+  },
+  {
     "episode": 118,
     "restaurant_name": "용흥궁식당",
     "menu": "젓국갈비",
@@ -5236,6 +6006,39 @@
     "place_id": "1657411120"
   },
   {
+    "episode": 118,
+    "restaurant_name": "마니산산채",
+    "menu": "",
+    "review": "",
+    "sido": "인천광역시",
+    "sigungu": "강화군",
+    "detail_addr": "화도면 해안남로 1182",
+    "address": "인천광역시 강화군 화도면 해안남로 1182",
+    "place_id": null
+  },
+  {
+    "episode": 118,
+    "restaurant_name": "강화꽃게집",
+    "menu": "",
+    "review": "",
+    "sido": "인천광역시",
+    "sigungu": "강화군",
+    "detail_addr": "내가면 중앙로 1222",
+    "address": "인천광역시 강화군 내가면 중앙로 1222",
+    "place_id": null
+  },
+  {
+    "episode": 118,
+    "restaurant_name": "수남호",
+    "menu": "",
+    "review": "",
+    "sido": "인천광역시",
+    "sigungu": "강화군",
+    "detail_addr": "길상면 해안동로 96-18",
+    "address": "인천광역시 강화군 길상면 해안동로 96-18",
+    "place_id": null
+  },
+  {
     "episode": 117,
     "restaurant_name": "태능배밭갈비",
     "menu": "태릉 갈비",
@@ -5244,6 +6047,39 @@
     "sigungu": "중랑구",
     "detail_addr": "묵동",
     "address": "서울특별시 중랑구 묵동",
+    "place_id": null
+  },
+  {
+    "episode": 117,
+    "restaurant_name": "묵동부대찌개",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "중랑구",
+    "detail_addr": "공릉로 42",
+    "address": "서울특별시 중랑구 공릉로 42",
+    "place_id": null
+  },
+  {
+    "episode": 117,
+    "restaurant_name": "원조닭갈비",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "노원구",
+    "detail_addr": "한글비석로36길 65",
+    "address": "서울특별시 노원구 한글비석로36길 65",
+    "place_id": null
+  },
+  {
+    "episode": 117,
+    "restaurant_name": "맹돌이생선구이쌈밥",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "중랑구",
+    "detail_addr": "용마산로115길 59",
+    "address": "서울특별시 중랑구 용마산로115길 59",
     "place_id": null
   },
   {
@@ -5258,6 +6094,39 @@
     "place_id": null
   },
   {
+    "episode": 116,
+    "restaurant_name": "수인씨의 마당",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "남양주시",
+    "detail_addr": "덕릉로 1115-49",
+    "address": "경기도 남양주시 덕릉로 1115-49",
+    "place_id": null
+  },
+  {
+    "episode": 116,
+    "restaurant_name": "옹기장터백화점",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "남양주시",
+    "detail_addr": "화도읍 북한강로 1619",
+    "address": "경기도 남양주시 화도읍 북한강로 1619",
+    "place_id": null
+  },
+  {
+    "episode": 116,
+    "restaurant_name": "광천정육점식당",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "남양주시",
+    "detail_addr": "진접읍 광릉내로 52",
+    "address": "경기도 남양주시 진접읍 광릉내로 52",
+    "place_id": null
+  },
+  {
     "episode": 115,
     "restaurant_name": "연잎담",
     "menu": "연잎밥",
@@ -5266,6 +6135,39 @@
     "sigungu": "부여군",
     "detail_addr": "",
     "address": "충청남도 부여군",
+    "place_id": null
+  },
+  {
+    "episode": 115,
+    "restaurant_name": "부여할매순대",
+    "menu": "",
+    "review": "",
+    "sido": "충청남도",
+    "sigungu": "부여군",
+    "detail_addr": "부여읍 사비로71번길 23",
+    "address": "충청남도 부여군 부여읍 사비로71번길 23",
+    "place_id": null
+  },
+  {
+    "episode": 115,
+    "restaurant_name": "광명식당",
+    "menu": "",
+    "review": "",
+    "sido": "충청남도",
+    "sigungu": "부여군",
+    "detail_addr": "외산면 무량로 192",
+    "address": "충청남도 부여군 외산면 무량로 192",
+    "place_id": null
+  },
+  {
+    "episode": 115,
+    "restaurant_name": "유구식당",
+    "menu": "",
+    "review": "",
+    "sido": "충청남도",
+    "sigungu": "공주시",
+    "detail_addr": "유구읍 시장길 33-4",
+    "address": "충청남도 공주시 유구읍 시장길 33-4",
     "place_id": null
   },
   {
@@ -5278,6 +6180,28 @@
     "detail_addr": "토성면 교암길 60 녹원식당",
     "address": "강원특별자치도 고성군 토성면 교암길 60 녹원식당",
     "place_id": "1120492213"
+  },
+  {
+    "episode": 114,
+    "restaurant_name": "쌍둥이네식당",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "고성군",
+    "detail_addr": "현내면 한나루로 136-1",
+    "address": "강원특별자치도 고성군 현내면 한나루로 136-1",
+    "place_id": null
+  },
+  {
+    "episode": 114,
+    "restaurant_name": "남경식당",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "고성군",
+    "detail_addr": "토성면 성대로 183",
+    "address": "강원특별자치도 고성군 토성면 성대로 183",
+    "place_id": null
   },
   {
     "episode": 113,
@@ -5324,14 +6248,80 @@
     "place_id": "12882590"
   },
   {
+    "episode": 112,
+    "restaurant_name": "관인약수터막국수",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "포천시",
+    "detail_addr": "관인면 창동로 1681",
+    "address": "경기도 포천시 관인면 창동로 1681",
+    "place_id": null
+  },
+  {
+    "episode": 112,
+    "restaurant_name": "샘물매운탕",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "포천시",
+    "detail_addr": "관인면 찬우물길 85",
+    "address": "경기도 포천시 관인면 찬우물길 85",
+    "place_id": null
+  },
+  {
+    "episode": 112,
+    "restaurant_name": "금강산매운갈비찜",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "포천시",
+    "detail_addr": "일동면 수입로 348",
+    "address": "경기도 포천시 일동면 수입로 348",
+    "place_id": null
+  },
+  {
     "episode": 111,
     "restaurant_name": "동해바다곰치국",
     "menu": "",
     "review": "",
-    "sido": "강원도",
+    "sido": "강원특별자치도",
     "sigungu": "동해시",
     "detail_addr": "일출로 179",
-    "address": "강원도 동해시 일출로 179",
+    "address": "강원특별자치도 동해시 일출로 179",
+    "place_id": null
+  },
+  {
+    "episode": 111,
+    "restaurant_name": "시골",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "동해시",
+    "detail_addr": "지양길 9",
+    "address": "강원특별자치도 동해시 지양길 9",
+    "place_id": null
+  },
+  {
+    "episode": 111,
+    "restaurant_name": "부흥횟집",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "동해시",
+    "detail_addr": "일출로 93",
+    "address": "강원특별자치도 동해시 일출로 93",
+    "place_id": null
+  },
+  {
+    "episode": 111,
+    "restaurant_name": "삼송갈비",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "동해시",
+    "detail_addr": "송정로 39",
+    "address": "강원특별자치도 동해시 송정로 39",
     "place_id": null
   },
   {
@@ -5346,6 +6336,39 @@
     "place_id": null
   },
   {
+    "episode": 110,
+    "restaurant_name": "마마수제만두",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "은평구",
+    "detail_addr": "증산로 397",
+    "address": "서울특별시 은평구 증산로 397",
+    "place_id": null
+  },
+  {
+    "episode": 110,
+    "restaurant_name": "와우 양철통소금구이",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "은평구",
+    "detail_addr": "연서로34길 23",
+    "address": "서울특별시 은평구 연서로34길 23",
+    "place_id": null
+  },
+  {
+    "episode": 110,
+    "restaurant_name": "오두리두부",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "은평구",
+    "detail_addr": "불광로18길 10-2",
+    "address": "서울특별시 은평구 불광로18길 10-2",
+    "place_id": null
+  },
+  {
     "episode": 109,
     "restaurant_name": "제일식당",
     "menu": "산채정식, 더덕구이",
@@ -5355,6 +6378,39 @@
     "detail_addr": "하남읍 수산중앙로 41 ,",
     "address": "경상남도 밀양시 하남읍 수산중앙로 41 ,",
     "place_id": "1180870969"
+  },
+  {
+    "episode": 109,
+    "restaurant_name": "사자평명물식당",
+    "menu": "",
+    "review": "",
+    "sido": "경상남도",
+    "sigungu": "밀양시",
+    "detail_addr": "단장면 바드리길 8",
+    "address": "경상남도 밀양시 단장면 바드리길 8",
+    "place_id": null
+  },
+  {
+    "episode": 109,
+    "restaurant_name": "촌닭농장",
+    "menu": "",
+    "review": "",
+    "sido": "경상남도",
+    "sigungu": "밀양시",
+    "detail_addr": "초동면 초동로 584-11",
+    "address": "경상남도 밀양시 초동면 초동로 584-11",
+    "place_id": null
+  },
+  {
+    "episode": 109,
+    "restaurant_name": "향촌갈비",
+    "menu": "",
+    "review": "",
+    "sido": "경상남도",
+    "sigungu": "밀양시",
+    "detail_addr": "내일상가1길 10",
+    "address": "경상남도 밀양시 내일상가1길 10",
+    "place_id": null
   },
   {
     "episode": 108,
@@ -5420,6 +6476,28 @@
     "sigungu": "예산군",
     "detail_addr": "예산읍 천변로195번길 9",
     "address": "충청남도 예산군 예산읍 천변로195번길 9",
+    "place_id": null
+  },
+  {
+    "episode": 107,
+    "restaurant_name": "호반식당",
+    "menu": "",
+    "review": "",
+    "sido": "충청남도",
+    "sigungu": "예산군",
+    "detail_addr": "대흥면 예당로 848",
+    "address": "충청남도 예산군 대흥면 예당로 848",
+    "place_id": null
+  },
+  {
+    "episode": 107,
+    "restaurant_name": "또순네식당",
+    "menu": "",
+    "review": "",
+    "sido": "충청남도",
+    "sigungu": "예산군",
+    "detail_addr": "덕산면 봉운로 25",
+    "address": "충청남도 예산군 덕산면 봉운로 25",
     "place_id": null
   },
   {
@@ -5511,6 +6589,28 @@
     "place_id": null
   },
   {
+    "episode": 105,
+    "restaurant_name": "통큰누이네 육회빈대떡",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "종로구",
+    "detail_addr": "동호로 403-24",
+    "address": "서울특별시 종로구 동호로 403-24",
+    "place_id": null
+  },
+  {
+    "episode": 105,
+    "restaurant_name": "진옥화할매원조닭한마리",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "종로구",
+    "detail_addr": "종로40가길 18",
+    "address": "서울특별시 종로구 종로40가길 18",
+    "place_id": null
+  },
+  {
     "episode": 104,
     "restaurant_name": "두암식당",
     "menu": "",
@@ -5520,6 +6620,39 @@
     "detail_addr": "몽탄면 우명길 52 몽탄 두암식당",
     "address": "전라남도 무안군 몽탄면 우명길 52 몽탄 두암식당",
     "place_id": "11718915"
+  },
+  {
+    "episode": 104,
+    "restaurant_name": "옛날시골밥상",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "무안군",
+    "detail_addr": "일로읍 시장길 17-10",
+    "address": "전라남도 무안군 일로읍 시장길 17-10",
+    "place_id": null
+  },
+  {
+    "episode": 104,
+    "restaurant_name": "곰솔낙지",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "무안군",
+    "detail_addr": "망운면 운해로 1447",
+    "address": "전라남도 무안군 망운면 운해로 1447",
+    "place_id": null
+  },
+  {
+    "episode": 104,
+    "restaurant_name": "삼부자낙지",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "무안군",
+    "detail_addr": "삼향읍 남악5로52번길 13-7",
+    "address": "전라남도 무안군 삼향읍 남악5로52번길 13-7",
+    "place_id": null
   },
   {
     "episode": 103,
@@ -5533,6 +6666,28 @@
     "place_id": "11872316"
   },
   {
+    "episode": 103,
+    "restaurant_name": "해운대암소갈비집",
+    "menu": "",
+    "review": "",
+    "sido": "부산광역시",
+    "sigungu": "해운대구",
+    "detail_addr": "중동2로10번길 32-10",
+    "address": "부산광역시 해운대구 중동2로10번길 32-10",
+    "place_id": null
+  },
+  {
+    "episode": 103,
+    "restaurant_name": "마라톤집",
+    "menu": "",
+    "review": "",
+    "sido": "부산광역시",
+    "sigungu": "부산진구",
+    "detail_addr": "가야대로784번길 54",
+    "address": "부산광역시 부산진구 가야대로784번길 54",
+    "place_id": null
+  },
+  {
     "episode": 102,
     "restaurant_name": "큰우리본점",
     "menu": "곤드레밥, 만둣국",
@@ -5542,6 +6697,28 @@
     "detail_addr": "대관령면 대관령로 192 큰우리본점",
     "address": "강원특별자치도 평창군 대관령면 대관령로 192 큰우리본점",
     "place_id": "12989507"
+  },
+  {
+    "episode": 102,
+    "restaurant_name": "오복가든",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "평창군",
+    "detail_addr": "용평면 운두령로 377-81",
+    "address": "강원특별자치도 평창군 용평면 운두령로 377-81",
+    "place_id": null
+  },
+  {
+    "episode": 102,
+    "restaurant_name": "고마루",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "평창군",
+    "detail_addr": "미탄면 미탄중앙로 45",
+    "address": "강원특별자치도 평창군 미탄면 미탄중앙로 45",
+    "place_id": null
   },
   {
     "episode": 101,
@@ -5599,6 +6776,50 @@
     "place_id": "15958022"
   },
   {
+    "episode": 100,
+    "restaurant_name": "호야막창",
+    "menu": "",
+    "review": "",
+    "sido": "대구광역시",
+    "sigungu": "달서구",
+    "detail_addr": "선원남로 151",
+    "address": "대구광역시 달서구 선원남로 151",
+    "place_id": null
+  },
+  {
+    "episode": 100,
+    "restaurant_name": "국일따로국밥",
+    "menu": "",
+    "review": "",
+    "sido": "대구광역시",
+    "sigungu": "중구",
+    "detail_addr": "국채보상로 571",
+    "address": "대구광역시 중구 국채보상로 571",
+    "place_id": null
+  },
+  {
+    "episode": 100,
+    "restaurant_name": "남도횟집",
+    "menu": "",
+    "review": "",
+    "sido": "대구광역시",
+    "sigungu": "중구",
+    "detail_addr": "경상감영길 165-5",
+    "address": "대구광역시 중구 경상감영길 165-5",
+    "place_id": null
+  },
+  {
+    "episode": 100,
+    "restaurant_name": "개미분식",
+    "menu": "",
+    "review": "",
+    "sido": "대구광역시",
+    "sigungu": "중구",
+    "detail_addr": "동성로 70-10",
+    "address": "대구광역시 중구 동성로 70-10",
+    "place_id": null
+  },
+  {
     "episode": 99,
     "restaurant_name": "곰배령끝집",
     "menu": "",
@@ -5654,6 +6875,39 @@
     "place_id": null
   },
   {
+    "episode": 98,
+    "restaurant_name": "강건너빼리",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "안성시",
+    "detail_addr": "금광면 가협1길 121-54",
+    "address": "경기도 안성시 금광면 가협1길 121-54",
+    "place_id": null
+  },
+  {
+    "episode": 98,
+    "restaurant_name": "한경식당",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "안성시",
+    "detail_addr": "중앙로372번길 21",
+    "address": "경기도 안성시 중앙로372번길 21",
+    "place_id": null
+  },
+  {
+    "episode": 98,
+    "restaurant_name": "두꺼비스넥",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "안성시",
+    "detail_addr": "안성맞춤대로 1068",
+    "address": "경기도 안성시 안성맞춤대로 1068",
+    "place_id": null
+  },
+  {
     "episode": 97,
     "restaurant_name": "뭉치네",
     "menu": "바지락 정식(바지락탕, 바지락밥)",
@@ -5665,6 +6919,39 @@
     "place_id": "17438091"
   },
   {
+    "episode": 97,
+    "restaurant_name": "모꼬지바지락요리전문점",
+    "menu": "",
+    "review": "",
+    "sido": "전북특별자치도",
+    "sigungu": "고창군",
+    "detail_addr": "부안면 인촌로 60",
+    "address": "전북특별자치도 고창군 부안면 인촌로 60",
+    "place_id": null
+  },
+  {
+    "episode": 97,
+    "restaurant_name": "작은항구",
+    "menu": "",
+    "review": "",
+    "sido": "전북특별자치도",
+    "sigungu": "고창군",
+    "detail_addr": "심원면 상전1길 45",
+    "address": "전북특별자치도 고창군 심원면 상전1길 45",
+    "place_id": null
+  },
+  {
+    "episode": 97,
+    "restaurant_name": "싱싱수산식당",
+    "menu": "",
+    "review": "",
+    "sido": "전북특별자치도",
+    "sigungu": "고창군",
+    "detail_addr": "고창읍 시장안길 26",
+    "address": "전북특별자치도 고창군 고창읍 시장안길 26",
+    "place_id": null
+  },
+  {
     "episode": 96,
     "restaurant_name": "강릉집",
     "menu": "",
@@ -5674,6 +6961,50 @@
     "detail_addr": "서부대성로 46",
     "address": "강원특별자치도 춘천시 서부대성로 46",
     "place_id": "15040617"
+  },
+  {
+    "episode": 96,
+    "restaurant_name": "감자밭",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "춘천시",
+    "detail_addr": "신북읍 신샘밭로 674",
+    "address": "강원특별자치도 춘천시 신북읍 신샘밭로 674",
+    "place_id": null
+  },
+  {
+    "episode": 96,
+    "restaurant_name": "후평왕족발",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "춘천시",
+    "detail_addr": "춘천로 293",
+    "address": "강원특별자치도 춘천시 춘천로 293",
+    "place_id": null
+  },
+  {
+    "episode": 96,
+    "restaurant_name": "대복소갈비살",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "춘천시",
+    "detail_addr": "동부시장길 8-4",
+    "address": "강원특별자치도 춘천시 동부시장길 8-4",
+    "place_id": null
+  },
+  {
+    "episode": 96,
+    "restaurant_name": "맥고을",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "춘천시",
+    "detail_addr": "서부대성로44번길 11-1",
+    "address": "강원특별자치도 춘천시 서부대성로44번길 11-1",
+    "place_id": null
   },
   {
     "episode": 95,
@@ -5775,6 +7106,28 @@
     "place_id": null
   },
   {
+    "episode": 93,
+    "restaurant_name": "고려당",
+    "menu": "",
+    "review": "",
+    "sido": "전북특별자치도",
+    "sigungu": "익산시",
+    "detail_addr": "중앙로 52",
+    "address": "전북특별자치도 익산시 중앙로 52",
+    "place_id": null
+  },
+  {
+    "episode": 93,
+    "restaurant_name": "장흥식당",
+    "menu": "",
+    "review": "",
+    "sido": "전북특별자치도",
+    "sigungu": "익산시",
+    "detail_addr": "황등면 황등로 183",
+    "address": "전북특별자치도 익산시 황등면 황등로 183",
+    "place_id": null
+  },
+  {
     "episode": 92,
     "restaurant_name": "노루목상회식당",
     "menu": "꼴두국수",
@@ -5786,6 +7139,50 @@
     "place_id": "15538041"
   },
   {
+    "episode": 92,
+    "restaurant_name": "박가네",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "영월군",
+    "detail_addr": "영월읍 중앙로 149",
+    "address": "강원특별자치도 영월군 영월읍 중앙로 149",
+    "place_id": null
+  },
+  {
+    "episode": 92,
+    "restaurant_name": "제천식당",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "영월군",
+    "detail_addr": "주천면 도천길 3",
+    "address": "강원특별자치도 영월군 주천면 도천길 3",
+    "place_id": null
+  },
+  {
+    "episode": 92,
+    "restaurant_name": "쌍용집",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "영월군",
+    "detail_addr": "한반도면 쌍용로 176-2",
+    "address": "강원특별자치도 영월군 한반도면 쌍용로 176-2",
+    "place_id": null
+  },
+  {
+    "episode": 92,
+    "restaurant_name": "장릉보리밥집",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "영월군",
+    "detail_addr": "영월읍 단종로 178-10",
+    "address": "강원특별자치도 영월군 영월읍 단종로 178-10",
+    "place_id": null
+  },
+  {
     "episode": 91,
     "restaurant_name": "봉정식당",
     "menu": "",
@@ -5794,6 +7191,61 @@
     "sigungu": "여수시",
     "detail_addr": "교동 563",
     "address": "전라남도 여수시 교동 563",
+    "place_id": null
+  },
+  {
+    "episode": 91,
+    "restaurant_name": "진주집",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "중구",
+    "detail_addr": "남대문시장길 22-2",
+    "address": "서울특별시 중구 남대문시장길 22-2",
+    "place_id": null
+  },
+  {
+    "episode": 91,
+    "restaurant_name": "나진국밥",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "여수시",
+    "detail_addr": "화양면 화양로 1391",
+    "address": "전라남도 여수시 화양면 화양로 1391",
+    "place_id": null
+  },
+  {
+    "episode": 91,
+    "restaurant_name": "41번포차",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "여수시",
+    "detail_addr": "봉산남3길 17",
+    "address": "전라남도 여수시 봉산남3길 17",
+    "place_id": null
+  },
+  {
+    "episode": 91,
+    "restaurant_name": "주부떡집",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "여수시",
+    "detail_addr": "서교4길 9",
+    "address": "전라남도 여수시 서교4길 9",
+    "place_id": null
+  },
+  {
+    "episode": 91,
+    "restaurant_name": "산들네 전집",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "여수시",
+    "detail_addr": "서교4길 9-1",
+    "address": "전라남도 여수시 서교4길 9-1",
     "place_id": null
   },
   {
@@ -5929,6 +7381,39 @@
     "place_id": "1526780805"
   },
   {
+    "episode": 87,
+    "restaurant_name": "중앙식당",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "해남군",
+    "detail_addr": "송지면 산정1길 69",
+    "address": "전라남도 해남군 송지면 산정1길 69",
+    "place_id": null
+  },
+  {
+    "episode": 87,
+    "restaurant_name": "이학식당",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "해남군",
+    "detail_addr": "해남읍 북부순환로 83",
+    "address": "전라남도 해남군 해남읍 북부순환로 83",
+    "place_id": null
+  },
+  {
+    "episode": 87,
+    "restaurant_name": "신창손순대국밥",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "해남군",
+    "detail_addr": "산이면 관광레저로 1673",
+    "address": "전라남도 해남군 산이면 관광레저로 1673",
+    "place_id": null
+  },
+  {
     "episode": 86,
     "restaurant_name": "금암피순대",
     "menu": "피순대, 순댓국(암뽕·오로시감투·염통)",
@@ -5938,6 +7423,50 @@
     "detail_addr": "덕진구 기린대로 400-61",
     "address": "전북특별자치도 전주시 덕진구 기린대로 400-61",
     "place_id": "11877551"
+  },
+  {
+    "episode": 86,
+    "restaurant_name": "중앙쌀호떡",
+    "menu": "",
+    "review": "",
+    "sido": "전북특별자치도",
+    "sigungu": "전주시",
+    "detail_addr": "완산구 태평3길 70",
+    "address": "전북특별자치도 전주시 완산구 태평3길 70",
+    "place_id": null
+  },
+  {
+    "episode": 86,
+    "restaurant_name": "운암콩나물국밥",
+    "menu": "",
+    "review": "",
+    "sido": "전북특별자치도",
+    "sigungu": "전주시",
+    "detail_addr": "완산구 풍남문2길 63",
+    "address": "전북특별자치도 전주시 완산구 풍남문2길 63",
+    "place_id": null
+  },
+  {
+    "episode": 86,
+    "restaurant_name": "성가떡집",
+    "menu": "",
+    "review": "",
+    "sido": "전북특별자치도",
+    "sigungu": "전주시",
+    "detail_addr": "완산구 팔달로 249",
+    "address": "전북특별자치도 전주시 완산구 팔달로 249",
+    "place_id": null
+  },
+  {
+    "episode": 86,
+    "restaurant_name": "향리",
+    "menu": "",
+    "review": "",
+    "sido": "전북특별자치도",
+    "sigungu": "전주시",
+    "detail_addr": "완산구 전주객사5길 83",
+    "address": "전북특별자치도 전주시 완산구 전주객사5길 83",
+    "place_id": null
   },
   {
     "episode": 85,
@@ -5960,6 +7489,39 @@
     "detail_addr": "홍성읍 의사로43번길 13-6",
     "address": "충청남도 홍성군 홍성읍 의사로43번길 13-6",
     "place_id": "13346209"
+  },
+  {
+    "episode": 85,
+    "restaurant_name": "갈매기횟집",
+    "menu": "",
+    "review": "",
+    "sido": "충청남도",
+    "sigungu": "홍성군",
+    "detail_addr": "서부면 남당항로 852",
+    "address": "충청남도 홍성군 서부면 남당항로 852",
+    "place_id": null
+  },
+  {
+    "episode": 85,
+    "restaurant_name": "꽃동산횟집",
+    "menu": "",
+    "review": "",
+    "sido": "충청남도",
+    "sigungu": "홍성군",
+    "detail_addr": "서부면 남당항로79번길 2-36",
+    "address": "충청남도 홍성군 서부면 남당항로79번길 2-36",
+    "place_id": null
+  },
+  {
+    "episode": 85,
+    "restaurant_name": "깜씨네",
+    "menu": "",
+    "review": "",
+    "sido": "충청남도",
+    "sigungu": "홍성군",
+    "detail_addr": "홍성읍 충절로1053번길 18",
+    "address": "충청남도 홍성군 홍성읍 충절로1053번길 18",
+    "place_id": null
   },
   {
     "episode": 84,
@@ -6017,6 +7579,39 @@
     "place_id": null
   },
   {
+    "episode": 83,
+    "restaurant_name": "동정리보경가든",
+    "menu": "",
+    "review": "",
+    "sido": "충청북도",
+    "sigungu": "영동군",
+    "detail_addr": "영동읍 동정로2안길 9-1",
+    "address": "충청북도 영동군 영동읍 동정로2안길 9-1",
+    "place_id": null
+  },
+  {
+    "episode": 83,
+    "restaurant_name": "선미식당",
+    "menu": "",
+    "review": "",
+    "sido": "충청북도",
+    "sigungu": "영동군",
+    "detail_addr": "학산면 서산로 39-1",
+    "address": "충청북도 영동군 학산면 서산로 39-1",
+    "place_id": null
+  },
+  {
+    "episode": 83,
+    "restaurant_name": "갑돌갈비",
+    "menu": "",
+    "review": "",
+    "sido": "충청북도",
+    "sigungu": "영동군",
+    "detail_addr": "영동읍 계산로2길 5-23",
+    "address": "충청북도 영동군 영동읍 계산로2길 5-23",
+    "place_id": null
+  },
+  {
     "episode": 82,
     "restaurant_name": "천지식당",
     "menu": "",
@@ -6025,6 +7620,39 @@
     "sigungu": "마포구",
     "detail_addr": "마포대로4가길 54",
     "address": "서울특별시 마포구 마포대로4가길 54",
+    "place_id": null
+  },
+  {
+    "episode": 82,
+    "restaurant_name": "산동만두",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "마포구",
+    "detail_addr": "도화길 22-10",
+    "address": "서울특별시 마포구 도화길 22-10",
+    "place_id": null
+  },
+  {
+    "episode": 82,
+    "restaurant_name": "신촌즉석생우동",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "마포구",
+    "detail_addr": "대흥로 38",
+    "address": "서울특별시 마포구 대흥로 38",
+    "place_id": null
+  },
+  {
+    "episode": 82,
+    "restaurant_name": "남해바다",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "마포구",
+    "detail_addr": "토정로37길 46",
+    "address": "서울특별시 마포구 토정로37길 46",
     "place_id": null
   },
   {
@@ -6083,6 +7711,50 @@
     "place_id": null
   },
   {
+    "episode": 80,
+    "restaurant_name": "수문식당",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "고흥군",
+    "detail_addr": "남양면 망월로 674-24",
+    "address": "전라남도 고흥군 남양면 망월로 674-24",
+    "place_id": null
+  },
+  {
+    "episode": 80,
+    "restaurant_name": "원조소문난갈비탕",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "고흥군",
+    "detail_addr": "동강면 고흥로 4259",
+    "address": "전라남도 고흥군 동강면 고흥로 4259",
+    "place_id": null
+  },
+  {
+    "episode": 80,
+    "restaurant_name": "순천횟집",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "고흥군",
+    "detail_addr": "봉래면 나로도항길 117",
+    "address": "전라남도 고흥군 봉래면 나로도항길 117",
+    "place_id": null
+  },
+  {
+    "episode": 80,
+    "restaurant_name": "화정상회",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "고흥군",
+    "detail_addr": "고흥읍 시장천변길 29-16",
+    "address": "전라남도 고흥군 고흥읍 시장천변길 29-16",
+    "place_id": null
+  },
+  {
     "episode": 79,
     "restaurant_name": "일미장어",
     "menu": "보쌈, 칼국수",
@@ -6116,6 +7788,17 @@
     "place_id": null
   },
   {
+    "episode": 79,
+    "restaurant_name": "충무칼국수",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "용산구",
+    "detail_addr": "한강대로104길 38",
+    "address": "서울특별시 용산구 한강대로104길 38",
+    "place_id": null
+  },
+  {
     "episode": 78,
     "restaurant_name": "동일횟집",
     "menu": "소쿠리회, 장어탕",
@@ -6125,6 +7808,72 @@
     "detail_addr": "양남면 양남로 227",
     "address": "경상북도 경주시 양남면 양남로 227",
     "place_id": "1325885976"
+  },
+  {
+    "episode": 78,
+    "restaurant_name": "백학정",
+    "menu": "",
+    "review": "",
+    "sido": "전북특별자치도",
+    "sigungu": "정읍시",
+    "detail_addr": "태인면 태인로 29-3",
+    "address": "전북특별자치도 정읍시 태인면 태인로 29-3",
+    "place_id": null
+  },
+  {
+    "episode": 78,
+    "restaurant_name": "원조콩국",
+    "menu": "",
+    "review": "",
+    "sido": "경상북도",
+    "sigungu": "경주시",
+    "detail_addr": "첨성로 113",
+    "address": "경상북도 경주시 첨성로 113",
+    "place_id": null
+  },
+  {
+    "episode": 78,
+    "restaurant_name": "할매문어집",
+    "menu": "",
+    "review": "",
+    "sido": "경상북도",
+    "sigungu": "경주시",
+    "detail_addr": "원화로281번길 11",
+    "address": "경상북도 경주시 원화로281번길 11",
+    "place_id": null
+  },
+  {
+    "episode": 78,
+    "restaurant_name": "보배김밥",
+    "menu": "",
+    "review": "",
+    "sido": "경상북도",
+    "sigungu": "경주시",
+    "detail_addr": "원화로281번길 11",
+    "address": "경상북도 경주시 원화로281번길 11",
+    "place_id": null
+  },
+  {
+    "episode": 78,
+    "restaurant_name": "평양냉면집",
+    "menu": "",
+    "review": "",
+    "sido": "경상북도",
+    "sigungu": "경주시",
+    "detail_addr": "원효로 109-2",
+    "address": "경상북도 경주시 원효로 109-2",
+    "place_id": null
+  },
+  {
+    "episode": 78,
+    "restaurant_name": "퇴근길숯불갈비",
+    "menu": "",
+    "review": "",
+    "sido": "경상북도",
+    "sigungu": "경주시",
+    "detail_addr": "금성로 190",
+    "address": "경상북도 경주시 금성로 190",
+    "place_id": null
   },
   {
     "episode": 77,
@@ -6138,6 +7887,39 @@
     "place_id": "17306389"
   },
   {
+    "episode": 77,
+    "restaurant_name": "장작불",
+    "menu": "",
+    "review": "",
+    "sido": "전북특별자치도",
+    "sigungu": "정읍시",
+    "detail_addr": "모촌길 50-31",
+    "address": "전북특별자치도 정읍시 모촌길 50-31",
+    "place_id": null
+  },
+  {
+    "episode": 77,
+    "restaurant_name": "고부동학고을한우",
+    "menu": "",
+    "review": "",
+    "sido": "전북특별자치도",
+    "sigungu": "정읍시",
+    "detail_addr": "고부면 교동2길 6",
+    "address": "전북특별자치도 정읍시 고부면 교동2길 6",
+    "place_id": null
+  },
+  {
+    "episode": 77,
+    "restaurant_name": "옛날팥죽",
+    "menu": "",
+    "review": "",
+    "sido": "전북특별자치도",
+    "sigungu": "정읍시",
+    "detail_addr": "중앙로 162",
+    "address": "전북특별자치도 정읍시 중앙로 162",
+    "place_id": null
+  },
+  {
     "episode": 76,
     "restaurant_name": "포항식당",
     "menu": "",
@@ -6146,6 +7928,50 @@
     "sigungu": "철원군",
     "detail_addr": "자등로 579",
     "address": "강원특별자치도 철원군 자등로 579",
+    "place_id": null
+  },
+  {
+    "episode": 76,
+    "restaurant_name": "감자바우",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "속초시",
+    "detail_addr": "청초호반로 239",
+    "address": "강원특별자치도 속초시 청초호반로 239",
+    "place_id": null
+  },
+  {
+    "episode": 76,
+    "restaurant_name": "갓냉이국수",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "철원군",
+    "detail_addr": "서면 자등로 611",
+    "address": "강원특별자치도 철원군 서면 자등로 611",
+    "place_id": null
+  },
+  {
+    "episode": 76,
+    "restaurant_name": "내대막국수",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "철원군",
+    "detail_addr": "갈말읍 내대1길 29-10",
+    "address": "강원특별자치도 철원군 갈말읍 내대1길 29-10",
+    "place_id": null
+  },
+  {
+    "episode": 76,
+    "restaurant_name": "솔향기",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "철원군",
+    "detail_addr": "동송읍 금학로 31-10",
+    "address": "강원특별자치도 철원군 동송읍 금학로 31-10",
     "place_id": null
   },
   {
@@ -6158,6 +7984,39 @@
     "detail_addr": "법대로 18-1",
     "address": "강원특별자치도 속초시 법대로 18-1",
     "place_id": "15006308"
+  },
+  {
+    "episode": 75,
+    "restaurant_name": "경진호",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "속초시",
+    "detail_addr": "동해대로 3666",
+    "address": "강원특별자치도 속초시 동해대로 3666",
+    "place_id": null
+  },
+  {
+    "episode": 75,
+    "restaurant_name": "88생선구이",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "속초시",
+    "detail_addr": "중앙부두길 71",
+    "address": "강원특별자치도 속초시 중앙부두길 71",
+    "place_id": null
+  },
+  {
+    "episode": 75,
+    "restaurant_name": "화진호 이선장네",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "속초시",
+    "detail_addr": "먹거리4길 18-1",
+    "address": "강원특별자치도 속초시 먹거리4길 18-1",
+    "place_id": null
   },
   {
     "episode": 74,
@@ -6204,6 +8063,17 @@
     "place_id": "15450490"
   },
   {
+    "episode": 74,
+    "restaurant_name": "송가네",
+    "menu": "",
+    "review": "",
+    "sido": "경상남도",
+    "sigungu": "진주시",
+    "detail_addr": "촉석로202번길 7",
+    "address": "경상남도 진주시 촉석로202번길 7",
+    "place_id": null
+  },
+  {
     "episode": 73,
     "restaurant_name": "해변회식당",
     "menu": "",
@@ -6212,6 +8082,39 @@
     "sigungu": "영덕군",
     "detail_addr": "영해면 영덕대게로 2817",
     "address": "경상북도 영덕군 영해면 영덕대게로 2817",
+    "place_id": null
+  },
+  {
+    "episode": 73,
+    "restaurant_name": "시장밥집",
+    "menu": "",
+    "review": "",
+    "sido": "경상북도",
+    "sigungu": "영덕군",
+    "detail_addr": "영덕읍 남석길 23-10",
+    "address": "경상북도 영덕군 영덕읍 남석길 23-10",
+    "place_id": null
+  },
+  {
+    "episode": 73,
+    "restaurant_name": "영덕물가자미전문점",
+    "menu": "",
+    "review": "",
+    "sido": "경상북도",
+    "sigungu": "영덕군",
+    "detail_addr": "영덕읍 영덕대게로 939",
+    "address": "경상북도 영덕군 영덕읍 영덕대게로 939",
+    "place_id": null
+  },
+  {
+    "episode": 73,
+    "restaurant_name": "팔팔식당",
+    "menu": "",
+    "review": "",
+    "sido": "경상북도",
+    "sigungu": "청송군",
+    "detail_addr": "진보면 경동로 5157",
+    "address": "경상북도 청송군 진보면 경동로 5157",
     "place_id": null
   },
   {
@@ -6226,6 +8129,39 @@
     "place_id": "17355222"
   },
   {
+    "episode": 72,
+    "restaurant_name": "인동할머니민박",
+    "menu": "",
+    "review": "",
+    "sido": "전북특별자치도",
+    "sigungu": "남원시",
+    "detail_addr": "운봉읍 삼산길 8-4",
+    "address": "전북특별자치도 남원시 운봉읍 삼산길 8-4",
+    "place_id": null
+  },
+  {
+    "episode": 72,
+    "restaurant_name": "동막골",
+    "menu": "",
+    "review": "",
+    "sido": "전북특별자치도",
+    "sigungu": "남원시",
+    "detail_addr": "요천로 1537",
+    "address": "전북특별자치도 남원시 요천로 1537",
+    "place_id": null
+  },
+  {
+    "episode": 72,
+    "restaurant_name": "부산집",
+    "menu": "",
+    "review": "",
+    "sido": "전북특별자치도",
+    "sigungu": "남원시",
+    "detail_addr": "의총로 11",
+    "address": "전북특별자치도 남원시 의총로 11",
+    "place_id": null
+  },
+  {
     "episode": 71,
     "restaurant_name": "독천식당",
     "menu": "",
@@ -6234,6 +8170,50 @@
     "sigungu": "영암군",
     "detail_addr": "학산면 독천로 162-1",
     "address": "전라남도 영암군 학산면 독천로 162-1",
+    "place_id": null
+  },
+  {
+    "episode": 71,
+    "restaurant_name": "청하식당",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "영암군",
+    "detail_addr": "학산면 독천로 170-1",
+    "address": "전라남도 영암군 학산면 독천로 170-1",
+    "place_id": null
+  },
+  {
+    "episode": 71,
+    "restaurant_name": "텃밭가든",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "영암군",
+    "detail_addr": "덕진면 새터신정길 71",
+    "address": "전라남도 영암군 덕진면 새터신정길 71",
+    "place_id": null
+  },
+  {
+    "episode": 71,
+    "restaurant_name": "수궁한정식",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "영암군",
+    "detail_addr": "삼호읍 용당로 80-1",
+    "address": "전라남도 영암군 삼호읍 용당로 80-1",
+    "place_id": null
+  },
+  {
+    "episode": 71,
+    "restaurant_name": "구림떡방아",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "영암군",
+    "detail_addr": "군서면 도갑사로 6-7",
+    "address": "전라남도 영암군 군서면 도갑사로 6-7",
     "place_id": null
   },
   {
@@ -6369,6 +8349,39 @@
     "place_id": "13344772"
   },
   {
+    "episode": 68,
+    "restaurant_name": "맘코리안비스트로",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "서초구",
+    "detail_addr": "사평대로26길 48",
+    "address": "서울특별시 서초구 사평대로26길 48",
+    "place_id": null
+  },
+  {
+    "episode": 68,
+    "restaurant_name": "장수식당",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "서초구",
+    "detail_addr": "서래로 50",
+    "address": "서울특별시 서초구 서래로 50",
+    "place_id": null
+  },
+  {
+    "episode": 68,
+    "restaurant_name": "설눈",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "서초구",
+    "detail_addr": "서초대로46길 20-7",
+    "address": "서울특별시 서초구 서초대로46길 20-7",
+    "place_id": null
+  },
+  {
     "episode": 67,
     "restaurant_name": "다복가든",
     "menu": "백반(홍어찜, 수육, 20여가지 찬)",
@@ -6402,6 +8415,28 @@
     "place_id": "11888987"
   },
   {
+    "episode": 67,
+    "restaurant_name": "진미옛날순대",
+    "menu": "암뽕순대",
+    "review": "선지를 넉넉히 넣어 고소한 맛이 강한 나주식 암뽕순대",
+    "sido": "전라남도",
+    "sigungu": "나주시",
+    "detail_addr": "나주로 73",
+    "address": "전라남도 나주시 나주로 73",
+    "place_id": null
+  },
+  {
+    "episode": 67,
+    "restaurant_name": "섬말민물횟집",
+    "menu": "해당없음",
+    "review": "[데이터 불일치] 본문에서 대응하는 문단을 찾을 수 없음",
+    "sido": "전라남도",
+    "sigungu": "나주시",
+    "detail_addr": "세지면 세지로 420",
+    "address": "전라남도 나주시 세지면 세지로 420",
+    "place_id": null
+  },
+  {
     "episode": 66,
     "restaurant_name": "샘말식당",
     "menu": "간장 막국수",
@@ -6411,6 +8446,50 @@
     "detail_addr": "청평면 경춘로 1457",
     "address": "경기도 가평군 청평면 경춘로 1457",
     "place_id": "1226156665"
+  },
+  {
+    "episode": 66,
+    "restaurant_name": "송원막국수",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "가평군",
+    "detail_addr": "가평읍 가화로 76-1",
+    "address": "경기도 가평군 가평읍 가화로 76-1",
+    "place_id": null
+  },
+  {
+    "episode": 66,
+    "restaurant_name": "장모님댁",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "가평군",
+    "detail_addr": "설악면 자잠로 8",
+    "address": "경기도 가평군 설악면 자잠로 8",
+    "place_id": null
+  },
+  {
+    "episode": 66,
+    "restaurant_name": "민기남씨네 솥뚜껑닭매운탕",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "가평군",
+    "detail_addr": "설악면 유명로 654-57",
+    "address": "경기도 가평군 설악면 유명로 654-57",
+    "place_id": null
+  },
+  {
+    "episode": 66,
+    "restaurant_name": "명지쉼터가든",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "가평군",
+    "detail_addr": "북면 가화로 777",
+    "address": "경기도 가평군 북면 가화로 777",
+    "place_id": null
   },
   {
     "episode": 65,
@@ -6446,6 +8525,28 @@
     "place_id": null
   },
   {
+    "episode": 65,
+    "restaurant_name": "수양식당",
+    "menu": "",
+    "review": "",
+    "sido": "경상남도",
+    "sigungu": "고성군",
+    "detail_addr": "동해면 동해로 1590",
+    "address": "경상남도 고성군 동해면 동해로 1590",
+    "place_id": null
+  },
+  {
+    "episode": 65,
+    "restaurant_name": "향가",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "종로구",
+    "detail_addr": "계동길 19-6",
+    "address": "서울특별시 종로구 계동길 19-6",
+    "place_id": null
+  },
+  {
     "episode": 64,
     "restaurant_name": "가든개미집",
     "menu": "",
@@ -6457,6 +8558,50 @@
     "place_id": "1560210603"
   },
   {
+    "episode": 64,
+    "restaurant_name": "풍년식당",
+    "menu": "",
+    "review": "",
+    "sido": "충청북도",
+    "sigungu": "충주시",
+    "detail_addr": "동량면 조동2길 88",
+    "address": "충청북도 충주시 동량면 조동2길 88",
+    "place_id": null
+  },
+  {
+    "episode": 64,
+    "restaurant_name": "군령포하모자연산횟집",
+    "menu": "",
+    "review": "",
+    "sido": "경상남도",
+    "sigungu": "고성군",
+    "detail_addr": "삼산면 두포5길 426",
+    "address": "경상남도 고성군 삼산면 두포5길 426",
+    "place_id": null
+  },
+  {
+    "episode": 64,
+    "restaurant_name": "옥천식당",
+    "menu": "",
+    "review": "",
+    "sido": "경상남도",
+    "sigungu": "고성군",
+    "detail_addr": "개천면 연화산1로 544",
+    "address": "경상남도 고성군 개천면 연화산1로 544",
+    "place_id": null
+  },
+  {
+    "episode": 64,
+    "restaurant_name": "기와실비",
+    "menu": "",
+    "review": "",
+    "sido": "경상남도",
+    "sigungu": "고성군",
+    "detail_addr": "회화면 배둔로 14-7",
+    "address": "경상남도 고성군 회화면 배둔로 14-7",
+    "place_id": null
+  },
+  {
     "episode": 63,
     "restaurant_name": "수안보대장군",
     "menu": "",
@@ -6465,6 +8610,61 @@
     "sigungu": "충주시",
     "detail_addr": "수안보면 미륵송계로 105",
     "address": "충청북도 충주시 수안보면 미륵송계로 105",
+    "place_id": null
+  },
+  {
+    "episode": 63,
+    "restaurant_name": "삼정면옥",
+    "menu": "",
+    "review": "",
+    "sido": "충청북도",
+    "sigungu": "충주시",
+    "detail_addr": "관아3길 21",
+    "address": "충청북도 충주시 관아3길 21",
+    "place_id": null
+  },
+  {
+    "episode": 63,
+    "restaurant_name": "아미각",
+    "menu": "",
+    "review": "",
+    "sido": "충청북도",
+    "sigungu": "충주시",
+    "detail_addr": "연수서편1길 9",
+    "address": "충청북도 충주시 연수서편1길 9",
+    "place_id": null
+  },
+  {
+    "episode": 63,
+    "restaurant_name": "올뱅이식당",
+    "menu": "",
+    "review": "",
+    "sido": "충청북도",
+    "sigungu": "충주시",
+    "detail_addr": "신대1길 1",
+    "address": "충청북도 충주시 신대1길 1",
+    "place_id": null
+  },
+  {
+    "episode": 63,
+    "restaurant_name": "들림횟집",
+    "menu": "",
+    "review": "",
+    "sido": "충청북도",
+    "sigungu": "충주시",
+    "detail_addr": "살미면 팔봉향산길 374",
+    "address": "충청북도 충주시 살미면 팔봉향산길 374",
+    "place_id": null
+  },
+  {
+    "episode": 63,
+    "restaurant_name": "수영식당",
+    "menu": "",
+    "review": "",
+    "sido": "충청북도",
+    "sigungu": "충주시",
+    "detail_addr": "상방12길 11",
+    "address": "충청북도 충주시 상방12길 11",
     "place_id": null
   },
   {
@@ -6490,6 +8690,50 @@
     "place_id": null
   },
   {
+    "episode": 62,
+    "restaurant_name": "장본가식품",
+    "menu": "",
+    "review": "",
+    "sido": "전북특별자치도",
+    "sigungu": "순창군",
+    "detail_addr": "순창읍 민속마을길 16",
+    "address": "전북특별자치도 순창군 순창읍 민속마을길 16",
+    "place_id": null
+  },
+  {
+    "episode": 62,
+    "restaurant_name": "유등숯불돼지갈비",
+    "menu": "",
+    "review": "",
+    "sido": "전북특별자치도",
+    "sigungu": "순창군",
+    "detail_addr": "순창읍 유등로 59",
+    "address": "전북특별자치도 순창군 순창읍 유등로 59",
+    "place_id": null
+  },
+  {
+    "episode": 62,
+    "restaurant_name": "백야촌",
+    "menu": "",
+    "review": "",
+    "sido": "전북특별자치도",
+    "sigungu": "순창군",
+    "detail_addr": "팔덕면 담순로 889-13",
+    "address": "전북특별자치도 순창군 팔덕면 담순로 889-13",
+    "place_id": null
+  },
+  {
+    "episode": 62,
+    "restaurant_name": "함양식당",
+    "menu": "",
+    "review": "",
+    "sido": "전북특별자치도",
+    "sigungu": "순창군",
+    "detail_addr": "구림면 구림로 472",
+    "address": "전북특별자치도 순창군 구림면 구림로 472",
+    "place_id": null
+  },
+  {
     "episode": 61,
     "restaurant_name": "남해달인횟집",
     "menu": "회백반(숙성회, 생선전, 맑은탕, 생선대가리찜)",
@@ -6499,6 +8743,61 @@
     "detail_addr": "사리로 40 남해달인횟집",
     "address": "부산광역시 사하구 사리로 40 남해달인횟집",
     "place_id": "11604340"
+  },
+  {
+    "episode": 61,
+    "restaurant_name": "금정산성막걸리 본점",
+    "menu": "",
+    "review": "",
+    "sido": "부산광역시",
+    "sigungu": "금정구",
+    "detail_addr": "산성로 453",
+    "address": "부산광역시 금정구 산성로 453",
+    "place_id": null
+  },
+  {
+    "episode": 61,
+    "restaurant_name": "청사초롱",
+    "menu": "",
+    "review": "",
+    "sido": "부산광역시",
+    "sigungu": "금정구",
+    "detail_addr": "산성로 447",
+    "address": "부산광역시 금정구 산성로 447",
+    "place_id": null
+  },
+  {
+    "episode": 61,
+    "restaurant_name": "선창갈미조개",
+    "menu": "",
+    "review": "",
+    "sido": "부산광역시",
+    "sigungu": "강서구",
+    "detail_addr": "르노삼성대로 602",
+    "address": "부산광역시 강서구 르노삼성대로 602",
+    "place_id": null
+  },
+  {
+    "episode": 61,
+    "restaurant_name": "원조18번완당 발국수",
+    "menu": "",
+    "review": "",
+    "sido": "부산광역시",
+    "sigungu": "서구",
+    "detail_addr": "구덕로238번길 6",
+    "address": "부산광역시 서구 구덕로238번길 6",
+    "place_id": null
+  },
+  {
+    "episode": 61,
+    "restaurant_name": "진주식당",
+    "menu": "",
+    "review": "",
+    "sido": "부산광역시",
+    "sigungu": "영도구",
+    "detail_addr": "절영로14번길 2",
+    "address": "부산광역시 영도구 절영로14번길 2",
+    "place_id": null
   },
   {
     "episode": 60,
@@ -6677,6 +8976,50 @@
     "place_id": "1606679389"
   },
   {
+    "episode": 57,
+    "restaurant_name": "정통옥수사",
+    "menu": "",
+    "review": "",
+    "sido": "충청남도",
+    "sigungu": "천안시",
+    "detail_addr": "동남구 먹거리11길 17",
+    "address": "충청남도 천안시 동남구 먹거리11길 17",
+    "place_id": null
+  },
+  {
+    "episode": 57,
+    "restaurant_name": "소우리생고기집",
+    "menu": "",
+    "review": "",
+    "sido": "충청남도",
+    "sigungu": "천안시",
+    "detail_addr": "서북구 성거읍 봉주로 258",
+    "address": "충청남도 천안시 서북구 성거읍 봉주로 258",
+    "place_id": null
+  },
+  {
+    "episode": 57,
+    "restaurant_name": "미라골미담식당",
+    "menu": "",
+    "review": "",
+    "sido": "충청남도",
+    "sigungu": "천안시",
+    "detail_addr": "서북구 미라15길 19",
+    "address": "충청남도 천안시 서북구 미라15길 19",
+    "place_id": null
+  },
+  {
+    "episode": 57,
+    "restaurant_name": "청화집",
+    "menu": "",
+    "review": "",
+    "sido": "충청남도",
+    "sigungu": "천안시",
+    "detail_addr": "동남구 병천면 충절로 1749",
+    "address": "충청남도 천안시 동남구 병천면 충절로 1749",
+    "place_id": null
+  },
+  {
     "episode": 56,
     "restaurant_name": "연백식당",
     "menu": "",
@@ -6743,6 +9086,61 @@
     "place_id": "13177027"
   },
   {
+    "episode": 55,
+    "restaurant_name": "골목집",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "영등포구",
+    "detail_addr": "도림로139가길 11-1",
+    "address": "서울특별시 영등포구 도림로139가길 11-1",
+    "place_id": null
+  },
+  {
+    "episode": 55,
+    "restaurant_name": "매일낙지",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "영등포구",
+    "detail_addr": "경인로78길 3-16",
+    "address": "서울특별시 영등포구 경인로78길 3-16",
+    "place_id": null
+  },
+  {
+    "episode": 55,
+    "restaurant_name": "은진포차",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "영등포구",
+    "detail_addr": "도림로133길 20",
+    "address": "서울특별시 영등포구 도림로133길 20",
+    "place_id": null
+  },
+  {
+    "episode": 55,
+    "restaurant_name": "서여사네",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "영등포구",
+    "detail_addr": "도림로129길 2",
+    "address": "서울특별시 영등포구 도림로129길 2",
+    "place_id": null
+  },
+  {
+    "episode": 55,
+    "restaurant_name": "덕원",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "영등포구",
+    "detail_addr": "버드나루로길 6",
+    "address": "서울특별시 영등포구 버드나루로길 6",
+    "place_id": null
+  },
+  {
     "episode": 54,
     "restaurant_name": "연옥당",
     "menu": "연잎정식(연잎밥+반찬 12~13가지)",
@@ -6752,6 +9150,61 @@
     "detail_addr": "남면 안면대로 605-8 1층",
     "address": "충청남도 태안군 남면 안면대로 605-8 1층",
     "place_id": "1578976959"
+  },
+  {
+    "episode": 54,
+    "restaurant_name": "산장가든",
+    "menu": "",
+    "review": "",
+    "sido": "충청남도",
+    "sigungu": "태안군",
+    "detail_addr": "태안읍 상도로 49-57",
+    "address": "충청남도 태안군 태안읍 상도로 49-57",
+    "place_id": null
+  },
+  {
+    "episode": 54,
+    "restaurant_name": "정아횟집",
+    "menu": "",
+    "review": "",
+    "sido": "충청남도",
+    "sigungu": "태안군",
+    "detail_addr": "근흥면 신진부두길 130",
+    "address": "충청남도 태안군 근흥면 신진부두길 130",
+    "place_id": null
+  },
+  {
+    "episode": 54,
+    "restaurant_name": "메꿀레분식",
+    "menu": "",
+    "review": "",
+    "sido": "충청남도",
+    "sigungu": "태안군",
+    "detail_addr": "태안읍 시장3길 43-7",
+    "address": "충청남도 태안군 태안읍 시장3길 43-7",
+    "place_id": null
+  },
+  {
+    "episode": 54,
+    "restaurant_name": "안흥식당",
+    "menu": "",
+    "review": "",
+    "sido": "충청남도",
+    "sigungu": "태안군",
+    "detail_addr": "태안읍 정주내2길 15",
+    "address": "충청남도 태안군 태안읍 정주내2길 15",
+    "place_id": null
+  },
+  {
+    "episode": 54,
+    "restaurant_name": "선창회마차",
+    "menu": "",
+    "review": "",
+    "sido": "충청남도",
+    "sigungu": "태안군",
+    "detail_addr": "근흥면 마도길 154-1",
+    "address": "충청남도 태안군 근흥면 마도길 154-1",
+    "place_id": null
   },
   {
     "episode": 53,
@@ -6798,6 +9251,17 @@
     "place_id": null
   },
   {
+    "episode": 53,
+    "restaurant_name": "노고산로뎀나무",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "양주시",
+    "detail_addr": "장흥면 유원지로 83",
+    "address": "경기도 양주시 장흥면 유원지로 83",
+    "place_id": null
+  },
+  {
     "episode": 52,
     "restaurant_name": "신토불이",
     "menu": "고등어 두부구이",
@@ -6807,6 +9271,50 @@
     "detail_addr": "화촌면 굴운로75번길 20-5",
     "address": "강원특별자치도 홍천군 화촌면 굴운로75번길 20-5",
     "place_id": "15491771"
+  },
+  {
+    "episode": 52,
+    "restaurant_name": "오대산내고향",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "홍천군",
+    "detail_addr": "내면 구룡령로 6898",
+    "address": "강원특별자치도 홍천군 내면 구룡령로 6898",
+    "place_id": null
+  },
+  {
+    "episode": 52,
+    "restaurant_name": "원미막국수",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "홍천군",
+    "detail_addr": "화촌면 가락재로 1273",
+    "address": "강원특별자치도 홍천군 화촌면 가락재로 1273",
+    "place_id": null
+  },
+  {
+    "episode": 52,
+    "restaurant_name": "오복식당",
+    "menu": "",
+    "review": "",
+    "sido": "강원도",
+    "sigungu": "홍천군",
+    "detail_addr": "남면 한서로 3395",
+    "address": "강원도 홍천군 남면 한서로 3395",
+    "place_id": null
+  },
+  {
+    "episode": 52,
+    "restaurant_name": "제일숯불구이",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "홍천군",
+    "detail_addr": "홍천읍 너브내길 49",
+    "address": "강원특별자치도 홍천군 홍천읍 너브내길 49",
+    "place_id": null
   },
   {
     "episode": 51,
@@ -6941,6 +9449,50 @@
     "place_id": "1960786782"
   },
   {
+    "episode": 49,
+    "restaurant_name": "금성식당",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "용인시",
+    "detail_addr": "처인구 양지면 남평로 16",
+    "address": "경기도 용인시 처인구 양지면 남평로 16",
+    "place_id": null
+  },
+  {
+    "episode": 49,
+    "restaurant_name": "한터장수오리골",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "용인시",
+    "detail_addr": "처인구 양지면 한터로662번길 39",
+    "address": "경기도 용인시 처인구 양지면 한터로662번길 39",
+    "place_id": null
+  },
+  {
+    "episode": 49,
+    "restaurant_name": "교동면옥",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "용인시",
+    "detail_addr": "기흥구 마북로 135",
+    "address": "경기도 용인시 기흥구 마북로 135",
+    "place_id": null
+  },
+  {
+    "episode": 49,
+    "restaurant_name": "처인성토속음식",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "용인시",
+    "detail_addr": "처인구 남사읍 처인성로827번길 116-3",
+    "address": "경기도 용인시 처인구 남사읍 처인성로827번길 116-3",
+    "place_id": null
+  },
+  {
     "episode": 48,
     "restaurant_name": "이화식당",
     "menu": "",
@@ -6949,6 +9501,50 @@
     "sigungu": "진도군",
     "detail_addr": "진도읍 남동1길 55",
     "address": "전라남도 진도군 진도읍 남동1길 55",
+    "place_id": null
+  },
+  {
+    "episode": 48,
+    "restaurant_name": "궁전음식점",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "진도군",
+    "detail_addr": "진도읍 옥주길 26",
+    "address": "전라남도 진도군 진도읍 옥주길 26",
+    "place_id": null
+  },
+  {
+    "episode": 48,
+    "restaurant_name": "우림",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "진도군",
+    "detail_addr": "진도읍 동외1길 50",
+    "address": "전라남도 진도군 진도읍 동외1길 50",
+    "place_id": null
+  },
+  {
+    "episode": 48,
+    "restaurant_name": "달님이네맛집",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "진도군",
+    "detail_addr": "진도읍 서문길 8-21",
+    "address": "전라남도 진도군 진도읍 서문길 8-21",
+    "place_id": null
+  },
+  {
+    "episode": 48,
+    "restaurant_name": "사랑방음식점",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "진도군",
+    "detail_addr": "진도읍 쌍정2길 22",
+    "address": "전라남도 진도군 진도읍 쌍정2길 22",
     "place_id": null
   },
   {
@@ -7293,6 +9889,50 @@
     "place_id": "11612746"
   },
   {
+    "episode": 42,
+    "restaurant_name": "훈이시락국",
+    "menu": "",
+    "review": "",
+    "sido": "경상남도",
+    "sigungu": "통영시",
+    "detail_addr": "새터길 42-7",
+    "address": "경상남도 통영시 새터길 42-7",
+    "place_id": null
+  },
+  {
+    "episode": 42,
+    "restaurant_name": "산양식당",
+    "menu": "",
+    "review": "",
+    "sido": "경상남도",
+    "sigungu": "통영시",
+    "detail_addr": "강구안길 29",
+    "address": "경상남도 통영시 강구안길 29",
+    "place_id": null
+  },
+  {
+    "episode": 42,
+    "restaurant_name": "물레야소주방",
+    "menu": "",
+    "review": "",
+    "sido": "경상남도",
+    "sigungu": "통영시",
+    "detail_addr": "동충3길 41-3",
+    "address": "경상남도 통영시 동충3길 41-3",
+    "place_id": null
+  },
+  {
+    "episode": 42,
+    "restaurant_name": "통영식당",
+    "menu": "",
+    "review": "",
+    "sido": "경상남도",
+    "sigungu": "통영시",
+    "detail_addr": "통영해안로 213",
+    "address": "경상남도 통영시 통영해안로 213",
+    "place_id": null
+  },
+  {
     "episode": 41,
     "restaurant_name": "김순옥댓잎찹쌀도너츠 본점",
     "menu": "댓잎 찹쌀 도넛",
@@ -7348,6 +9988,17 @@
     "place_id": "21037894"
   },
   {
+    "episode": 41,
+    "restaurant_name": "목화식당",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "담양군",
+    "detail_addr": "담양읍 천변5길 3",
+    "address": "전라남도 담양군 담양읍 천변5길 3",
+    "place_id": null
+  },
+  {
     "episode": 40,
     "restaurant_name": "별미곱창",
     "menu": "곱창볶음",
@@ -7356,6 +10007,50 @@
     "sigungu": "종로구",
     "detail_addr": "필운동",
     "address": "서울특별시 종로구 필운동",
+    "place_id": null
+  },
+  {
+    "episode": 40,
+    "restaurant_name": "해장국사람들",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "종로구",
+    "detail_addr": "자하문로 50-1",
+    "address": "서울특별시 종로구 자하문로 50-1",
+    "place_id": null
+  },
+  {
+    "episode": 40,
+    "restaurant_name": "서촌통영",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "종로구",
+    "detail_addr": "필운대로 47",
+    "address": "서울특별시 종로구 필운대로 47",
+    "place_id": null
+  },
+  {
+    "episode": 40,
+    "restaurant_name": "경동맛집",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "종로구",
+    "detail_addr": "자하문로1길 7",
+    "address": "서울특별시 종로구 자하문로1길 7",
+    "place_id": null
+  },
+  {
+    "episode": 40,
+    "restaurant_name": "창성갈비",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "종로구",
+    "detail_addr": "자하문로 40-1",
+    "address": "서울특별시 종로구 자하문로 40-1",
     "place_id": null
   },
   {
@@ -7491,6 +10186,61 @@
     "place_id": "15050508"
   },
   {
+    "episode": 37,
+    "restaurant_name": "창바위맛집",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "인제군",
+    "detail_addr": "북면 미시령로 1272",
+    "address": "강원특별자치도 인제군 북면 미시령로 1272",
+    "place_id": null
+  },
+  {
+    "episode": 37,
+    "restaurant_name": "매화촌해장국",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "인제군",
+    "detail_addr": "기린면 내린천로 3412",
+    "address": "강원특별자치도 인제군 기린면 내린천로 3412",
+    "place_id": null
+  },
+  {
+    "episode": 37,
+    "restaurant_name": "동양식당",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "평창군",
+    "detail_addr": "대관령면 대관령로 118",
+    "address": "강원특별자치도 평창군 대관령면 대관령로 118",
+    "place_id": null
+  },
+  {
+    "episode": 37,
+    "restaurant_name": "부산식육식당",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "평창군",
+    "detail_addr": "대관령면 대관령로 108",
+    "address": "강원특별자치도 평창군 대관령면 대관령로 108",
+    "place_id": null
+  },
+  {
+    "episode": 37,
+    "restaurant_name": "아승순메밀막국수",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "평창군",
+    "detail_addr": "대화면 대화중앙로 31",
+    "address": "강원특별자치도 평창군 대화면 대화중앙로 31",
+    "place_id": null
+  },
+  {
     "episode": 36,
     "restaurant_name": "돈타래게장정식",
     "menu": "",
@@ -7500,6 +10250,50 @@
     "detail_addr": "열우물로 59",
     "address": "인천광역시 부평구 열우물로 59",
     "place_id": "1206138965"
+  },
+  {
+    "episode": 36,
+    "restaurant_name": "군봉묵은지김치찜",
+    "menu": "",
+    "review": "",
+    "sido": "인천광역시",
+    "sigungu": "연수구",
+    "detail_addr": "비류대로150번길 13",
+    "address": "인천광역시 연수구 비류대로150번길 13",
+    "place_id": null
+  },
+  {
+    "episode": 36,
+    "restaurant_name": "경인면옥",
+    "menu": "",
+    "review": "",
+    "sido": "인천광역시",
+    "sigungu": "중구",
+    "detail_addr": "신포로46번길 38",
+    "address": "인천광역시 중구 신포로46번길 38",
+    "place_id": null
+  },
+  {
+    "episode": 36,
+    "restaurant_name": "등대경양식",
+    "menu": "",
+    "review": "",
+    "sido": "인천광역시",
+    "sigungu": "중구",
+    "detail_addr": "제물량로 190",
+    "address": "인천광역시 중구 제물량로 190",
+    "place_id": null
+  },
+  {
+    "episode": 36,
+    "restaurant_name": "송미옥",
+    "menu": "",
+    "review": "",
+    "sido": "인천광역시",
+    "sigungu": "동구",
+    "detail_addr": "화도진로5번길 11-3",
+    "address": "인천광역시 동구 화도진로5번길 11-3",
+    "place_id": null
   },
   {
     "episode": 35,
@@ -7524,6 +10318,72 @@
     "place_id": "1900424147"
   },
   {
+    "episode": 35,
+    "restaurant_name": "영동설렁탕",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "서초구",
+    "detail_addr": "강남대로101안길 24",
+    "address": "서울특별시 서초구 강남대로101안길 24",
+    "place_id": null
+  },
+  {
+    "episode": 35,
+    "restaurant_name": "개화옥",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "강남구",
+    "detail_addr": "압구정로50길 7",
+    "address": "서울특별시 강남구 압구정로50길 7",
+    "place_id": null
+  },
+  {
+    "episode": 35,
+    "restaurant_name": "금성스테이크부대찌개",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "강남구",
+    "detail_addr": "언주로174길 26",
+    "address": "서울특별시 강남구 언주로174길 26",
+    "place_id": null
+  },
+  {
+    "episode": 35,
+    "restaurant_name": "해남집",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "강남구",
+    "detail_addr": "강남대로160길 16",
+    "address": "서울특별시 강남구 강남대로160길 16",
+    "place_id": null
+  },
+  {
+    "episode": 35,
+    "restaurant_name": "돌곰네",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "강남구",
+    "detail_addr": "언주로146길 18",
+    "address": "서울특별시 강남구 언주로146길 18",
+    "place_id": null
+  },
+  {
+    "episode": 35,
+    "restaurant_name": "압구정3번출구닭꼬치",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "강남구",
+    "detail_addr": "논현로 848",
+    "address": "서울특별시 강남구 논현로 848",
+    "place_id": null
+  },
+  {
     "episode": 34,
     "restaurant_name": "가마골쉼터",
     "menu": "시래기밥, 시래깃국",
@@ -7533,6 +10393,61 @@
     "detail_addr": "가곡면 새밭로 547-8",
     "address": "충청북도 단양군 가곡면 새밭로 547-8",
     "place_id": "11066549"
+  },
+  {
+    "episode": 34,
+    "restaurant_name": "대산원조마늘순대",
+    "menu": "",
+    "review": "",
+    "sido": "충청북도",
+    "sigungu": "단양군",
+    "detail_addr": "단양읍 도전5길 25",
+    "address": "충청북도 단양군 단양읍 도전5길 25",
+    "place_id": null
+  },
+  {
+    "episode": 34,
+    "restaurant_name": "덩실분식",
+    "menu": "",
+    "review": "",
+    "sido": "충청북도",
+    "sigungu": "제천시",
+    "detail_addr": "독순로6길 5",
+    "address": "충청북도 제천시 독순로6길 5",
+    "place_id": null
+  },
+  {
+    "episode": 34,
+    "restaurant_name": "시락국",
+    "menu": "",
+    "review": "",
+    "sido": "충청북도",
+    "sigungu": "제천시",
+    "detail_addr": "의림대로2길 16",
+    "address": "충청북도 제천시 의림대로2길 16",
+    "place_id": null
+  },
+  {
+    "episode": 34,
+    "restaurant_name": "시골순두부",
+    "menu": "",
+    "review": "",
+    "sido": "충청북도",
+    "sigungu": "제천시",
+    "detail_addr": "중말8길 22",
+    "address": "충청북도 제천시 중말8길 22",
+    "place_id": null
+  },
+  {
+    "episode": 34,
+    "restaurant_name": "송학반점",
+    "menu": "",
+    "review": "",
+    "sido": "충청북도",
+    "sigungu": "제천시",
+    "detail_addr": "의병대로12길 7",
+    "address": "충청북도 제천시 의병대로12길 7",
+    "place_id": null
   },
   {
     "episode": 33,
@@ -7599,6 +10514,50 @@
     "detail_addr": "장군산길 71",
     "address": "전라남도 여수시 장군산길 71",
     "place_id": "16931408"
+  },
+  {
+    "episode": 32,
+    "restaurant_name": "남원식당",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "여수시",
+    "detail_addr": "관문2길 5",
+    "address": "전라남도 여수시 관문2길 5",
+    "place_id": null
+  },
+  {
+    "episode": 32,
+    "restaurant_name": "고래실",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "여수시",
+    "detail_addr": "여서동5길 8-1",
+    "address": "전라남도 여수시 여서동5길 8-1",
+    "place_id": null
+  },
+  {
+    "episode": 32,
+    "restaurant_name": "자봉식당",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "여수시",
+    "detail_addr": "충무로 19",
+    "address": "전라남도 여수시 충무로 19",
+    "place_id": null
+  },
+  {
+    "episode": 32,
+    "restaurant_name": "조일식당",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "여수시",
+    "detail_addr": "여문문화2길 61",
+    "address": "전라남도 여수시 여문문화2길 61",
+    "place_id": null
   },
   {
     "episode": 31,
@@ -7678,6 +10637,50 @@
     "place_id": null
   },
   {
+    "episode": 30,
+    "restaurant_name": "주유소식당",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "중구",
+    "detail_addr": "창경궁로5길 11",
+    "address": "서울특별시 중구 창경궁로5길 11",
+    "place_id": null
+  },
+  {
+    "episode": 30,
+    "restaurant_name": "동원집",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "중구",
+    "detail_addr": "을지로11길 22",
+    "address": "서울특별시 중구 을지로11길 22",
+    "place_id": null
+  },
+  {
+    "episode": 30,
+    "restaurant_name": "우화식당",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "중구",
+    "detail_addr": "충무로11길 18-4",
+    "address": "서울특별시 중구 충무로11길 18-4",
+    "place_id": null
+  },
+  {
+    "episode": 30,
+    "restaurant_name": "나드리식품",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "중구",
+    "detail_addr": "을지로33길 38",
+    "address": "서울특별시 중구 을지로33길 38",
+    "place_id": null
+  },
+  {
     "episode": 29,
     "restaurant_name": "옥동손국수",
     "menu": "",
@@ -7741,6 +10744,61 @@
     "sigungu": "성북구",
     "detail_addr": "정릉동",
     "address": "서울특별시 성북구 정릉동",
+    "place_id": null
+  },
+  {
+    "episode": 28,
+    "restaurant_name": "국시집",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "성북구",
+    "detail_addr": "창경궁로43길 9",
+    "address": "서울특별시 성북구 창경궁로43길 9",
+    "place_id": null
+  },
+  {
+    "episode": 28,
+    "restaurant_name": "욕쟁이할머니집 신신식당",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "성북구",
+    "detail_addr": "보문로30라길 3",
+    "address": "서울특별시 성북구 보문로30라길 3",
+    "place_id": null
+  },
+  {
+    "episode": 28,
+    "restaurant_name": "수연산방",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "성북구",
+    "detail_addr": "성북로26길 8",
+    "address": "서울특별시 성북구 성북로26길 8",
+    "place_id": null
+  },
+  {
+    "episode": 28,
+    "restaurant_name": "새천년호프",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "성북구",
+    "detail_addr": "성북로 62-1",
+    "address": "서울특별시 성북구 성북로 62-1",
+    "place_id": null
+  },
+  {
+    "episode": 28,
+    "restaurant_name": "전통만두국 이상조",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "성북구",
+    "detail_addr": "고려대로8길 67",
+    "address": "서울특별시 성북구 고려대로8길 67",
     "place_id": null
   },
   {
@@ -7818,6 +10876,50 @@
     "sigungu": "종로구",
     "detail_addr": "종로 190-4",
     "address": "서울특별시 종로구 종로 190-4",
+    "place_id": null
+  },
+  {
+    "episode": 26,
+    "restaurant_name": "유진식당",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "종로구",
+    "detail_addr": "종로17길 40",
+    "address": "서울특별시 종로구 종로17길 40",
+    "place_id": null
+  },
+  {
+    "episode": 26,
+    "restaurant_name": "부산횟집",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "종로구",
+    "detail_addr": "돈화문로4길 38",
+    "address": "서울특별시 종로구 돈화문로4길 38",
+    "place_id": null
+  },
+  {
+    "episode": 26,
+    "restaurant_name": "평원숯불갈비",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "종로구",
+    "detail_addr": "종로39길 29",
+    "address": "서울특별시 종로구 종로39길 29",
+    "place_id": null
+  },
+  {
+    "episode": 26,
+    "restaurant_name": "참새집",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "종로구",
+    "detail_addr": "삼봉로 74",
+    "address": "서울특별시 종로구 삼봉로 74",
     "place_id": null
   },
   {
@@ -7975,6 +11077,72 @@
     "place_id": "16138448"
   },
   {
+    "episode": 23,
+    "restaurant_name": "골메골",
+    "menu": "",
+    "review": "",
+    "sido": "광주광역시",
+    "sigungu": "광산구",
+    "detail_addr": "평동로 424",
+    "address": "광주광역시 광산구 평동로 424",
+    "place_id": null
+  },
+  {
+    "episode": 23,
+    "restaurant_name": "원조두유",
+    "menu": "",
+    "review": "",
+    "sido": "광주광역시",
+    "sigungu": "동구",
+    "detail_addr": "무등로 513-2",
+    "address": "광주광역시 동구 무등로 513-2",
+    "place_id": null
+  },
+  {
+    "episode": 23,
+    "restaurant_name": "광신보리밥",
+    "menu": "",
+    "review": "",
+    "sido": "광주광역시",
+    "sigungu": "북구",
+    "detail_addr": "두리봉길 2-1",
+    "address": "광주광역시 북구 두리봉길 2-1",
+    "place_id": null
+  },
+  {
+    "episode": 23,
+    "restaurant_name": "무등분식",
+    "menu": "",
+    "review": "",
+    "sido": "광주광역시",
+    "sigungu": "북구",
+    "detail_addr": "독립로 249",
+    "address": "광주광역시 북구 독립로 249",
+    "place_id": null
+  },
+  {
+    "episode": 23,
+    "restaurant_name": "육전명가",
+    "menu": "",
+    "review": "",
+    "sido": "광주광역시",
+    "sigungu": "서구",
+    "detail_addr": "상무자유로 174",
+    "address": "광주광역시 서구 상무자유로 174",
+    "place_id": null
+  },
+  {
+    "episode": 23,
+    "restaurant_name": "창신식당",
+    "menu": "",
+    "review": "",
+    "sido": "광주광역시",
+    "sigungu": "서구",
+    "detail_addr": "금화로492번길 18-1",
+    "address": "광주광역시 서구 금화로492번길 18-1",
+    "place_id": null
+  },
+  {
     "episode": 22,
     "restaurant_name": "서궁",
     "menu": "오향장육, 군만두",
@@ -8027,6 +11195,17 @@
     "sigungu": "영등포구",
     "detail_addr": "여의도동",
     "address": "서울특별시 영등포구 여의도동",
+    "place_id": null
+  },
+  {
+    "episode": 22,
+    "restaurant_name": "부흥동태",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "영등포구",
+    "detail_addr": "국제금융로8길 34",
+    "address": "서울특별시 영등포구 국제금융로8길 34",
     "place_id": null
   },
   {
@@ -8195,6 +11374,50 @@
     "place_id": null
   },
   {
+    "episode": 19,
+    "restaurant_name": "천일삼계탕",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "중구",
+    "detail_addr": "장충단로13길 43",
+    "address": "서울특별시 중구 장충단로13길 43",
+    "place_id": null
+  },
+  {
+    "episode": 19,
+    "restaurant_name": "우남식당",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "중구",
+    "detail_addr": "을지로42길 28",
+    "address": "서울특별시 중구 을지로42길 28",
+    "place_id": null
+  },
+  {
+    "episode": 19,
+    "restaurant_name": "금문장",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "종로구",
+    "detail_addr": "지봉로8길 45",
+    "address": "서울특별시 종로구 지봉로8길 45",
+    "place_id": null
+  },
+  {
+    "episode": 19,
+    "restaurant_name": "경상도식당",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "중구",
+    "detail_addr": "을지로39길 29",
+    "address": "서울특별시 중구 을지로39길 29",
+    "place_id": null
+  },
+  {
     "episode": 18,
     "restaurant_name": "한벽집",
     "menu": "김밥연탄불고기쌈",
@@ -8250,6 +11473,17 @@
     "place_id": "16803321"
   },
   {
+    "episode": 18,
+    "restaurant_name": "백일홍찐빵만두",
+    "menu": "시래기 해장국",
+    "review": "[데이터 불일치 추정] 멸칫국물에 집된장을 더해 옛 시골 맛을 재현한 30년 해장국",
+    "sido": "전북특별자치도",
+    "sigungu": "전주시",
+    "detail_addr": "완산구 현무2길 67",
+    "address": "전북특별자치도 전주시 완산구 현무2길 67",
+    "place_id": null
+  },
+  {
     "episode": 17,
     "restaurant_name": "대원식당",
     "menu": "",
@@ -8258,6 +11492,61 @@
     "sigungu": "순천시",
     "detail_addr": "장천2길 30-29",
     "address": "전라남도 순천시 장천2길 30-29",
+    "place_id": null
+  },
+  {
+    "episode": 17,
+    "restaurant_name": "갈마골아구찜",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "순천시",
+    "detail_addr": "장명3길 9",
+    "address": "전라남도 순천시 장명3길 9",
+    "place_id": null
+  },
+  {
+    "episode": 17,
+    "restaurant_name": "민호네 전 전문점",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "순천시",
+    "detail_addr": "장평로 60",
+    "address": "전라남도 순천시 장평로 60",
+    "place_id": null
+  },
+  {
+    "episode": 17,
+    "restaurant_name": "풍미통닭",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "순천시",
+    "detail_addr": "성남뒷길 3",
+    "address": "전라남도 순천시 성남뒷길 3",
+    "place_id": null
+  },
+  {
+    "episode": 17,
+    "restaurant_name": "한우식당",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "순천시",
+    "detail_addr": "북문길 40",
+    "address": "전라남도 순천시 북문길 40",
+    "place_id": null
+  },
+  {
+    "episode": 17,
+    "restaurant_name": "뚝왕대포",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "순천시",
+    "detail_addr": "강변로 855-3",
+    "address": "전라남도 순천시 강변로 855-3",
     "place_id": null
   },
   {
@@ -8270,6 +11559,61 @@
     "detail_addr": "새창로 124-10",
     "address": "서울특별시 용산구 새창로 124-10",
     "place_id": "19873649"
+  },
+  {
+    "episode": 16,
+    "restaurant_name": "진주식당",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "용산구",
+    "detail_addr": "한강대로62나길 2",
+    "address": "서울특별시 용산구 한강대로62나길 2",
+    "place_id": null
+  },
+  {
+    "episode": 16,
+    "restaurant_name": "김용안과자점",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "용산구",
+    "detail_addr": "한강대로 155-1",
+    "address": "서울특별시 용산구 한강대로 155-1",
+    "place_id": null
+  },
+  {
+    "episode": 16,
+    "restaurant_name": "털보집",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "용산구",
+    "detail_addr": "한강대로88길 11",
+    "address": "서울특별시 용산구 한강대로88길 11",
+    "place_id": null
+  },
+  {
+    "episode": 16,
+    "restaurant_name": "원대구탕",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "용산구",
+    "detail_addr": "한강대로62가길 8",
+    "address": "서울특별시 용산구 한강대로62가길 8",
+    "place_id": null
+  },
+  {
+    "episode": 16,
+    "restaurant_name": "아성빈대떡",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "용산구",
+    "detail_addr": "효창원로48길 3",
+    "address": "서울특별시 용산구 효창원로48길 3",
+    "place_id": null
   },
   {
     "episode": 15,
@@ -8291,6 +11635,61 @@
     "sigungu": "마포구",
     "detail_addr": "합정동",
     "address": "서울특별시 마포구 합정동",
+    "place_id": null
+  },
+  {
+    "episode": 15,
+    "restaurant_name": "너랑나랑호프",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "마포구",
+    "detail_addr": "월드컵로 61",
+    "address": "서울특별시 마포구 월드컵로 61",
+    "place_id": null
+  },
+  {
+    "episode": 15,
+    "restaurant_name": "시골순대",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "마포구",
+    "detail_addr": "월드컵북로1길 50",
+    "address": "서울특별시 마포구 월드컵북로1길 50",
+    "place_id": null
+  },
+  {
+    "episode": 15,
+    "restaurant_name": "진가식탁",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "마포구",
+    "detail_addr": "월드컵로21길 18",
+    "address": "서울특별시 마포구 월드컵로21길 18",
+    "place_id": null
+  },
+  {
+    "episode": 15,
+    "restaurant_name": "고향집",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "마포구",
+    "detail_addr": "포은로8길 28",
+    "address": "서울특별시 마포구 포은로8길 28",
+    "place_id": null
+  },
+  {
+    "episode": 15,
+    "restaurant_name": "퓨전선술집",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "마포구",
+    "detail_addr": "월드컵로1길 7",
+    "address": "서울특별시 마포구 월드컵로1길 7",
     "place_id": null
   },
   {
@@ -8368,6 +11767,61 @@
     "sigungu": "동구",
     "detail_addr": "송림로 10-1",
     "address": "인천광역시 동구 송림로 10-1",
+    "place_id": null
+  },
+  {
+    "episode": 13,
+    "restaurant_name": "삼강옥",
+    "menu": "",
+    "review": "",
+    "sido": "인천광역시",
+    "sigungu": "중구",
+    "detail_addr": "참외전로158번길 1",
+    "address": "인천광역시 중구 참외전로158번길 1",
+    "place_id": null
+  },
+  {
+    "episode": 13,
+    "restaurant_name": "인천당",
+    "menu": "",
+    "review": "",
+    "sido": "인천광역시",
+    "sigungu": "중구",
+    "detail_addr": "참외전로 138",
+    "address": "인천광역시 중구 참외전로 138",
+    "place_id": null
+  },
+  {
+    "episode": 13,
+    "restaurant_name": "대전집",
+    "menu": "",
+    "review": "",
+    "sido": "인천광역시",
+    "sigungu": "중구",
+    "detail_addr": "우현로39번길 7",
+    "address": "인천광역시 중구 우현로39번길 7",
+    "place_id": null
+  },
+  {
+    "episode": 13,
+    "restaurant_name": "문화반점",
+    "menu": "",
+    "review": "",
+    "sido": "인천광역시",
+    "sigungu": "동구",
+    "detail_addr": "금곡로 31",
+    "address": "인천광역시 동구 금곡로 31",
+    "place_id": null
+  },
+  {
+    "episode": 13,
+    "restaurant_name": "맷돌 칼국수",
+    "menu": "",
+    "review": "",
+    "sido": "인천광역시",
+    "sigungu": "중구",
+    "detail_addr": "신포로 32-16",
+    "address": "인천광역시 중구 신포로 32-16",
     "place_id": null
   },
   {
@@ -8588,6 +12042,39 @@
     "sigungu": "목포시",
     "detail_addr": "복만동",
     "address": "전라남도 목포시 복만동",
+    "place_id": null
+  },
+  {
+    "episode": 8,
+    "restaurant_name": "은지네해장국",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "목포시",
+    "detail_addr": "삼학로18번길 2-2",
+    "address": "전라남도 목포시 삼학로18번길 2-2",
+    "place_id": null
+  },
+  {
+    "episode": 8,
+    "restaurant_name": "보리마당 가맥집",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "목포시",
+    "detail_addr": "보리마당로 29",
+    "address": "전라남도 목포시 보리마당로 29",
+    "place_id": null
+  },
+  {
+    "episode": 8,
+    "restaurant_name": "미락식당",
+    "menu": "",
+    "review": "",
+    "sido": "전라남도",
+    "sigungu": "목포시",
+    "detail_addr": "백년대로231번길 12",
+    "address": "전라남도 목포시 백년대로231번길 12",
     "place_id": null
   },
   {
@@ -8951,6 +12438,72 @@
     "sigungu": "서산시",
     "detail_addr": "부석면 천수만로 658-39",
     "address": "충청남도 서산시 부석면 천수만로 658-39",
+    "place_id": null
+  },
+  {
+    "episode": 2,
+    "restaurant_name": "삼길포수산물직매장",
+    "menu": "",
+    "review": "",
+    "sido": "충청남도",
+    "sigungu": "서산시",
+    "detail_addr": "대산읍 삼길포1로 72-2",
+    "address": "충청남도 서산시 대산읍 삼길포1로 72-2",
+    "place_id": null
+  },
+  {
+    "episode": 2,
+    "restaurant_name": "가야슈퍼",
+    "menu": "",
+    "review": "",
+    "sido": "충청남도",
+    "sigungu": "서산시",
+    "detail_addr": "운산면 개심사로 322",
+    "address": "충청남도 서산시 운산면 개심사로 322",
+    "place_id": null
+  },
+  {
+    "episode": 2,
+    "restaurant_name": "옛날빵집",
+    "menu": "",
+    "review": "",
+    "sido": "충청남도",
+    "sigungu": "서산시",
+    "detail_addr": "시장3길 12-6",
+    "address": "충청남도 서산시 시장3길 12-6",
+    "place_id": null
+  },
+  {
+    "episode": 2,
+    "restaurant_name": "정성맛집",
+    "menu": "",
+    "review": "",
+    "sido": "충청남도",
+    "sigungu": "서산시",
+    "detail_addr": "시장3길 3",
+    "address": "충청남도 서산시 시장3길 3",
+    "place_id": null
+  },
+  {
+    "episode": 2,
+    "restaurant_name": "웅도식당",
+    "menu": "",
+    "review": "",
+    "sido": "충청남도",
+    "sigungu": "서산시",
+    "detail_addr": "대산읍 탑골1길 19-14",
+    "address": "충청남도 서산시 대산읍 탑골1길 19-14",
+    "place_id": null
+  },
+  {
+    "episode": 2,
+    "restaurant_name": "광진상회",
+    "menu": "",
+    "review": "",
+    "sido": "충청남도",
+    "sigungu": "서산시",
+    "detail_addr": "운산면 해운로 761",
+    "address": "충청남도 서산시 운산면 해운로 761",
     "place_id": null
   },
   {
