@@ -3013,13 +3013,13 @@
         "place_id": null
       },
       {
-        "lat": null,
-        "lng": null,
+        "lat": 34.3580358505747,
+        "lng": 126.731035988161,
         "tel": null,
         "menu": "낙지 한상",
         "name": "장도식당슈퍼",
         "review": "",
-        "address": "전라남도 완도군 완도읍 청해진로1369번길 38-3",
+        "address": "전라남도 완도군 완도읍 장좌길 38-3",
         "place_id": null
       },
       {
@@ -3058,13 +3058,13 @@
     "region": "강원특별자치도 고성군",
     "restaurants": [
       {
-        "lat": null,
-        "lng": null,
+        "lat": 38.4484786472143,
+        "lng": 128.457518367142,
         "tel": null,
         "menu": "수산시장 오징어회",
         "name": "항포구",
         "review": "",
-        "address": "강원특별자치도 고성군 거진읍 거진항1길 13",
+        "address": "강원특별자치도 고성군 거진읍 거탄진로 159",
         "place_id": null
       },
       {
@@ -5152,13 +5152,13 @@
     "region": "울산광역시",
     "restaurants": [
       {
-        "lat": null,
-        "lng": null,
+        "lat": 35.5498461878716,
+        "lng": 129.292759058449,
         "tel": null,
         "menu": "생가자미찌개",
         "name": "밀양시골밥상",
         "review": "",
-        "address": "울산광역시 중구 내오산로 113-1",
+        "address": "울산광역시 중구 태화강국가정원길 163",
         "place_id": null
       },
       {
