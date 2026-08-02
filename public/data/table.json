@@ -3224,13 +3224,24 @@
   },
   {
     "episode": 231,
-    "restaurant_name": "",
+    "restaurant_name": "초록밥상",
     "menu": "",
     "review": "",
     "sido": "경기도",
     "sigungu": "양주시",
-    "detail_addr": "",
-    "address": "",
+    "detail_addr": "남면 양연로 229",
+    "address": "경기도 양주시 남면 양연로 229",
+    "place_id": null
+  },
+  {
+    "episode": 231,
+    "restaurant_name": "화사랑아사도",
+    "menu": "",
+    "review": "",
+    "sido": "경기도",
+    "sigungu": "의정부시",
+    "detail_addr": "경의로 61",
+    "address": "경기도 의정부시 경의로 61",
     "place_id": null
   },
   {
@@ -3268,13 +3279,35 @@
   },
   {
     "episode": 227,
-    "restaurant_name": "",
+    "restaurant_name": "순천집",
     "menu": "",
     "review": "",
-    "sido": "",
-    "sigungu": "",
-    "detail_addr": "",
-    "address": "",
+    "sido": "서울특별시",
+    "sigungu": "동작구",
+    "detail_addr": "노량진로 80 노량진큐브스테이트 오피스텔 2층",
+    "address": "서울특별시 동작구 노량진로 80 노량진큐브스테이트 오피스텔 2층",
+    "place_id": null
+  },
+  {
+    "episode": 227,
+    "restaurant_name": "청년밥상문간",
+    "menu": "",
+    "review": "",
+    "sido": "서울특별시",
+    "sigungu": "성북구",
+    "detail_addr": "보국문로11길 18-2 2층",
+    "address": "서울특별시 성북구 보국문로11길 18-2 2층",
+    "place_id": null
+  },
+  {
+    "episode": 227,
+    "restaurant_name": "옛날팥죽",
+    "menu": "",
+    "review": "",
+    "sido": "강원특별자치도",
+    "sigungu": "홍천군",
+    "detail_addr": "홍천읍 번영로 51",
+    "address": "강원특별자치도 홍천군 홍천읍 번영로 51",
     "place_id": null
   },
   {
@@ -4181,13 +4214,13 @@
   },
   {
     "episode": 166,
-    "restaurant_name": "",
+    "restaurant_name": "큰손식당",
     "menu": "",
     "review": "",
-    "sido": "",
-    "sigungu": "",
-    "detail_addr": "",
-    "address": "",
+    "sido": "충청남도",
+    "sigungu": "논산시",
+    "detail_addr": "강경읍 금백로 158",
+    "address": "충청남도 논산시 강경읍 금백로 158",
     "place_id": null
   },
   {
