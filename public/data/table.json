@@ -5528,8 +5528,8 @@
     "review": "",
     "sido": "대전광역시",
     "sigungu": "중구",
-    "detail_addr": "충무로107번길 15",
-    "address": "대전광역시 중구 충무로107번길 15",
+    "detail_addr": "대종로 258",
+    "address": "대전광역시 중구 대종로 258",
     "place_id": null
   },
   {
@@ -6672,8 +6672,8 @@
     "review": "",
     "sido": "부산광역시",
     "sigungu": "해운대구",
-    "detail_addr": "중동2로10번길 32-10",
-    "address": "부산광역시 해운대구 중동2로10번길 32-10",
+    "detail_addr": "해운대해변로 333",
+    "address": "부산광역시 해운대구 해운대해변로 333",
     "place_id": null
   },
   {
@@ -8091,8 +8091,8 @@
     "review": "",
     "sido": "경상북도",
     "sigungu": "영덕군",
-    "detail_addr": "영덕읍 남석길 23-10",
-    "address": "경상북도 영덕군 영덕읍 남석길 23-10",
+    "detail_addr": "영덕읍 남석길 23-48",
+    "address": "경상북도 영덕군 영덕읍 남석길 23-48",
     "place_id": null
   },
   {
@@ -8641,8 +8641,8 @@
     "review": "",
     "sido": "충청북도",
     "sigungu": "충주시",
-    "detail_addr": "신대1길 1",
-    "address": "충청북도 충주시 신대1길 1",
+    "detail_addr": "달천강변1길 8",
+    "address": "충청북도 충주시 달천강변1길 8",
     "place_id": null
   },
   {
@@ -9114,8 +9114,8 @@
     "review": "",
     "sido": "서울특별시",
     "sigungu": "영등포구",
-    "detail_addr": "도림로133길 20",
-    "address": "서울특별시 영등포구 도림로133길 20",
+    "detail_addr": "도림로133길 17",
+    "address": "서울특별시 영등포구 도림로133길 17",
     "place_id": null
   },
   {
@@ -9136,8 +9136,8 @@
     "review": "",
     "sido": "서울특별시",
     "sigungu": "영등포구",
-    "detail_addr": "버드나루로길 6",
-    "address": "서울특별시 영등포구 버드나루로길 6",
+    "detail_addr": "버드나루로6길 6",
+    "address": "서울특별시 영등포구 버드나루로6길 6",
     "place_id": null
   },
   {
@@ -9290,8 +9290,8 @@
     "review": "",
     "sido": "강원특별자치도",
     "sigungu": "홍천군",
-    "detail_addr": "화촌면 가락재로 1273",
-    "address": "강원특별자치도 홍천군 화촌면 가락재로 1273",
+    "detail_addr": "화촌면 가락재로 1172",
+    "address": "강원특별자치도 홍천군 화촌면 가락재로 1172",
     "place_id": null
   },
   {
@@ -11413,8 +11413,8 @@
     "review": "",
     "sido": "서울특별시",
     "sigungu": "중구",
-    "detail_addr": "을지로39길 29",
-    "address": "서울특별시 중구 을지로39길 29",
+    "detail_addr": "을지로39길 41",
+    "address": "서울특별시 중구 을지로39길 41",
     "place_id": null
   },
   {
