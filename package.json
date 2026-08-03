@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "description": "허영만의 백반기행 회차 아카이브 (정적 프론트엔드 + Vercel Serverless API)",
   "scripts": {
-    "test": "node test/auth.test.js && node test/address.test.js && node test/rateLimit.test.js"
+    "start": "python -m http.server 8000 --directory public",
+    "test": "node test/auth.test.js && node test/address.test.js && node test/rateLimit.test.js && node test/episodesLogic.test.js && node test/editModeFlow.test.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.4",

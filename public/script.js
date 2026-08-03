@@ -1,6 +1,34 @@
 // 백반기행 아카이브 목록/상세 화면 렌더링과 검색·정렬·해시 라우팅을 담당하는 스크립트
 const DATA_URL = './data/episodes.json';
 
+const episodesLogic = (typeof window !== 'undefined' && window.EpisodesLogic)
+  ? window.EpisodesLogic
+  : (typeof require === 'function' ? require('./lib/episodesLogic') : null);
+const editModeFlow = (typeof window !== 'undefined' && window.EditModeFlow)
+  ? window.EditModeFlow
+  : (typeof require === 'function' ? require('./lib/editModeFlow') : null);
+const matchesSearch = episodesLogic?.matchesSearch || function (ep, query) {
+  if (!query) return true;
+  const restaurantNames = (ep.restaurants || []).map((r) => r.name).join(' ');
+  const haystack = [ep.title, ep.raw_title, ep.region, restaurantNames]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
+  return haystack.includes(query.toLowerCase());
+};
+const sortEpisodes = episodesLogic?.sortEpisodes || function (list, mode) {
+  const withEp = list.filter((e) => e.episode != null);
+  const withoutEp = list.filter((e) => e.episode == null);
+  withEp.sort((a, b) => (mode === 'episode' ? a.episode - b.episode : b.episode - a.episode));
+  return [...withEp, ...withoutEp];
+};
+const authenticateAdmin = editModeFlow?.authenticateAdmin || async function () {
+  return { ok: false, error: '편집 모드 인증 모듈을 불러오지 못했습니다.' };
+};
+const saveRestaurantEdit = editModeFlow?.saveRestaurantEdit || async function () {
+  return { ok: false, error: '편집 저장 모듈을 불러오지 못했습니다.' };
+};
+
 const grid = document.getElementById('grid');
 const resultCount = document.getElementById('resultCount');
 const listView = document.getElementById('listView');
@@ -10,6 +38,38 @@ const sortSelect = document.getElementById('sortSelect');
 const editToggle = document.getElementById('editToggle');
 
 const pencilIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>';
+
+let statusTimer = null;
+
+function showStatus(message, type = 'info', duration = 2400) {
+  let banner = document.getElementById('statusBanner');
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'statusBanner';
+    banner.className = 'status-banner';
+    document.body.appendChild(banner);
+  }
+  banner.textContent = message;
+  banner.className = `status-banner show ${type}`;
+  if (statusTimer) clearTimeout(statusTimer);
+  if (duration > 0) {
+    statusTimer = setTimeout(() => {
+      banner.classList.remove('show');
+    }, duration);
+  }
+}
+
+function setEditing(value) {
+  editing = value;
+  editToggle.classList.toggle('active', editing);
+  editToggle.innerHTML = editing
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>편집 모드 끄기'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>편집 모드';
+  grid.classList.toggle('editing', editing);
+  if (editing) {
+    showStatus('편집 모드가 켜졌습니다. 회차를 선택해 식당 정보를 수정해보세요.', 'success', 2200);
+  }
+}
 const pinIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.5 7-11.5A7 7 0 0 0 5 9.5C5 14.5 12 21 12 21Z"></path><circle cx="12" cy="9.5" r="2.3"></circle></svg>';
 const forkIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3v6a1.5 1.5 0 0 0 1.5 1.5h0A1.5 1.5 0 0 0 9 9V3M7.5 10.5V21M16 3c-1.66 0-3 1.79-3 5v3h3M16 11v10"></path></svg>';
 
@@ -67,23 +127,6 @@ async function loadEpisodes() {
   episodes = await fallback.json();
 }
 
-function matchesSearch(ep, query) {
-  if (!query) return true;
-  const restaurantNames = (ep.restaurants || []).map((r) => r.name).join(' ');
-  const haystack = [ep.title, ep.raw_title, ep.region, restaurantNames]
-    .filter(Boolean)
-    .join(' ')
-    .toLowerCase();
-  return haystack.includes(query.toLowerCase());
-}
-
-function sortEpisodes(list, mode) {
-  const withEp = list.filter((e) => e.episode != null);
-  const withoutEp = list.filter((e) => e.episode == null);
-  withEp.sort((a, b) => (mode === 'episode' ? a.episode - b.episode : b.episode - a.episode));
-  return [...withEp, ...withoutEp];
-}
-
 function escapeHtml(str) {
   const div = document.createElement('div');
   div.textContent = str || '';
@@ -133,15 +176,27 @@ function renderList() {
   const filtered = episodes.filter((ep) => matchesSearch(ep, query));
   const sorted = sortEpisodes(filtered, sortSelect.value);
 
-  resultCount.textContent = `총 ${sorted.length}개 회차`;
+  const summaryHint = query
+    ? `“${query}”로 찾은 회차 ${sorted.length}개`
+    : `총 ${sorted.length}개 회차`; 
+  const countText = query
+    ? `${summaryHint} · 제목, 지역, 식당명으로 검색됩니다`
+    : `${summaryHint} · 원하는 회차를 탭해 상세를 확인하세요`;
+  resultCount.textContent = countText;
+
+  const prevEmpty = document.getElementById('emptyState');
+  if (prevEmpty) prevEmpty.remove();
 
   if (sorted.length === 0) {
     grid.innerHTML = '';
-    grid.insertAdjacentHTML('afterend', '<p class="empty-state" id="emptyState">검색 결과가 없습니다.</p>');
+    grid.insertAdjacentHTML('afterend', `
+      <div class="empty-state" id="emptyState">
+        <p>검색 결과가 없습니다.</p>
+        <span>다른 키워드로 다시 검색해 보세요.</span>
+      </div>
+    `);
     return;
   }
-  const prevEmpty = document.getElementById('emptyState');
-  if (prevEmpty) prevEmpty.remove();
 
   grid.innerHTML = sorted.map(cardTemplate).join('');
   grid.classList.toggle('editing', editing);
@@ -266,7 +321,10 @@ async function renderDetail(epNum) {
       <div class="spot-panel">
         <div class="spot-panel-head">
           <span class="spot-panel-title">방문 식당</span>
-          ${badge}
+          <div class="spot-panel-actions">
+            ${badge}
+            ${editing ? '<span class="edit-state-pill">편집 가능</span>' : ''}
+          </div>
         </div>
         <div id="spotView">
           ${viewRows}
@@ -304,11 +362,13 @@ async function renderDetail(epNum) {
     spotEditBtn.addEventListener('click', () => {
       spotView.hidden = true;
       spotEditForm.hidden = false;
+      showStatus('수정 중인 내용을 입력한 뒤 저장하세요.', 'info', 2400);
     });
   }
   spotCancelBtn.addEventListener('click', () => {
     spotView.hidden = false;
     spotEditForm.hidden = true;
+    showStatus('편집이 취소되었습니다.', 'info', 2200);
   });
   addRestaurantBtn.addEventListener('click', () => {
     const idx = restaurantRows.children.length;
@@ -322,7 +382,7 @@ async function renderDetail(epNum) {
     e.preventDefault();
     const token = getAdminToken();
     if (!token) {
-      alert('로그인이 만료되었습니다. 편집 모드를 다시 켜주세요.');
+      showStatus('로그인이 만료되었습니다. 편집 모드를 다시 켜주세요.', 'error', 3200);
       setEditing(false);
       return;
     }
@@ -331,29 +391,46 @@ async function renderDetail(epNum) {
     const saveBtn = spotEditForm.querySelector('.btn-save');
     saveBtn.disabled = true;
     saveBtn.textContent = '저장 중...';
+    showStatus('저장 중입니다. 잠시만 기다려 주세요.', 'loading', 0);
 
     try {
-      const res = await fetch(`/api/episodes/${ep.episode}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ restaurants, verified: true }),
+      const result = await saveRestaurantEdit({
+        episodeId: ep.episode,
+        token,
+        restaurants,
+        verified: true,
+        localDevOverride: location.hostname === 'localhost' || location.hostname === '127.0.0.1',
+        saveRequest: async ({ episodeId, token: authToken, restaurants: nextRestaurants, verified: nextVerified }) => {
+          try {
+            const res = await fetch(`/api/episodes/${episodeId}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${authToken}` },
+              body: JSON.stringify({ restaurants: nextRestaurants, verified: nextVerified }),
+            });
+            const data = await res.json();
+            return { ok: res.ok, status: res.status, data, error: data.error };
+          } catch (err) {
+            return { ok: false, status: 404, error: '로컬 저장 API에 연결할 수 없습니다.' };
+          }
+        },
       });
-      const data = await res.json();
-      if (res.status === 401) {
+
+      if (!result.ok && result.expired) {
         clearAdminSession();
         setEditing(false);
-        alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
+        showStatus(result.error, 'error', 3200);
         renderDetail(ep.episode);
         return;
       }
-      if (!res.ok) {
-        alert(data.error || '저장에 실패했습니다.');
+      if (!result.ok) {
+        showStatus(result.error, 'error', 3200);
         return;
       }
-      Object.assign(ep, data);
+      Object.assign(ep, result.data);
       renderDetail(ep.episode);
+      showStatus('식당 정보가 저장되었습니다.', 'success', 2400);
     } catch (err) {
-      alert('서버에 연결할 수 없습니다. 배포된 사이트에서만 저장할 수 있습니다.');
+      showStatus('서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.', 'error', 3200);
     } finally {
       saveBtn.disabled = false;
       saveBtn.textContent = '저장';
@@ -391,12 +468,6 @@ grid.addEventListener('keydown', (e) => {
   goToCard(e.target.closest('.card'));
 });
 
-function setEditing(value) {
-  editing = value;
-  editToggle.classList.toggle('active', editing);
-  grid.classList.toggle('editing', editing);
-}
-
 window.addEventListener('hashchange', route);
 searchInput.addEventListener('input', () => { if (!listView.hidden) renderList(); });
 sortSelect.addEventListener('change', () => { if (!listView.hidden) renderList(); });
@@ -404,28 +475,80 @@ editToggle.addEventListener('click', async () => {
   if (editing) {
     clearAdminSession();
     setEditing(false);
+    showStatus('편집 모드가 종료되었습니다.', 'info', 2200);
     return;
   }
-  const input = prompt('관리자 비밀번호를 입력하세요');
-  if (input === null) return;
 
-  try {
-    const res = await fetch('/api/auth', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password: input }),
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      alert(data.error || '로그인에 실패했습니다.');
+  const isLocalDev = ['localhost', '127.0.0.1'].includes(location.hostname) || location.protocol === 'file:';
+  const panel = document.createElement('div');
+  panel.className = 'login-panel';
+  panel.innerHTML = `
+    <h2>편집 모드 로그인</h2>
+    <p>${isLocalDev ? '로컬 개발 환경입니다. 입력값에 관계없이 편집 모드로 진입할 수 있습니다.' : '관리자 비밀번호를 입력하면 식당 정보를 수정할 수 있습니다.'}</p>
+    <input type="password" id="adminPasswordInput" placeholder="비밀번호 입력" ${isLocalDev ? '' : 'required'} />
+    <button type="button" id="adminLoginBtn">로그인</button>
+    <p class="login-hint">비밀번호는 저장되지 않고 세션만 유지됩니다.</p>
+  `;
+
+  const existing = document.querySelector('.login-panel');
+  if (existing) existing.remove();
+  editToggle.insertAdjacentElement('afterend', panel);
+
+  const passwordInput = panel.querySelector('#adminPasswordInput');
+  const loginBtn = panel.querySelector('#adminLoginBtn');
+  passwordInput.focus();
+
+  const submitLogin = async () => {
+    const input = passwordInput.value;
+    if (!input && !isLocalDev) {
+      showStatus('비밀번호를 입력해 주세요.', 'error', 2400);
       return;
     }
-    localStorage.setItem('foodtrip_admin_token', data.token);
-    localStorage.setItem('foodtrip_admin_expires', String(data.expiresAt));
-    setEditing(true);
-  } catch (err) {
-    alert('서버에 연결할 수 없습니다. 배포된 사이트에서만 로그인할 수 있습니다.');
-  }
+    loginBtn.disabled = true;
+    loginBtn.textContent = '로그인 중...';
+    panel.classList.add('loading');
+    showStatus('로그인 중입니다. 잠시만 기다려 주세요.', 'loading', 0);
+
+    try {
+      const result = await authenticateAdmin({
+        password: input,
+        authRequest: async ({ password }) => {
+          try {
+            const res = await fetch('/api/auth', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ password }),
+            });
+            const data = await res.json();
+            return { ok: res.ok, token: data.token, expiresAt: data.expiresAt, error: data.error };
+          } catch (err) {
+            return { ok: false, error: '로컬 서버에서 인증 API에 연결할 수 없습니다.' };
+          }
+        },
+        storage: localStorage,
+        localDevOverride: isLocalDev,
+      });
+
+      if (!result.ok) {
+        showStatus(result.error, 'error', 3200);
+        return;
+      }
+      panel.remove();
+      setEditing(true);
+      showStatus('로그인되었습니다. 편집할 회차를 확인해 주세요.', 'success', 2400);
+    } catch (err) {
+      showStatus('서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.', 'error', 3200);
+    } finally {
+      loginBtn.disabled = false;
+      loginBtn.textContent = '로그인';
+      panel.classList.remove('loading');
+    }
+  };
+
+  loginBtn.addEventListener('click', submitLogin);
+  passwordInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') submitLogin();
+  });
 });
 
 setEditing(editing);
