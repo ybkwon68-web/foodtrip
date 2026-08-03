@@ -154,7 +154,7 @@ button, a, input, select, textarea {
   text-decoration: none;
   color: var(--ink);
 }
-.brand-icon { flex: none; color: var(--accent); }
+.brand-icon { flex: none; color: var(--accent); width: 26px; height: 26px; }
 .wordmark {
   font-family: var(--font-display);
   font-size: 19px;
