@@ -176,6 +176,24 @@ button, a, input, select, textarea {
   letter-spacing: 0.02em;
   white-space: nowrap;
 }
+.right-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+.site-link {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 13px;
+}
+.site-link:hover { color: var(--accent); border-color: var(--accent); }
 .search-box {
   display: flex;
   align-items: center;
