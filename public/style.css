@@ -323,6 +323,7 @@ button, a, input, select, textarea {
 .status-banner.success { border-color: var(--jade); color: var(--jade); }
 .status-banner.error { border-color: var(--accent); color: var(--accent); }
 .status-banner.info { border-color: var(--brass); color: var(--brass); }
+.status-banner.warning { border-color: #c68b2e; color: #c68b2e; }
 .status-banner.loading { border-color: var(--line); color: var(--ink-soft); }
 
 .login-panel {

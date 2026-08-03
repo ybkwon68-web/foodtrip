@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>추가 등록 · 백반기행 아카이브</title>
+<meta name="description" content="백반기행 추가 방송분을 편집 모드에서 등록하는 페이지입니다.">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="./index.html">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="brand-icon">
+      <path d="M4 11a8 8 0 0 0 16 0Z"></path>
+      <path d="M4 11h16"></path>
+      <path d="M12 3v3M8 4l1 3M16 4l-1 3"></path>
+    </svg>
+    <span class="wordmark">백반기행 아카이브<small>추가 등록</small></span>
+  </a>
+  <div class="controls">
+    <div class="controls-row">
+      <a class="edit-toggle" href="./index.html">목록으로</a>
+    </div>
+  </div>
+</header>
+
+<main class="add-page">
+  <section class="detail-wrap">
+    <h1 class="detail-title">추가 방송분 등록</h1>
+    <p class="detail-meta">기존 회차를 검색해 중복 여부를 확인한 뒤, 새 방송 정보를 등록할 수 있습니다.</p>
+
+    <div class="spot-panel">
+      <div class="spot-panel-head">
+        <span class="spot-panel-title">회차 번호로 자동 발견</span>
+      </div>
+      <div class="spot-field">
+        <label for="addSearch">회차 번호</label>
+        <div class="search-box" style="width:100%;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg>
+          <input id="addSearch" type="number" min="1" placeholder="예: 353" />
+        </div>
+      </div>
+      <details class="spot-panel" style="margin-bottom:16px;">
+        <summary>고급 옵션</summary>
+        <div class="spot-field">
+          <label for="referenceUrl">참고 URL</label>
+          <input id="referenceUrl" type="url" placeholder="https://blog.naver.com/... 또는 broadcast.tvchosun.com/..." />
+        </div>
+        <div class="spot-field">
+          <label for="supplementFile">보조 파일</label>
+          <input id="supplementFile" type="file" accept=".json,.txt,.md" />
+          <p class="spot-note">JSON 또는 텍스트 파일에서 제목/회차/식당 정보를 자동으로 추출할 수 있습니다.</p>
+        </div>
+      </details>
+      <div class="spot-edit-actions">
+        <button type="button" id="lookupBtn" class="btn-save">자동 발견</button>
+      </div>
+      <div id="lookupError" class="spot-note"></div>
+      <div id="matchResults"></div>
+    </div>
+
+    <div id="lookupResult" class="spot-panel" hidden></div>
+    <div id="reviewPanel" class="spot-panel" hidden>
+      <div class="spot-panel-head"><span class="spot-panel-title">자동 수집 결과</span></div>
+      <div id="reviewSummary"></div>
+      <div class="spot-edit-actions">
+        <button type="button" id="confirmLookupBtn" class="btn-save">등록 준비</button>
+        <button type="button" id="editManualBtn" class="btn-cancel">수동 수정</button>
+      </div>
+    </div>
+
+    <form class="spot-edit-form" id="addForm" hidden>
+      <div class="spot-panel-head">
+        <span class="spot-panel-title">자동 수집 결과를 확인하고 필요 시 수정하세요</span>
+      </div>
+      <div class="spot-field"><label>회차 번호<input type="number" id="episodeInput" min="1" required></label></div>
+      <div class="spot-field"><label>제목<input type="text" id="titleInput" required></label></div>
+      <div class="spot-field"><label>부제/원제<input type="text" id="rawTitleInput"></label></div>
+      <div class="spot-field"><label>방송일<input type="date" id="airDateInput"></label></div>
+      <div class="spot-field"><label>지역<input type="text" id="regionInput"></label></div>
+      <div class="spot-field"><label>원본 URL<input type="url" id="detailUrlInput" placeholder="https://"></label></div>
+
+      <div class="spot-panel-head" style="margin-top:18px;">
+        <span class="spot-panel-title">대표 식당 정보</span>
+      </div>
+      <div class="spot-field"><label>식당명<input type="text" id="restNameInput"></label></div>
+      <div class="spot-field"><label>주소<input type="text" id="restAddrInput"></label></div>
+      <div class="spot-field"><label>소개된 메뉴<input type="text" id="restMenuInput"></label></div>
+      <div class="spot-field"><label>한줄평<input type="text" id="restReviewInput"></label></div>
+
+      <div class="spot-edit-actions">
+        <button type="submit" class="btn-save">등록하기</button>
+        <button type="button" class="btn-cancel" id="cancelAddBtn">취소</button>
+      </div>
+      <p class="spot-note">편집 모드가 필요합니다. 로컬 개발 환경이면 비밀번호 없이 등록할 수 있습니다.</p>
+    </form>
+  </section>
+</main>
+
+<script src="./lib/episodesLogic.js"></script>
+<script src="./lib/editModeFlow.js"></script>
+<script src="./add.js"></script>
+</body>
+</html>

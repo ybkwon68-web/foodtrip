@@ -36,6 +36,7 @@ const detailView = document.getElementById('detailView');
 const searchInput = document.getElementById('searchInput');
 const sortSelect = document.getElementById('sortSelect');
 const editToggle = document.getElementById('editToggle');
+const addEntryLink = document.getElementById('addEntryLink');
 
 const pencilIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>';
 
@@ -66,6 +67,7 @@ function setEditing(value) {
     ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>편집 모드 끄기'
     : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>편집 모드';
   grid.classList.toggle('editing', editing);
+  if (addEntryLink) addEntryLink.hidden = !editing;
   if (editing) {
     showStatus('편집 모드가 켜졌습니다. 회차를 선택해 식당 정보를 수정해보세요.', 'success', 2200);
   }
