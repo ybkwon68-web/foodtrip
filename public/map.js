@@ -78,6 +78,14 @@ function buildMarkers() {
         infoWindow.open(map, marker);
         activeInfoWindow = infoWindow;
       });
+      // Ensure activeInfoWindow is cleared when this infoWindow is closed
+      try {
+        naver.maps.Event.addListener(infoWindow, 'close', () => {
+          if (activeInfoWindow === infoWindow) activeInfoWindow = null;
+        });
+      } catch (e) {
+        // Some environments may not emit 'close' for InfoWindow; fall back to map/key handlers
+      }
 
       const haystack = [ep.title, ep.raw_title, ep.region, r.name, r.address]
         .filter(Boolean)
@@ -148,6 +156,24 @@ function init() {
   buildMarkers();
   fitBounds();
   render();
+
+  // Close any open info window when clicking on the map background
+  naver.maps.Event.addListener(map, 'click', () => {
+    if (activeInfoWindow) {
+      activeInfoWindow.close();
+      activeInfoWindow = null;
+    }
+  });
+
+  // Close info window with ESC key for keyboard accessibility
+  document.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Escape' || ev.key === 'Esc') {
+      if (activeInfoWindow) {
+        activeInfoWindow.close();
+        activeInfoWindow = null;
+      }
+    }
+  });
 }
 
 mapSearch.addEventListener('input', render);
