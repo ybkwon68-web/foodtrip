@@ -4,7 +4,7 @@ const { extractTvChosunBroadcast, findUrlInText, findFirstNaverBlogPlaces, fetch
 const TVCHOSUN_BASE = 'https://broadcast.tvchosun.com';
 const LIST_URL = `${TVCHOSUN_BASE}/broadcast/program/3/C201900033/bbs/8667/C201900033_10/list.cstv`;
 const EP_TITLE_RE = /(\d{1,4})\s*회\s*(.*?)\s*$/;
-const LINK_ITEM_RE = /<a[^>]*class=["'][^"']*vd-link[^"']*["'][^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
+const LINK_ITEM_RE = /<a[^>]+class=["'][^"']*vd-link[^"']*["'][^>]*>([\s\S]*?)<\/a>/gi;
 const TITLE_FIELD_RE = /<p[^>]*class=["'][^"']*title[^"']*["'][^>]*>([\s\S]*?)<\/p>/i;
 const DATE_FIELD_RE = /<p[^>]*class=["'][^"']*date[^"']*["'][^>]*>([\s\S]*?)<\/p>/i;
 
@@ -34,8 +34,12 @@ function parseTvChosunList(html) {
   const entries = [];
   let match;
   while ((match = LINK_ITEM_RE.exec(html))) {
-    const detailHref = match[1];
-    const content = match[2];
+    const fullTag = match[0];
+    const content = match[1];
+    const hrefMatch = fullTag.match(/href=["']([^"']+)["']/i);
+    if (!hrefMatch) continue;
+    const detailHref = hrefMatch[1];
+
     const titleMatch = TITLE_FIELD_RE.exec(content);
     if (!titleMatch) continue;
     const rawTitle = stripTags(decodeHtmlEntities(titleMatch[1]));
@@ -83,8 +87,9 @@ async function fetchText(url) {
 
 async function searchTvChosun(query, maxPages = 6) {
   const expectedEpisode = numericEpisode(query);
+  const searchText = expectedEpisode ? `${expectedEpisode}회` : query;
   for (let page = 1; page <= maxPages; page += 1) {
-    const html = await fetchText(`${LIST_URL}?search_text=&pg=${page}`);
+    const html = await fetchText(`${LIST_URL}?search_text=${encodeURIComponent(searchText)}&pg=${page}`);
     const entries = parseTvChosunList(html);
     if (!entries.length) continue;
     const exact = expectedEpisode ? entries.find((entry) => entry.episode === expectedEpisode) : null;
@@ -162,11 +167,21 @@ module.exports = async function handler(req, res) {
         source = source || 'tvchosun_search';
         source_url = source_url || foundItem.detail_url;
         const html = await fetchText(foundItem.detail_url);
-        broadcast = extractTvChosunBroadcast(html, foundItem.detail_url);
+        const detailBroadcast = extractTvChosunBroadcast(html, foundItem.detail_url);
+        broadcast = {
+          episode: foundItem.episode || detailBroadcast.episode,
+          title: foundItem.title || detailBroadcast.title,
+          raw_title: foundItem.raw_title || detailBroadcast.raw_title,
+          air_date: foundItem.air_date ? foundItem.air_date.replace(/\./g, '-') : detailBroadcast.air_date,
+          region: foundItem.region || detailBroadcast.region,
+          thumbnail: detailBroadcast.thumbnail || null,
+          detail_url: foundItem.detail_url,
+          body_html: detailBroadcast.body_html,
+        };
       }
     }
 
-    if (!restaurants && query) {
+    if ((!restaurants || !restaurants.length) && query) {
       const lookupQuery = numericEpisode(query)
         ? `허영만의 백반기행 ${numericEpisode(query)}회`
         : `${query} 백반기행`;

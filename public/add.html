@@ -81,12 +81,10 @@
       <div class="spot-field"><label>원본 URL<input type="url" id="detailUrlInput" placeholder="https://"></label></div>
 
       <div class="spot-panel-head" style="margin-top:18px;">
-        <span class="spot-panel-title">대표 식당 정보</span>
+        <span class="spot-panel-title">소개된 식당 목록</span>
       </div>
-      <div class="spot-field"><label>식당명<input type="text" id="restNameInput"></label></div>
-      <div class="spot-field"><label>주소<input type="text" id="restAddrInput"></label></div>
-      <div class="spot-field"><label>소개된 메뉴<input type="text" id="restMenuInput"></label></div>
-      <div class="spot-field"><label>한줄평<input type="text" id="restReviewInput"></label></div>
+      <div id="restaurantRows"></div>
+      <button type="button" class="spot-edit-btn" id="addRestaurantBtn" style="margin-top:8px;">+ 식당 추가</button>
 
       <div class="spot-edit-actions">
         <button type="submit" class="btn-save">등록하기</button>

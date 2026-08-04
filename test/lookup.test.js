@@ -24,7 +24,9 @@ test('extractNaverBlogPlaces returns places from v2_map module JSON', () => {
 test('extractTvChosunBroadcast returns metadata and body_html for broadcast detail HTML', () => {
   const html = `<!doctype html><html><head><meta property="og:title" content="123회 테스트"><meta property="og:description" content="방송 설명"><meta property="og:image" content="https://img.example.com/thumb.jpg"></head><body><div class="board-view"><div class="cont-box"><p>본문</p><img src="http://img.example.com/photo.jpg"></div></div></body></html>`;
   const result = extractTvChosunBroadcast(html, 'https://broadcast.tvchosun.com/detail');
-  assert.strictEqual(result.title, '123회 테스트');
+  assert.strictEqual(result.raw_title, '123회 테스트');
+  assert.strictEqual(result.title, '테스트');
+  assert.strictEqual(result.episode, 123);
   assert.strictEqual(result.thumbnail, 'https://img.example.com/thumb.jpg');
   assert.ok(result.body_html.includes('https://img.example.com/photo.jpg'));
   assert.strictEqual(result.detail_url, 'https://broadcast.tvchosun.com/detail');

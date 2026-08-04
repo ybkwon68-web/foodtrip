@@ -25,10 +25,85 @@ const rawTitleInput = document.getElementById('rawTitleInput');
 const airDateInput = document.getElementById('airDateInput');
 const regionInput = document.getElementById('regionInput');
 const detailUrlInput = document.getElementById('detailUrlInput');
-const restNameInput = document.getElementById('restNameInput');
-const restAddrInput = document.getElementById('restAddrInput');
-const restMenuInput = document.getElementById('restMenuInput');
-const restReviewInput = document.getElementById('restReviewInput');
+const restaurantRows = document.getElementById('restaurantRows');
+const addRestaurantBtn = document.getElementById('addRestaurantBtn');
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str || '';
+  return div.innerHTML;
+}
+
+function restaurantEditRow(r, idx) {
+  const origB64 = btoa(unescape(encodeURIComponent(JSON.stringify(r || {}))));
+  return `
+    <div class="restaurant-edit-row" data-idx="${idx}" data-orig="${origB64}">
+      <div class="r-field-row">
+        <label>식당명 <input type="text" class="r-name" value="${escapeHtml(r.name || '')}"></label>
+        <label>주소 <input type="text" class="r-addr" value="${escapeHtml(r.address || '')}"></label>
+        <button type="button" class="spot-remove-btn">삭제</button>
+      </div>
+      <div class="r-field-row">
+        <label>소개된 메뉴 <input type="text" class="r-menu" value="${escapeHtml(r.menu || '')}"></label>
+        <label>한줄평 <input type="text" class="r-review" value="${escapeHtml(r.review || '')}"></label>
+      </div>
+    </div>
+  `;
+}
+
+function collectRestaurantRows(container) {
+  return Array.from(container.querySelectorAll('.restaurant-edit-row'))
+    .map((row) => {
+      const name = row.querySelector('.r-name').value.trim();
+      const address = row.querySelector('.r-addr').value.trim();
+      const menu = row.querySelector('.r-menu').value.trim();
+      const review = row.querySelector('.r-review').value.trim();
+      let orig = {};
+      try {
+        orig = JSON.parse(decodeURIComponent(escape(atob(row.dataset.orig || ''))));
+      } catch (err) {
+        orig = {};
+      }
+      const addressUnchanged = Boolean(orig.address) && orig.address === address;
+      return {
+        name,
+        address,
+        menu,
+        review,
+        tel: addressUnchanged ? orig.tel ?? null : null,
+        lat: addressUnchanged ? orig.lat ?? null : null,
+        lng: addressUnchanged ? orig.lng ?? null : null,
+        place_id: addressUnchanged ? orig.place_id ?? null : null,
+      };
+    })
+    .filter((r) => r.name);
+}
+
+// 식당 추가/삭제 리스너
+if (addRestaurantBtn) {
+  addRestaurantBtn.addEventListener('click', () => {
+    const idx = restaurantRows.children.length;
+    restaurantRows.insertAdjacentHTML('beforeend', restaurantEditRow({}, idx));
+  });
+}
+if (restaurantRows) {
+  restaurantRows.addEventListener('click', (e) => {
+    if (!e.target.classList.contains('spot-remove-btn')) return;
+    e.target.closest('.restaurant-edit-row').remove();
+  });
+}
+
+function getAdminToken() {
+  const token = localStorage.getItem('foodtrip_admin_token');
+  const expiresAt = Number(localStorage.getItem('foodtrip_admin_expires') || 0);
+  if (!token || Date.now() > expiresAt) return null;
+  return token;
+}
+
+if (!getAdminToken()) {
+  alert('추가 등록 기능은 편집 모드가 활성화된 상태에서만 사용할 수 있습니다. 메인 화면에서 로그인해 주세요.');
+  location.href = './index.html';
+}
 
 const isLocalDev = ['localhost', '127.0.0.1'].includes(location.hostname) || location.protocol === 'file:';
 let allEpisodes = [];
@@ -163,12 +238,15 @@ function fillFormFromLookup(data) {
     if (data.broadcast.air_date) airDateInput.value = data.broadcast.air_date;
     if (data.broadcast.region) regionInput.value = data.broadcast.region;
   }
-  if (data.restaurants?.length) {
-    const first = data.restaurants[0];
-    if (first.name) restNameInput.value = first.name;
-    if (first.address) restAddrInput.value = first.address;
-    if (first.menu) restMenuInput.value = first.menu;
-    if (first.review) restReviewInput.value = first.review;
+  if (restaurantRows) {
+    restaurantRows.innerHTML = '';
+    if (data.restaurants && data.restaurants.length) {
+      data.restaurants.forEach((r, idx) => {
+        restaurantRows.insertAdjacentHTML('beforeend', restaurantEditRow(r, idx));
+      });
+    } else {
+      restaurantRows.insertAdjacentHTML('beforeend', restaurantEditRow({}, 0));
+    }
   }
 }
 
@@ -328,23 +406,12 @@ addForm.addEventListener('submit', async (event) => {
     air_date: airDateInput.value || null,
     region: regionInput.value.trim(),
     detail_url: detailUrlInput.value.trim() || null,
-    restaurants: [],
+    restaurants: collectRestaurantRows(restaurantRows),
     verified: false,
   };
 
-  const restaurant = {
-    name: restNameInput.value.trim(),
-    address: restAddrInput.value.trim(),
-    menu: restMenuInput.value.trim(),
-    review: restReviewInput.value.trim(),
-  };
-
-  if (restaurant.name) {
-    payload.restaurants.push(restaurant);
-  }
-
-  const token = localStorage.getItem('foodtrip_admin_token');
-  if (!token && !isLocalDev) {
+  const token = getAdminToken();
+  if (!token) {
     showStatus('편집 모드 로그인이 필요합니다.', 'error', 3200);
     return;
   }
@@ -391,4 +458,16 @@ cancelAddBtn.addEventListener('click', () => {
   location.href = './index.html';
 });
 
-loadEpisodes().then(() => renderMatches('')).catch(() => renderMatches(''));
+loadEpisodes()
+  .then(() => {
+    renderMatches('');
+    if (restaurantRows && restaurantRows.children.length === 0) {
+      restaurantRows.insertAdjacentHTML('beforeend', restaurantEditRow({}, 0));
+    }
+  })
+  .catch(() => {
+    renderMatches('');
+    if (restaurantRows && restaurantRows.children.length === 0) {
+      restaurantRows.insertAdjacentHTML('beforeend', restaurantEditRow({}, 0));
+    }
+  });
