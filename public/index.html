@@ -62,6 +62,17 @@
 </header>
 
 <main id="app">
+  <section id="recommendBox" class="recommend-box">
+    <form id="recommendForm">
+      <label for="recommendInput" class="recommend-label">오늘 뭐 먹지? 조건을 알려주면 어울리는 식당을 찾아드려요</label>
+      <div class="recommend-input-row">
+        <textarea id="recommendInput" rows="1" placeholder="예: 지금 나는 과천인데, 가끔 보는 친구들과 가볍게 저녁식사를 하면서 술을 한잔 할 수 있는 조용한 분위기의 식당을 알려줘. 과천에서 이동거리 1시간 이내로 해서"></textarea>
+        <button type="submit" id="recommendSubmit">추천받기</button>
+      </div>
+    </form>
+    <div id="recommendResult" class="recommend-result" hidden></div>
+  </section>
+
   <section id="listView">
     <p class="result-count" id="resultCount"></p>
     <div class="grid" id="grid"></div>
@@ -73,5 +84,6 @@
 <script src="./lib/episodesLogic.js"></script>
 <script src="./lib/editModeFlow.js"></script>
 <script src="./script.js"></script>
+<script src="./recommend.js"></script>
 </body>
 </html>
