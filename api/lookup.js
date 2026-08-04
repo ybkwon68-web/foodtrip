@@ -1,5 +1,33 @@
 // 방송국/네이버 블로그 검색 기반 자동 수집 API
 const { extractTvChosunBroadcast, findUrlInText, findFirstNaverBlogPlaces, fetchNaverBlogPost } = require('../lib/lookup');
+const { findRegionInText } = require('../lib/koreanRegions');
+const { getSupabase } = require('../lib/supabase');
+
+const NAVER_BLOG_URL_RE = /blog\.naver\.com\/([a-zA-Z0-9_-]+)\/(\d+)/;
+
+// 이미 다른 회차가 채택한 네이버 블로그 글(source)과 식당(place_id)을 DB 전체에서 조회한다.
+// 같은 블로그 글이나 같은 식당이 서로 다른 회차에 중복 채택되는 걸 막기 위한 전역 가드.
+// 실패해도(DB 연결 문제 등) 조회 자체를 막지 않도록 fail-open으로 빈 목록을 반환한다.
+async function loadUsedNaverSources(excludeEpisode) {
+  const sourceKeys = new Set();
+  const placeIds = new Set();
+  try {
+    const supabase = getSupabase();
+    const { data, error } = await supabase.from('episodes').select('episode,restaurants,restaurants_source_url');
+    if (error || !data) return { sourceKeys, placeIds };
+    for (const ep of data) {
+      if (excludeEpisode != null && ep.episode === excludeEpisode) continue;
+      const match = NAVER_BLOG_URL_RE.exec(ep.restaurants_source_url || '');
+      if (match) sourceKeys.add(`${match[1]}/${match[2]}`);
+      for (const r of ep.restaurants || []) {
+        if (r.place_id) placeIds.add(r.place_id);
+      }
+    }
+  } catch (err) {
+    // Supabase 미설정 등으로 조회 실패 시 중복 검증 없이 진행(기존 동작 유지)
+  }
+  return { sourceKeys, placeIds };
+}
 
 const TVCHOSUN_BASE = 'https://broadcast.tvchosun.com';
 const LIST_URL = `${TVCHOSUN_BASE}/broadcast/program/3/C201900033/bbs/8667/C201900033_10/list.cstv`;
@@ -68,11 +96,11 @@ function numericEpisode(query) {
   return Number.isInteger(num) && num > 0 ? num : null;
 }
 
+// 숫자 회차 검색이 아닌, 자유 텍스트 검색에서만 쓰는 느슨한 부분일치 폴백.
+// (숫자 회차 검색은 searchTvChosun에서 정확한 회차번호 일치만 신뢰하고 이 함수를 타지 않는다.)
 function matchesTvChosunItem(item, query) {
   if (!query) return false;
   const raw = String(query).trim().toLowerCase();
-  const episodeNum = numericEpisode(query);
-  if (episodeNum && item.episode === episodeNum) return true;
   const haystack = [item.title, item.raw_title, item.air_date].filter(Boolean).join(' ').toLowerCase();
   return haystack.includes(raw);
 }
@@ -92,8 +120,14 @@ async function searchTvChosun(query, maxPages = 6) {
     const html = await fetchText(`${LIST_URL}?search_text=${encodeURIComponent(searchText)}&pg=${page}`);
     const entries = parseTvChosunList(html);
     if (!entries.length) continue;
-    const exact = expectedEpisode ? entries.find((entry) => entry.episode === expectedEpisode) : null;
-    if (exact) return exact;
+    if (expectedEpisode) {
+      // 숫자 회차 검색은 정확히 일치하는 회차번호만 신뢰한다. 부분일치 폴백을 허용하면
+      // 다른 회차의 제목·방송일 문자열에 그 숫자가 우연히 포함된 경우 오매칭될 수 있다
+      // (예: "44" 검색이 "344회" 항목이나 날짜 문자열에 우연히 걸리는 경우).
+      const exact = entries.find((entry) => entry.episode === expectedEpisode);
+      if (exact) return exact;
+      continue;
+    }
     const fuzzy = entries.find((entry) => matchesTvChosunItem(entry, query));
     if (fuzzy) return fuzzy;
   }
@@ -185,7 +219,21 @@ module.exports = async function handler(req, res) {
       const lookupQuery = numericEpisode(query)
         ? `허영만의 백반기행 ${numericEpisode(query)}회`
         : `${query} 백반기행`;
-      const naverResult = await findFirstNaverBlogPlaces(lookupQuery, 6);
+
+      const targetEpisode = broadcast?.episode ?? numericEpisode(query);
+      const episodeTitleText = [broadcast?.raw_title, broadcast?.title, broadcast?.region].filter(Boolean).join(' ');
+      const expectedRegion = episodeTitleText ? findRegionInText(episodeTitleText) : null;
+      const expectedSido = expectedRegion ? expectedRegion.split(' ')[0] : null;
+      const { sourceKeys, placeIds } = await loadUsedNaverSources(targetEpisode);
+
+      const naverResult = await findFirstNaverBlogPlaces(lookupQuery, {
+        candidateLimit: 6,
+        episode: targetEpisode,
+        episodeTitle: episodeTitleText || broadcast?.title || null,
+        expectedSido,
+        excludeSourceKeys: sourceKeys,
+        excludePlaceIds: placeIds,
+      });
       if (naverResult && Array.isArray(naverResult.places) && naverResult.places.length) {
         restaurants = naverResult.places;
         candidateUrls = naverResult.candidate_urls || [];

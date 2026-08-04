@@ -210,6 +210,14 @@ function renderLookupResult(data) {
   `;
 }
 
+function reviewRestaurantRow(r, idx) {
+  const parts = [`<strong>${idx + 1}. ${escapeHtml(r.name || '미확인')}</strong>`];
+  if (r.address) parts.push(escapeHtml(r.address));
+  if (r.menu) parts.push(`메뉴: ${escapeHtml(r.menu)}`);
+  if (r.review) parts.push(`한줄평: ${escapeHtml(r.review)}`);
+  return `<div class="spot-field">${parts.join(' · ')}</div>`;
+}
+
 function renderReviewSummary(data) {
   const lines = [];
   if (data.source) lines.push(`소스: ${data.source}`);
@@ -218,13 +226,18 @@ function renderReviewSummary(data) {
   if (data.broadcast?.raw_title) lines.push(`부제: ${data.broadcast.raw_title}`);
   if (data.broadcast?.air_date) lines.push(`방송일: ${data.broadcast.air_date}`);
   if (data.broadcast?.region) lines.push(`지역: ${data.broadcast.region}`);
-  if (data.restaurants?.length) lines.push(`대표 식당: ${data.restaurants[0].name || '미확인'}`);
-  if (data.restaurants?.[0]?.address) lines.push(`주소: ${data.restaurants[0].address}`);
-  if (data.restaurants?.[0]?.menu) lines.push(`메뉴: ${data.restaurants[0].menu}`);
-  if (data.restaurants?.[0]?.review) lines.push(`한줄평: ${data.restaurants[0].review}`);
+
+  const restaurants = data.restaurants || [];
+  const restaurantHeader = restaurants.length
+    ? `<div class="spot-field"><strong>발견된 식당 ${restaurants.length}곳 — 지역이 맞는지 꼭 확인하세요</strong></div>`
+    : '';
+  const restaurantRows = restaurants.map(reviewRestaurantRow).join('');
+
   reviewSummary.innerHTML = `
     <div class="spot-panel-head"><span class="spot-panel-title">자동 수집 결과 미리보기</span></div>
     ${lines.map((line) => `<div class="spot-field">${line}</div>`).join('')}
+    ${restaurantHeader}
+    ${restaurantRows}
   `;
   reviewPanel.hidden = false;
 }
