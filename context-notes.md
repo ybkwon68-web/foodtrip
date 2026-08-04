@@ -309,3 +309,11 @@
   - `lib/gemini.js`에서 `extractIntent` 제거, `pickRecommendations`(최종 선정, Gemini 호출 1회)만 남김. `api/recommend.js`도 그에 맞춰 수정.
   - **한계**: 이 방식은 "산성역"처럼 사전에 없는 역명·랜드마크는 인식 못 함(테스트로 명시적으로 확인해둠) — 그런 경우 위치 조건 없이 추천 진행되고 `notice`로 안내됨. 실제 성남시 관공서/지하철역이 아닌 "시/군/구" 단위 지명만 커버.
 - 단위테스트로 검증(`test/koreanRegions.test.js` 3개, `test/recommend.test.js`의 extractRadiusMinutes/extractIntentLocal 2개 추가)했으나, **오늘은 무료 할당량이 이미 소진돼 실제 Gemini 응답까지 포함한 종단 간 재확인은 못함** — 내일 할당량 초기화 후 확인 필요.
+
+## 2026-08-04 자연어 추천 "다시 추천받기" 흐름 추가
+
+- 사용자가 "추천 결과가 마음에 안 들 때 같은 요청 맥락을 이어서 재추천받고 싶다"고 요청 — 프롬프트를 새로 입력하지 않고 방금 본 결과만 다른 곳으로 바꿔서 다시 보고 싶다는 의도.
+- 결과 카드 위에 "다른 곳으로 다시 추천받기" 버튼 추가. 프론트(`public/recommend.js`)가 마지막 요청 문장(`lastQuery`)과 방금 보여준 식당 목록(`lastPicks`)을 기억해뒀다가, 버튼 클릭 시 같은 문장 + `exclude: [{episode,name}, ...]`를 그대로 서버에 재전송.
+- 서버(`api/recommend.js`)는 `buildCandidateList`로 만든 전체 후보에서 `excludeCandidates`(신규, `lib/recommend.js`)로 exclude 목록을 제거한 뒤 Gemini에 넘김 — 모델이 방금 추천한 곳을 다시 고를 수 없도록 후보 자체에서 빼버리는 방식이라, 프롬프트 지시문에만 의존하는 것보다 안전함(기존 `parsePicksResponse`의 "후보 목록 대조로 환각 방지" 원칙과 동일선상).
+- 반경 필터링된 후보가 얼마 없어서 exclude 후 후보가 0개가 되면 "조건에 맞는 다른 후보를 더 찾지 못했습니다" 안내로 구분 처리.
+- 단위테스트로 `excludeCandidates` 검증 완료. 다만 오늘 Gemini 무료 할당량이 계속 소진 상태라(RPM성 제한으로 추정, 테스트마다 됐다 안됐다 함) 실제 "다시 추천받기" 클릭 후 새 Gemini 응답까지 포함한 완전한 종단 간 확인은 못 했음 — 요청 페이로드에 `exclude` 배열이 올바르게 실려나가는 것까지는 Playwright로 확인.

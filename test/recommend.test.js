@@ -3,6 +3,7 @@ const {
   haversineKm,
   minutesToRadiusKm,
   buildCandidateList,
+  excludeCandidates,
   toPromptCandidates,
   extractRadiusMinutes,
   extractIntentLocal,
@@ -72,6 +73,19 @@ test('toPromptCandidates는 좌표·전화번호 등 불필요한 필드를 제�
   assert.ok(!('lat' in prompt[0]));
   assert.ok(!('place_id' in prompt[0]));
   assert.ok('name' in prompt[0] && 'region' in prompt[0]);
+});
+
+test('excludeCandidates는 이전에 보여준 (episode,name)만 후보에서 제외한다', () => {
+  const candidates = buildCandidateList(sampleEpisodes, {});
+  const filtered = excludeCandidates(candidates, [{ episode: 1, name: '가까운집' }]);
+  assert.strictEqual(filtered.length, 2);
+  assert.ok(!filtered.some((c) => c.name === '가까운집'));
+});
+
+test('excludeCandidates는 제외 목록이 비어있으면 후보를 그대로 반환한다', () => {
+  const candidates = buildCandidateList(sampleEpisodes, {});
+  assert.strictEqual(excludeCandidates(candidates, []), candidates);
+  assert.strictEqual(excludeCandidates(candidates, undefined), candidates);
 });
 
 test('extractRadiusMinutes는 "N시간"/"N분"/"N시간 M분" 표현에서 분 단위 숫자를 뽑는다', () => {

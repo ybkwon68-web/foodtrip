@@ -4,6 +4,9 @@ const recommendInput = document.getElementById('recommendInput');
 const recommendSubmit = document.getElementById('recommendSubmit');
 const recommendResult = document.getElementById('recommendResult');
 
+let lastQuery = '';
+let lastPicks = [];
+
 function escapeHtmlForRecommend(str) {
   const div = document.createElement('div');
   div.textContent = str || '';
@@ -25,21 +28,29 @@ function recommendCardTemplate(p) {
 }
 
 const closeButtonHtml = '<button type="button" class="recommend-close" id="recommendClose">✕ 결과 닫기</button>';
+const retryButtonHtml = '<button type="button" class="recommend-retry" id="recommendRetry">다른 곳으로 다시 추천받기</button>';
+
+function actionsHtml(withRetry) {
+  return `<div class="recommend-actions">${withRetry ? retryButtonHtml : ''}${closeButtonHtml}</div>`;
+}
 
 function closeRecommendResult() {
   recommendResult.hidden = true;
   recommendResult.innerHTML = '';
   recommendInput.value = '';
+  lastQuery = '';
+  lastPicks = [];
 }
 
 function renderRecommendResult(data) {
+  lastPicks = data.picks || [];
   if (!data.picks || !data.picks.length) {
-    recommendResult.innerHTML = `${closeButtonHtml}<p class="recommend-empty">${escapeHtmlForRecommend(data.notice || '조건에 맞는 식당을 찾지 못했습니다. 다른 표현으로 다시 시도해 보세요.')}</p>`;
+    recommendResult.innerHTML = `${actionsHtml(false)}<p class="recommend-empty">${escapeHtmlForRecommend(data.notice || '조건에 맞는 식당을 찾지 못했습니다. 다른 표현으로 다시 시도해 보세요.')}</p>`;
     return;
   }
   const noticeHtml = data.notice ? `<p class="recommend-notice">${escapeHtmlForRecommend(data.notice)}</p>` : '';
   const cardsHtml = data.picks.map(recommendCardTemplate).join('');
-  recommendResult.innerHTML = `${closeButtonHtml}${noticeHtml}<div class="recommend-cards">${cardsHtml}</div>`;
+  recommendResult.innerHTML = `${actionsHtml(true)}${noticeHtml}<div class="recommend-cards">${cardsHtml}</div>`;
 }
 
 // textarea 스크롤바(위아래 화살표)가 보이지 않도록, 입력한 만큼 높이를 자동으로 늘린다.
@@ -49,15 +60,9 @@ function autoGrowRecommendInput() {
 }
 recommendInput.addEventListener('input', autoGrowRecommendInput);
 
-recommendResult.addEventListener('click', (e) => {
-  if (e.target.closest('#recommendClose')) closeRecommendResult();
-});
-
-recommendForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const query = recommendInput.value.trim();
-  if (!query) return;
-
+// 신규 요청과 "다시 추천받기" 요청을 공통 처리한다. exclude는 이전에 보여준 (episode,name) 목록으로,
+// 서버가 같은 식당을 다시 추천하지 않도록 후보에서 제외하는 데 쓰인다.
+async function runRecommend(query, exclude) {
   recommendSubmit.disabled = true;
   recommendSubmit.textContent = '찾는 중...';
   recommendResult.hidden = false;
@@ -67,18 +72,37 @@ recommendForm.addEventListener('submit', async (e) => {
     const res = await fetch('/api/recommend', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query }),
+      body: JSON.stringify({ query, exclude }),
     });
     const data = await res.json();
     if (!res.ok) {
-      recommendResult.innerHTML = `${closeButtonHtml}<p class="recommend-empty">${escapeHtmlForRecommend(data.error || '추천을 가져오지 못했습니다.')}</p>`;
+      recommendResult.innerHTML = `${actionsHtml(false)}<p class="recommend-empty">${escapeHtmlForRecommend(data.error || '추천을 가져오지 못했습니다.')}</p>`;
       return;
     }
+    lastQuery = query;
     renderRecommendResult(data);
   } catch (err) {
-    recommendResult.innerHTML = `${closeButtonHtml}<p class="recommend-empty">서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.</p>`;
+    recommendResult.innerHTML = `${actionsHtml(false)}<p class="recommend-empty">서버에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.</p>`;
   } finally {
     recommendSubmit.disabled = false;
     recommendSubmit.textContent = '추천받기';
   }
+}
+
+recommendResult.addEventListener('click', (e) => {
+  if (e.target.closest('#recommendClose')) {
+    closeRecommendResult();
+    return;
+  }
+  if (e.target.closest('#recommendRetry')) {
+    const exclude = lastPicks.map((p) => ({ episode: p.episode, name: p.name }));
+    runRecommend(lastQuery, exclude);
+  }
+});
+
+recommendForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const query = recommendInput.value.trim();
+  if (!query) return;
+  runRecommend(query, []);
 });

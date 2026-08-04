@@ -2,7 +2,7 @@
 const { getSupabase } = require('../lib/supabase');
 const { geocodeAddress } = require('../lib/geocode');
 const { checkRecommendRateLimit } = require('../lib/rateLimit');
-const { buildCandidateList, minutesToRadiusKm, extractIntentLocal } = require('../lib/recommend');
+const { buildCandidateList, excludeCandidates, minutesToRadiusKm, extractIntentLocal } = require('../lib/recommend');
 const { pickRecommendations } = require('../lib/gemini');
 
 const MAX_QUERY_LENGTH = 500;
@@ -40,6 +40,7 @@ module.exports = async function handler(req, res) {
     res.status(400).json({ error: `입력이 너무 깁니다. ${MAX_QUERY_LENGTH}자 이내로 입력해주세요.` });
     return;
   }
+  const exclude = Array.isArray((req.body || {}).exclude) ? req.body.exclude : [];
 
   try {
     const supabase = getSupabase();
@@ -58,10 +59,14 @@ module.exports = async function handler(req, res) {
     }
 
     const radiusKm = originPoint ? minutesToRadiusKm(intent.radiusMinutes) : null;
-    const candidates = buildCandidateList(episodes || [], { origin: originPoint, radiusKm });
+    const allCandidates = buildCandidateList(episodes || [], { origin: originPoint, radiusKm });
+    const candidates = excludeCandidates(allCandidates, exclude);
 
     if (!candidates.length) {
-      res.status(200).json({ picks: [], origin: intent.origin, radius_km: radiusKm, notice: notice || '조건에 맞는 후보를 찾지 못했습니다.' });
+      const emptyNotice = exclude.length
+        ? '조건에 맞는 다른 후보를 더 찾지 못했습니다.'
+        : '조건에 맞는 후보를 찾지 못했습니다.';
+      res.status(200).json({ picks: [], origin: intent.origin, radius_km: radiusKm, notice: notice || emptyNotice });
       return;
     }
 
