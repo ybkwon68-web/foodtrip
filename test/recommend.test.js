@@ -7,7 +7,7 @@ const {
   toPromptCandidates,
   extractRadiusMinutes,
   extractIntentLocal,
-  parsePicksResponse,
+  parseRecommendResponse,
 } = require('../lib/recommend');
 
 test('haversineKm은 같은 지점이면 0, 서울-부산은 약 300km대를 반환한다', () => {
@@ -104,25 +104,50 @@ test('extractIntentLocal은 Gemini 호출 없이 출발지·이동시간을 함�
   assert.deepStrictEqual(extractIntentLocal('그냥 아무 데나 알려줘'), { origin: null, radiusMinutes: null });
 });
 
-test('parsePicksResponse는 후보 목록에 실제로 있는 (episode,name)만 채택하고 최대 3개로 제한한다', () => {
+test('parseRecommendResponse는 picks 형식 응답에서 후보 목록에 실제로 있는 (episode,name)만 채택하고 최대 3개로 제한한다', () => {
   const candidates = buildCandidateList(sampleEpisodes, {});
-  const text = JSON.stringify([
-    { episode: 1, name: '가까운집', reason: '조용해서 좋아요' },
-    { episode: 999, name: '지어낸식당', reason: '없는 식당' },
-    { episode: 2, name: '먼집', reason: '해산물이 좋아요' },
-    { episode: 3, name: '좌표없는집', reason: '3번째' },
-  ]);
-  const picks = parsePicksResponse(text, candidates);
-  assert.strictEqual(picks.length, 3);
-  assert.strictEqual(picks[0].name, '가까운집');
-  assert.strictEqual(picks[0].reason, '조용해서 좋아요');
-  assert.ok(!picks.some((p) => p.name === '지어낸식당'));
+  const text = JSON.stringify({
+    type: 'picks',
+    items: [
+      { episode: 1, name: '가까운집', reason: '조용해서 좋아요' },
+      { episode: 999, name: '지어낸식당', reason: '없는 식당' },
+      { episode: 2, name: '먼집', reason: '해산물이 좋아요' },
+      { episode: 3, name: '좌표없는집', reason: '3번째' },
+    ],
+  });
+  const result = parseRecommendResponse(text, candidates);
+  assert.strictEqual(result.type, 'picks');
+  assert.strictEqual(result.items.length, 3);
+  assert.strictEqual(result.items[0].name, '가까운집');
+  assert.strictEqual(result.items[0].reason, '조용해서 좋아요');
+  assert.ok(!result.items.some((p) => p.name === '지어낸식당'));
 });
 
-test('parsePicksResponse는 배열이 아니거나 JSON이 아니면 빈 배열을 반환한다', () => {
+test('parseRecommendResponse는 하위호환으로 배열만 온 응답도 picks로 처리한다', () => {
   const candidates = buildCandidateList(sampleEpisodes, {});
-  assert.deepStrictEqual(parsePicksResponse('{"not":"array"}', candidates), []);
-  assert.deepStrictEqual(parsePicksResponse('이상한 텍스트', candidates), []);
+  const text = JSON.stringify([{ episode: 1, name: '가까운집', reason: '조용해서 좋아요' }]);
+  const result = parseRecommendResponse(text, candidates);
+  assert.strictEqual(result.type, 'picks');
+  assert.strictEqual(result.items.length, 1);
+});
+
+test('parseRecommendResponse는 clarify 형식 응답을 그대로 반환한다(막연한 요청 되묻기)', () => {
+  const candidates = buildCandidateList(sampleEpisodes, {});
+  const text = JSON.stringify({ type: 'clarify', question: '어느 지역에서 어떤 분위기를 원하세요?' });
+  const result = parseRecommendResponse(text, candidates);
+  assert.deepStrictEqual(result, { type: 'clarify', question: '어느 지역에서 어떤 분위기를 원하세요?' });
+});
+
+test('parseRecommendResponse는 clarify인데 question이 비어있으면 빈 picks로 처리한다', () => {
+  const candidates = buildCandidateList(sampleEpisodes, {});
+  const text = JSON.stringify({ type: 'clarify', question: '' });
+  assert.deepStrictEqual(parseRecommendResponse(text, candidates), { type: 'picks', items: [] });
+});
+
+test('parseRecommendResponse는 형식이 이상하거나 JSON이 아니면 빈 picks를 반환한다', () => {
+  const candidates = buildCandidateList(sampleEpisodes, {});
+  assert.deepStrictEqual(parseRecommendResponse('{"not":"valid"}', candidates), { type: 'picks', items: [] });
+  assert.deepStrictEqual(parseRecommendResponse('이상한 텍스트', candidates), { type: 'picks', items: [] });
 });
 
 summary('lib/recommend.js');

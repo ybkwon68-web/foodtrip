@@ -493,6 +493,16 @@ button, a, input, select, textarea {
   color: var(--ink-soft);
   margin: 0 0 10px;
 }
+.recommend-clarify {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--brass);
+  border: 1px dashed var(--brass);
+  border-radius: var(--radius-card);
+  padding: 12px 16px;
+  margin: 0 0 10px;
+}
 .recommend-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));

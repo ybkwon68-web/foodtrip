@@ -41,6 +41,7 @@ module.exports = async function handler(req, res) {
     return;
   }
   const exclude = Array.isArray((req.body || {}).exclude) ? req.body.exclude : [];
+  const forcePicks = Boolean((req.body || {}).forcePicks);
 
   try {
     const supabase = getSupabase();
@@ -70,7 +71,14 @@ module.exports = async function handler(req, res) {
       return;
     }
 
-    const picks = await pickRecommendations(query, candidates);
+    const result = await pickRecommendations(query, candidates, { forcePicks });
+
+    if (result.type === 'clarify') {
+      res.status(200).json({ needsClarification: true, question: result.question });
+      return;
+    }
+
+    const picks = result.items;
 
     const enriched = picks.map((p) => ({
       episode: p.episode,
