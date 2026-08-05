@@ -70,6 +70,12 @@
   .recommend-input-row button {
     min-height: 40px;
   }
+  .recommend-buttons {
+    flex-direction: row;
+  }
+  .recommend-buttons #recommendSubmit {
+    flex: 1;
+  }
   .grid {
     grid-template-columns: 1fr;
     padding: 14px 16px 40px;
@@ -447,6 +453,11 @@ button, a, input, select, textarea {
   max-height: 120px;
 }
 .recommend-input-row textarea::placeholder { color: var(--ink-soft); }
+.recommend-buttons {
+  display: flex;
+  flex: none;
+  gap: 8px;
+}
 .recommend-input-row button {
   flex: none;
   border: 1px solid var(--accent);
@@ -461,6 +472,24 @@ button, a, input, select, textarea {
 }
 .recommend-input-row button:hover { opacity: 0.9; }
 .recommend-input-row button:disabled { opacity: 0.6; cursor: default; }
+.recommend-input-row .recommend-location-btn {
+  border: 1px solid var(--line);
+  background: var(--paper-raised);
+  color: var(--ink);
+}
+.recommend-input-row .recommend-location-btn:hover { border-color: var(--accent); opacity: 1; }
+.recommend-input-row .recommend-location-btn.active {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+.recommend-location-status {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin: 6px 2px 0;
+  text-align: center;
+}
+.recommend-location-status.error { color: var(--brass); }
 .recommend-result { margin-top: 14px; position: relative; }
 .recommend-actions {
   display: flex;

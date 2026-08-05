@@ -3,9 +3,13 @@ const recommendForm = document.getElementById('recommendForm');
 const recommendInput = document.getElementById('recommendInput');
 const recommendSubmit = document.getElementById('recommendSubmit');
 const recommendResult = document.getElementById('recommendResult');
+const recommendLocationBtn = document.getElementById('recommendLocationBtn');
+const recommendLocationStatus = document.getElementById('recommendLocationStatus');
 
 let lastQuery = '';
 let lastPicks = [];
+let lastOriginCoords = null;
+let originCoords = null; // "내 위치" 버튼으로 얻은 좌표 — 켜져 있으면 다음 요청에 함께 실려감
 let awaitingAnswer = false; // 되묻기 질문에 대한 답을 기다리는 중인지 (1회로 제한)
 
 function escapeHtmlForRecommend(str) {
@@ -41,6 +45,7 @@ function closeRecommendResult() {
   recommendInput.value = '';
   lastQuery = '';
   lastPicks = [];
+  lastOriginCoords = null;
   awaitingAnswer = false;
 }
 
@@ -68,10 +73,58 @@ function autoGrowRecommendInput() {
 }
 recommendInput.addEventListener('input', autoGrowRecommendInput);
 
+function showLocationStatus(message, isError) {
+  recommendLocationStatus.textContent = message;
+  recommendLocationStatus.hidden = !message;
+  recommendLocationStatus.classList.toggle('error', Boolean(isError));
+}
+
+function setLocationActive(active) {
+  recommendLocationBtn.classList.toggle('active', active);
+  recommendLocationBtn.textContent = active ? '📍 현재 위치 사용 중' : '📍 내 위치';
+}
+
+// "내 위치" 토글: 켜져 있으면 끄고, 꺼져 있으면 브라우저 위치 권한을 요청해 좌표를 받아온다.
+recommendLocationBtn.addEventListener('click', () => {
+  if (originCoords) {
+    originCoords = null;
+    setLocationActive(false);
+    showLocationStatus('', false);
+    return;
+  }
+
+  if (!navigator.geolocation) {
+    showLocationStatus('이 브라우저는 위치 사용을 지원하지 않습니다.', true);
+    return;
+  }
+
+  recommendLocationBtn.disabled = true;
+  showLocationStatus('위치를 확인하는 중...', false);
+
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      originCoords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+      setLocationActive(true);
+      showLocationStatus('현재 위치를 사용해 추천합니다.', false);
+      recommendLocationBtn.disabled = false;
+    },
+    (err) => {
+      const message =
+        err.code === err.PERMISSION_DENIED
+          ? '위치 권한이 거부되어 사용할 수 없습니다. 브라우저 설정에서 허용해주세요.'
+          : '위치를 확인하지 못했습니다. 잠시 후 다시 시도해주세요.';
+      showLocationStatus(message, true);
+      recommendLocationBtn.disabled = false;
+    },
+    { timeout: 8000 }
+  );
+});
+
 // 신규 요청, "다시 추천받기", 되묻기 답변을 공통 처리한다.
 // - exclude: 이전에 보여준 (episode,name) 목록 — 서버가 같은 식당을 다시 추천하지 않도록 후보에서 제외
 // - forcePicks: 되묻기에 대한 답변을 보낼 때 true — 이번엔 정보가 부족해 보여도 추천을 강제한다(되묻기 1회 제한)
-async function runRecommend(query, exclude, forcePicks) {
+// - coords: "내 위치" 버튼으로 얻은 좌표(있으면 서버가 지명 인식 대신 이 좌표를 출발지로 사용)
+async function runRecommend(query, exclude, forcePicks, coords) {
   recommendSubmit.disabled = true;
   recommendSubmit.textContent = '찾는 중...';
   recommendResult.hidden = false;
@@ -81,7 +134,7 @@ async function runRecommend(query, exclude, forcePicks) {
     const res = await fetch('/api/recommend', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query, exclude, forcePicks }),
+      body: JSON.stringify({ query, exclude, forcePicks, originCoords: coords || null }),
     });
     const data = await res.json();
     if (!res.ok) {
@@ -91,6 +144,7 @@ async function runRecommend(query, exclude, forcePicks) {
     }
 
     lastQuery = query;
+    lastOriginCoords = coords || null;
     if (data.needsClarification) {
       if (forcePicks) {
         // 이미 한 번 답변을 받았는데도 모델이 다시 되물으면, 무한 루프를 막기 위해
@@ -122,7 +176,7 @@ recommendResult.addEventListener('click', (e) => {
   }
   if (e.target.closest('#recommendRetry')) {
     const exclude = lastPicks.map((p) => ({ episode: p.episode, name: p.name }));
-    runRecommend(lastQuery, exclude, false);
+    runRecommend(lastQuery, exclude, false, lastOriginCoords);
   }
 });
 
@@ -135,9 +189,9 @@ recommendForm.addEventListener('submit', (e) => {
     // 되묻기는 1회로 제한 — 답을 이어붙여 다시 요청하고, 이후엔 forcePicks로 반드시 추천하게 한다.
     const combined = `${lastQuery} ${typed}`.trim();
     awaitingAnswer = false;
-    runRecommend(combined, [], true);
+    runRecommend(combined, [], true, originCoords);
     return;
   }
 
-  runRecommend(typed, [], false);
+  runRecommend(typed, [], false, originCoords);
 });

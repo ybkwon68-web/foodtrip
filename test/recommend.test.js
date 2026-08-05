@@ -2,10 +2,12 @@ const { test, summary, assert } = require('./helpers');
 const {
   haversineKm,
   minutesToRadiusKm,
+  resolveRadiusMinutes,
   buildCandidateList,
   excludeCandidates,
   toPromptCandidates,
   extractRadiusMinutes,
+  extractRelevanceKeywords,
   extractIntentLocal,
   parseRecommendResponse,
 } = require('../lib/recommend');
@@ -23,6 +25,13 @@ test('minutesToRadiusKm은 분을 km로 환산하고 최소·최대 범위로 �
   assert.strictEqual(minutesToRadiusKm(null), null);
   assert.strictEqual(minutesToRadiusKm(0), null);
   assert.strictEqual(minutesToRadiusKm(-10), null);
+});
+
+test('resolveRadiusMinutes는 명시된 이동시간이 없으면 기본값(60분)을 쓴다', () => {
+  assert.strictEqual(resolveRadiusMinutes(30), 30);
+  assert.strictEqual(resolveRadiusMinutes(null), 60);
+  assert.strictEqual(resolveRadiusMinutes(undefined), 60);
+  assert.strictEqual(resolveRadiusMinutes(0), 60);
 });
 
 const sampleEpisodes = [
@@ -65,6 +74,25 @@ test('buildCandidateList는 origin이 없으면 좌표 없는 식당도 포함�
   const candidates = buildCandidateList(sampleEpisodes, {});
   assert.strictEqual(candidates.length, 3);
   assert.strictEqual(candidates[0].verified, true);
+});
+
+test('buildCandidateList는 origin이 없어도 질의 키워드와 관련도가 높은 후보를 verified보다 우선한다', () => {
+  const candidates = buildCandidateList(sampleEpisodes, { query: '해산물 먹고 싶어' });
+  assert.strictEqual(candidates[0].name, '먼집'); // verified: false지만 menu가 "해산물"과 일치
+});
+
+test('buildCandidateList는 질의에 관련 키워드가 없으면 기존처럼 verified를 우선한다', () => {
+  const candidates = buildCandidateList(sampleEpisodes, { query: '아무거나 알려줘' });
+  assert.strictEqual(candidates[0].verified, true);
+});
+
+test('extractRelevanceKeywords는 조사/필러 단어와 짧은 토큰을 제외하고 핵심 키워드만 남긴다', () => {
+  assert.deepStrictEqual(
+    extractRelevanceKeywords('지금 나는 해산물이 먹고 싶어, 조용한 곳으로 알려줘'),
+    ['해산물이', '조용한', '곳으로']
+  );
+  assert.deepStrictEqual(extractRelevanceKeywords(''), []);
+  assert.deepStrictEqual(extractRelevanceKeywords(null), []);
 });
 
 test('toPromptCandidates는 좌표·전화번호 등 불필요한 필드를 제거한다', () => {

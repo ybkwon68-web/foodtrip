@@ -2,7 +2,13 @@
 const { getSupabase } = require('../lib/supabase');
 const { geocodeAddress } = require('../lib/geocode');
 const { checkRecommendRateLimit } = require('../lib/rateLimit');
-const { buildCandidateList, excludeCandidates, minutesToRadiusKm, extractIntentLocal } = require('../lib/recommend');
+const {
+  buildCandidateList,
+  excludeCandidates,
+  minutesToRadiusKm,
+  resolveRadiusMinutes,
+  extractIntentLocal,
+} = require('../lib/recommend');
 const { pickRecommendations } = require('../lib/gemini');
 
 const MAX_QUERY_LENGTH = 500;
@@ -42,6 +48,8 @@ module.exports = async function handler(req, res) {
   }
   const exclude = Array.isArray((req.body || {}).exclude) ? req.body.exclude : [];
   const forcePicks = Boolean((req.body || {}).forcePicks);
+  const coords = (req.body || {}).originCoords;
+  const hasCoords = coords && typeof coords.lat === 'number' && typeof coords.lng === 'number';
 
   try {
     const supabase = getSupabase();
@@ -53,21 +61,26 @@ module.exports = async function handler(req, res) {
     const intent = extractIntentLocal(query);
 
     let originPoint = null;
+    let originLabel = null;
     let notice = null;
-    if (intent.origin) {
+    if (hasCoords) {
+      originPoint = { lat: coords.lat, lng: coords.lng };
+      originLabel = '현재 위치';
+    } else if (intent.origin) {
       originPoint = await geocodeAddress(intent.origin);
+      originLabel = intent.origin;
       if (!originPoint) notice = `"${intent.origin}" 위치를 확인하지 못해 지역 조건 없이 추천했습니다.`;
     }
 
-    const radiusKm = originPoint ? minutesToRadiusKm(intent.radiusMinutes) : null;
-    const allCandidates = buildCandidateList(episodes || [], { origin: originPoint, radiusKm });
+    const radiusKm = originPoint ? minutesToRadiusKm(resolveRadiusMinutes(intent.radiusMinutes)) : null;
+    const allCandidates = buildCandidateList(episodes || [], { origin: originPoint, radiusKm, query });
     const candidates = excludeCandidates(allCandidates, exclude);
 
     if (!candidates.length) {
       const emptyNotice = exclude.length
         ? '조건에 맞는 다른 후보를 더 찾지 못했습니다.'
         : '조건에 맞는 후보를 찾지 못했습니다.';
-      res.status(200).json({ picks: [], origin: intent.origin, radius_km: radiusKm, notice: notice || emptyNotice });
+      res.status(200).json({ picks: [], origin: originLabel, radius_km: radiusKm, notice: notice || emptyNotice });
       return;
     }
 
@@ -93,7 +106,7 @@ module.exports = async function handler(req, res) {
 
     res.status(200).json({
       picks: enriched,
-      origin: intent.origin,
+      origin: originLabel,
       radius_km: radiusKm,
       notice,
     });

@@ -125,5 +125,16 @@
 - [x] 되묻기는 **1회로 제한** — 프론트(`public/recommend.js`)가 되묻기 질문을 받으면 원래 질문을 기억해뒀다가, 사용자가 답변을 입력하면 "원래 질문 + 답변"을 이어붙여 `forcePicks:true`로 재요청(서버 상태 저장 없이 프론트에서 문자열만 이어붙임). `forcePicks`가 오면 프롬프트에서 clarify 옵션 자체를 제거해 모델이 무조건 추천하도록 강제. 모델이 그래도 다시 되물으면(지시 불이행 대비) 안내만 보여주고 루프 없이 종료하는 방어 로직 추가
 - [x] `api/recommend.js`에 `forcePicks` 파싱 및 `needsClarification` 응답 처리 추가, CSS에 되묻기 질문 전용 스타일 추가
 - [x] 실제 curl 호출로 "배고파 밥먹고 싶어" → `needsClarification: true`와 자연스러운 되묻기 질문 확인(무료 할당량 문제로 브라우저 종단 간 답변 이어붙이기 흐름까지는 재검증 못함 — 코드 로직과 단위테스트로만 확인된 상태)
-- [ ] 무료 할당량이 안정될 때 브라우저에서 실제로 "되묻기 → 답변 → 추천" 전체 흐름 재확인 필요
+- [x] 2026-08-05: 사용자가 새 `GEMINI_API_KEY` 제공, `vercel dev`(포트 8000) + Node fetch로 "배고파 밥먹고 싶어" → clarify 확인 → 답변 이어붙여 forcePicks 재요청 → picks 3곳 정상 수신까지 전체 흐름 실제 검증 완료(더 이상 재확인 불필요)
+
+## 13단계: 2026-08-05 추천받기 후보 선별 로직 개선
+- [x] 위치조건 없는 질의(음식종류·분위기 중심)에서 `buildCandidateList`가 verified 우선 정렬만 쓰던 문제 확인 — 전체 1,135곳 중 verified는 99곳뿐이라 나머지는 회차순으로 대충 80개까지만 채워져 Gemini가 실제로 못 보는 후보가 태반이었음
+- [x] `lib/recommend.js`에 `extractRelevanceKeywords`(불용어/조사 제외 키워드 추출)와 `relevanceScore`(name/menu/review/region/title 매칭) 추가, `buildCandidateList`가 origin 없을 때 관련도 점수(동점이면 verified) 순으로 정렬하도록 변경. 키워드가 없으면 기존 verified 우선 동작 그대로 유지(하위호환)
+- [x] `api/recommend.js`에서 `buildCandidateList` 호출 시 `query` 전달, 단위테스트 4개 추가(관련도 우선순위, 키워드 없을 때 폴백, 키워드 추출) — `npm test` 전체 스위트 재실행해 기존 테스트 포함 전부 통과 확인
+- [x] review 텍스트 80자 절단 문제로 지목했던 항목 재검토 — 실데이터(505건) 확인 결과 review 최대 길이가 53자로 80자 한도에 전혀 걸리지 않음(오탐), 코드 변경 불필요로 결론
+- [x] GPS 기반 "현재 위치" 옵션 추가 — `public/index.html`에 "📍 내 위치" 토글 버튼과 상태 안내 문구 추가, `public/recommend.js`가 `navigator.geolocation`으로 좌표를 얻어 요청 본문에 `originCoords`로 실어 보냄(거부/미지원 시 안내 문구 표시), `api/recommend.js`가 `originCoords`가 있으면 지명 지오코딩을 건너뛰고 그 좌표를 바로 출발지로 사용
+- [x] GPS 기능 구현 중 발견한 연관 버그 수정 — 출발지는 있지만("과천인데") "N시간/N분" 같은 이동시간 표현이 없으면 반경 필터가 아예 적용 안 되던 문제(`radiusKm`가 null). `lib/recommend.js`에 `resolveRadiusMinutes`(기본 60분) 추가해 출발지가 있으면 항상 반경 필터가 적용되도록 수정, 단위테스트 추가
+- [x] `node --check`로 변경 파일 문법 검증 + 로컬 정적 서버로 새 DOM 요소(`recommendLocationBtn` 등)·CSS·JS가 정상 서빙되는지 확인
+- [x] 사용자가 `GEMINI_API_KEY` 제공(`.env.local`에 추가) → `vercel dev`(포트 8000)로 `/api/recommend` 5개 시나리오 실제 호출 검증: (1) 막연한 질의 → clarify, (2) forcePicks 재요청 → picks, (3) 음식종류만 있는 질의(위치조건 없음) → 관련도 기반 선별 확인(해산물 질의 → 실제 해산물 전문점 3곳), (4) 위치+시간표현 없음 → 기본반경(48km) 적용 확인, (5) GPS 좌표 → origin: "현재 위치" 확인. exclude(다시 추천받기) 흐름도 별도 확인, 제외 목록과 겹치지 않는 새 후보 반환됨
+- [ ] GPS "내 위치" 버튼의 실제 클릭·브라우저 위치권한 프롬프트 동작은 이 환경에 브라우저 자동화 도구가 없어 검증 못함 — 사용자가 직접 브라우저에서 확인 필요(API 자체는 위 항목에서 GPS 좌표로 검증 완료, 프론트 버튼 클릭 흐름만 미검증)
 
