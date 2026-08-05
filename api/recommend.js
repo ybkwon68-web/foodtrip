@@ -51,6 +51,18 @@ module.exports = async function handler(req, res) {
   const coords = (req.body || {}).originCoords;
   const hasCoords = coords && typeof coords.lat === 'number' && typeof coords.lng === 'number';
 
+  // forcePicks(되묻기에 이미 한 번 답한 재요청)면 "광주"처럼 동명이지역이어도 다시 묻지 않고
+  // 기본 해석으로 확정한다 — 같은 질문을 무한 반복하지 않기 위함(clarify는 항상 최대 1회).
+  const intent = extractIntentLocal(query, { allowAmbiguous: forcePicks });
+  if (intent.ambiguousOrigin) {
+    const { name, options } = intent.ambiguousOrigin;
+    res.status(200).json({
+      needsClarification: true,
+      question: `"${name}"는 ${options.join(' 또는 ')}, 이렇게 여러 곳이 있어서 헷갈려요. 어느 지역을 말씀하시는 걸까요?`,
+    });
+    return;
+  }
+
   try {
     const supabase = getSupabase();
     const { data: episodes, error } = await supabase
@@ -58,18 +70,23 @@ module.exports = async function handler(req, res) {
       .select('episode,title,region,restaurants,verified');
     if (error) throw error;
 
-    const intent = extractIntentLocal(query);
-
+    // 출발지 우선순위: (1) "지금 나는 ~인데"처럼 1인칭으로 명시된 텍스트 위치 — 사용자가 GPS보다
+    // 방금 더 구체적으로 정정한 것이므로 최우선 (2) GPS "내 위치" (3) 그 외 텍스트에서 추정한 위치
     let originPoint = null;
     let originLabel = null;
     let notice = null;
-    if (hasCoords) {
+    if (intent.origin && intent.originExplicit) {
+      originPoint = await geocodeAddress(intent.origin);
+      originLabel = intent.origin;
+    } else if (hasCoords) {
       originPoint = { lat: coords.lat, lng: coords.lng };
       originLabel = '현재 위치';
     } else if (intent.origin) {
       originPoint = await geocodeAddress(intent.origin);
       originLabel = intent.origin;
-      if (!originPoint) notice = `"${intent.origin}" 위치를 확인하지 못해 지역 조건 없이 추천했습니다.`;
+    }
+    if (originLabel && !originPoint) {
+      notice = `"${originLabel}" 위치를 확인하지 못해 지역 조건 없이 추천했습니다.`;
     }
 
     const radiusKm = originPoint ? minutesToRadiusKm(resolveRadiusMinutes(intent.radiusMinutes)) : null;

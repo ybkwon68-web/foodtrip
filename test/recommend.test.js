@@ -8,6 +8,7 @@ const {
   toPromptCandidates,
   extractRadiusMinutes,
   extractRelevanceKeywords,
+  extractOwnOrigin,
   extractIntentLocal,
   parseRecommendResponse,
 } = require('../lib/recommend');
@@ -127,9 +128,71 @@ test('extractRadiusMinutes는 "N시간"/"N분"/"N시간 M분" 표현에서 분 �
 test('extractIntentLocal은 Gemini 호출 없이 출발지·이동시간을 함께 추출한다', () => {
   assert.deepStrictEqual(extractIntentLocal('지금 나는 과천인데, 이동거리 1시간 이내로 알려줘'), {
     origin: '경기도 과천시',
+    originExplicit: true,
+    ambiguousOrigin: null,
     radiusMinutes: 60,
   });
-  assert.deepStrictEqual(extractIntentLocal('그냥 아무 데나 알려줘'), { origin: null, radiusMinutes: null });
+  assert.deepStrictEqual(extractIntentLocal('그냥 아무 데나 알려줘'), {
+    origin: null,
+    originExplicit: false,
+    ambiguousOrigin: null,
+    radiusMinutes: null,
+  });
+});
+
+test('extractOwnOrigin은 1인칭 문맥("지금 나는 ~")으로 명시된 지명을 explicit:true로 최우선 채택한다', () => {
+  assert.deepStrictEqual(extractOwnOrigin('지금 전주인데 맛있는집 추천해줘'), {
+    origin: '전북특별자치도 전주시',
+    explicit: true,
+    ambiguous: null,
+  });
+  assert.deepStrictEqual(extractOwnOrigin('저는 과천에 사는데 조용한 곳 알려줘'), {
+    origin: '경기도 과천시',
+    explicit: true,
+    ambiguous: null,
+  });
+});
+
+test('extractOwnOrigin은 3인칭 문맥("친구는 ~")으로만 언급된 지명은 후보에서 제외한다(강남 오인식 사고 재현)', () => {
+  const q = '친구들과 저녁식사와 술한잔을 같이 할 장소를 추천해줘. 친구들은 위례, 서울 강남이 집이라 셋이 모이기 편한곳으로';
+  assert.deepStrictEqual(extractOwnOrigin(q), { origin: null, explicit: false, ambiguous: null });
+});
+
+test('extractOwnOrigin은 1인칭·3인칭 지명이 함께 나오면 1인칭 쪽만 채택한다', () => {
+  const q = '친구는 강남에 살고, 나는 지금 과천이야';
+  assert.deepStrictEqual(extractOwnOrigin(q), { origin: '경기도 과천시', explicit: true, ambiguous: null });
+});
+
+test('extractOwnOrigin은 화자 표현이 전혀 없으면 기존 규칙(긴 이름/뒤쪽 우선)으로 explicit:false 채택한다', () => {
+  assert.deepStrictEqual(extractOwnOrigin('과천에서 이동거리 1시간 이내로'), {
+    origin: '경기도 과천시',
+    explicit: false,
+    ambiguous: null,
+  });
+});
+
+test('extractOwnOrigin은 "광주"처럼 동명이지역인 지명은 확정하지 않고 후보 목록과 함께 되묻기 신호를 준다', () => {
+  const result = extractOwnOrigin('지금 광주인데 맛있는집 추천해줘');
+  assert.strictEqual(result.origin, null);
+  assert.strictEqual(result.explicit, false);
+  assert.deepStrictEqual(new Set(result.ambiguous.options), new Set(['광주광역시', '경기도 광주시']));
+  assert.strictEqual(result.ambiguous.name, '광주');
+});
+
+test('extractOwnOrigin은 "경기도 광주"처럼 구체적으로 쓰면 동명이지역이어도 바로 확정한다', () => {
+  assert.deepStrictEqual(extractOwnOrigin('지금 경기도 광주인데 맛있는집 추천해줘'), {
+    origin: '경기도 광주시',
+    explicit: true,
+    ambiguous: null,
+  });
+});
+
+test('extractOwnOrigin은 allowAmbiguous:true면 동명이지역이어도 되묻지 않고 기본 해석으로 확정한다', () => {
+  assert.deepStrictEqual(extractOwnOrigin('지금 광주인데 맛있는집 추천해줘', { allowAmbiguous: true }), {
+    origin: '광주광역시',
+    explicit: true,
+    ambiguous: null,
+  });
 });
 
 test('parseRecommendResponse는 picks 형식 응답에서 후보 목록에 실제로 있는 (episode,name)만 채택하고 최대 3개로 제한한다', () => {
