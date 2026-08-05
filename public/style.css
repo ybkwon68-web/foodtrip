@@ -30,29 +30,37 @@
 
 @media (max-width: 720px) {
   .site-header {
-    padding: 14px 16px;
+    padding: 10px 14px;
     align-items: flex-start;
   }
   .controls {
     width: 100%;
     align-items: stretch;
+    gap: 6px;
   }
   .controls-row {
-    flex-direction: column;
     align-items: stretch;
   }
   .search-box {
     min-width: 0;
     width: 100%;
-    padding: 10px 12px;
-    min-height: 44px;
+    padding: 8px 12px;
+    min-height: 38px;
   }
   .sort-select,
   .edit-toggle {
-    width: 100%;
+    flex: 1;
+    min-width: 0;
     justify-content: center;
-    min-height: 44px;
-    padding: 10px 12px;
+    min-height: 36px;
+    padding: 7px 6px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  /* 모바일에서는 콘텐츠 영역을 넓게 쓰도록 관리자 전용 기능(추가등록/편집모드) 숨김 */
+  #addEntryLink,
+  #editToggle {
+    display: none;
   }
   .creator-credit {
     align-self: flex-start;
