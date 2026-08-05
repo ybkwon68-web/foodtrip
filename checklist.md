@@ -161,3 +161,10 @@
 - [x] `#addEntryLink`(추가등록)·`#editToggle`(편집모드)를 모바일에서 `display:none`으로 완전히 숨김(로그인/편집모드 상태와 무관하게 항상 숨김)
 - [x] Playwright(`npx playwright screenshot`)로 390×844 모바일 뷰포트 실제 렌더링 캡처해 확인 — 헤더가 검색창 1줄+정렬/표/지도 1줄로 축소됨, 추가등록·편집모드 완전히 안 보임을 확인
 - [ ] 확인 중 "지도로 보기" 링크에 밑줄이 보이는 기존 스타일 이슈 발견(`.edit-toggle`에 `text-decoration:none`이 원래 없음) — 이번 작업 범위 밖이라 손대지 않음, 필요하면 별도로 정리
+
+## 16단계: 2026-08-05 지도로 보기 — "내 위치로 보기" 버튼 추가
+- [x] `public/map.html`에 `#map`을 감싸는 `.map-wrap` 추가하고 지도 오른쪽 아래에 `#mapLocateBtn`(📍) 버튼 배치(줌 컨트롤 TOP_RIGHT·네이버 로고와 안 겹치는 위치)
+- [x] `public/map.js`의 `locateMe()` — 브라우저 위치 권한 요청 → 성공하면 그 위치로 지도 이동(줌 15) + 파란 점 마커 표시(재클릭 시 마커 위치만 갱신, 중복 생성 안 함). 이 마커는 식당 클러스터링 대상(`markers` 배열)과 분리된 별도 `naver.maps.Marker`라 검색 필터링에 영향 없음. 거부/미지원 시 안내 문구 표시(recommend 페이지 "내 위치" 버튼과 동일 패턴)
+- [x] `public/style.css`에 `.map-locate-btn`(원형 플로팅 버튼)·`.map-locate-status`·`.map-my-location-dot` 스타일 추가
+- [x] Playwright로 데스크톱(1280×720)·모바일(390×844) 뷰포트 둘 다 `context.grantPermissions(['geolocation'])`+가짜 좌표(과천)로 실제 클릭까지 검증 — 지도가 정확히 과천시청 근처로 이동하고 마커가 찍힘, 버튼 위치가 줌 컨트롤·네이버 로고와 안 겹침을 스크린샷으로 확인
+- [x] `vercel dev`(포트 8000)로 로컬 서버 띄워 사용자가 직접 브라우저에서 확인 완료

@@ -1077,12 +1077,48 @@ button, a, input, select, textarea {
 /* 지도로 보기 */
 .map-page { max-width: 1400px; margin: 0 auto; padding: 18px 28px 40px; }
 .map-page .result-count { max-width: none; margin: 0 0 10px; padding: 0; }
+.map-wrap { position: relative; }
 #map {
   width: 100%;
   height: 75vh;
   min-height: 420px;
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
+}
+.map-locate-btn {
+  position: absolute;
+  right: 12px;
+  bottom: 24px;
+  z-index: 5;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--paper-raised);
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+.map-locate-btn:hover { border-color: var(--accent); color: var(--accent); }
+.map-locate-btn:disabled { opacity: 0.6; cursor: default; }
+.map-locate-status {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--brass);
+  text-align: center;
+}
+.map-my-location-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #4285f4;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.4), 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 .map-note { margin-top: 10px; font-size: 12px; color: var(--ink-soft); }
 .map-info {

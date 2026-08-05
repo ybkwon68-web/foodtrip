@@ -3,12 +3,15 @@ const DATA_URL = './data/episodes.json';
 
 const mapCount = document.getElementById('mapCount');
 const mapSearch = document.getElementById('mapSearch');
+const mapLocateBtn = document.getElementById('mapLocateBtn');
+const mapLocateStatus = document.getElementById('mapLocateStatus');
 
 let episodes = [];
 let markers = []; // { marker, haystack }
 let activeInfoWindow = null;
 let map;
 let clustering;
+let myLocationMarker = null; // 클러스터링 대상이 아닌, "내 위치"를 표시하는 별도 마커
 
 // 마커 개수 구간별로 커지는 원형 클러스터 뱃지 (2~9 / 10~49 / 50+)
 function clusterIconDef(size, sizeClass) {
@@ -145,6 +148,52 @@ function render() {
   applyClustering(active);
   mapCount.textContent = `총 ${active.length}개 식당 표시 중 (좌표 확인된 전체 ${markers.length}개)`;
 }
+
+// "내 위치로 보기" 버튼: 브라우저 위치 권한을 요청해 지도를 그 위치로 이동시키고
+// 별도 마커(파란 점)로 표시한다. 클러스터링 대상(식당 마커)과는 분리된 마커.
+function locateMe() {
+  if (!navigator.geolocation) {
+    mapLocateStatus.textContent = '이 브라우저는 위치 사용을 지원하지 않습니다.';
+    mapLocateStatus.hidden = false;
+    return;
+  }
+
+  mapLocateBtn.disabled = true;
+  mapLocateStatus.hidden = true;
+
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      const latlng = new naver.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+      if (myLocationMarker) {
+        myLocationMarker.setPosition(latlng);
+      } else {
+        myLocationMarker = new naver.maps.Marker({
+          position: latlng,
+          map,
+          zIndex: 200,
+          icon: {
+            content: '<div class="map-my-location-dot"></div>',
+            size: new naver.maps.Size(16, 16),
+            anchor: new naver.maps.Point(8, 8),
+          },
+        });
+      }
+      map.setCenter(latlng);
+      map.setZoom(15);
+      mapLocateBtn.disabled = false;
+    },
+    (err) => {
+      mapLocateStatus.textContent =
+        err.code === err.PERMISSION_DENIED
+          ? '위치 권한이 거부되어 사용할 수 없습니다. 브라우저 설정에서 허용해주세요.'
+          : '위치를 확인하지 못했습니다. 잠시 후 다시 시도해주세요.';
+      mapLocateStatus.hidden = false;
+      mapLocateBtn.disabled = false;
+    },
+    { timeout: 8000 }
+  );
+}
+mapLocateBtn.addEventListener('click', locateMe);
 
 function init() {
   map = new naver.maps.Map('map', {
