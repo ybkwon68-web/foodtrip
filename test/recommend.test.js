@@ -195,6 +195,20 @@ test('extractOwnOrigin은 allowAmbiguous:true면 동명이지역이어도 되묻
   });
 });
 
+test('extractOwnOrigin은 마침표로 절이 끊겨 있으면 뒤 절의 지명을 앞 절의 3인칭 문맥과 섞지 않는다(되묻기 답변 이어붙이기 사고 재현)', () => {
+  // "친구들은 ~" 문장 뒤에 마침표 없이 바로 답변("경기도 광주야")을 이어붙이면, 그 답변의 지명까지
+  // 앞 문장의 "친구들은"에 걸려 3인칭으로 오인되던 사고가 있었음(public/recommend.js가 이제
+  // "${lastQuery}. ${typed}"처럼 마침표를 넣어 이어붙이도록 수정됨). 마침표로 절이 분리되면
+  // 뒤 절의 "경기도 광주"는 앞 절 문맥과 무관하게 그 자체로 채택돼야 한다.
+  const q =
+    '친구들과 저녁식사와 술한잔을 같이 할 장소를 추천해줘. 나는 광주고, 친구들은 위례와 서울 강남이 집이라 셋이 모이기 편한곳으로. 경기도 광주야';
+  assert.deepStrictEqual(extractOwnOrigin(q, { allowAmbiguous: true }), {
+    origin: '경기도 광주시',
+    explicit: false,
+    ambiguous: null,
+  });
+});
+
 test('parseRecommendResponse는 picks 형식 응답에서 후보 목록에 실제로 있는 (episode,name)만 채택하고 최대 3개로 제한한다', () => {
   const candidates = buildCandidateList(sampleEpisodes, {});
   const text = JSON.stringify({

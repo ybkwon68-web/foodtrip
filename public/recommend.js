@@ -182,9 +182,12 @@ async function runRecommend(query, exclude, forcePicks, coords) {
 }
 
 // 되묻기 질문에 대한 답을 처리한다: 원래 질문 + 답변을 이어붙여 forcePicks:true로 재요청(1회 제한).
+// 마침표로 문장을 끊어서 붙인다 — 그냥 공백만으로 이으면 서버의 "1인칭/3인칭 문맥 판단"이 원래
+// 문장 끝부분(예: "친구들은 ~")과 답변을 같은 절로 묶어버려, 답변으로 새로 말한 위치가 제3자
+// 위치로 오인되는 문제가 있었음(예: 되묻기에 "경기도 광주야"라고 답해도 인식이 안 되던 사고).
 function submitClarifyAnswer(typed) {
   if (!typed) return;
-  const combined = `${lastQuery} ${typed}`.trim();
+  const combined = `${lastQuery}. ${typed}`.trim();
   awaitingAnswer = false;
   runRecommend(combined, [], true, originCoords);
 }
