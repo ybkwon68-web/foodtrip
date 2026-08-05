@@ -39,10 +39,16 @@ function actionsHtml(withRetry) {
   return `<div class="recommend-actions">${withRetry ? retryButtonHtml : ''}${closeButtonHtml}</div>`;
 }
 
+// 값을 비우면서 자동으로 늘어난 높이도 함께 초기화한다(안 하면 빈 칸인데 예전 높이만큼 커 보임).
+function resetRecommendInput() {
+  recommendInput.value = '';
+  recommendInput.style.height = 'auto';
+}
+
 function closeRecommendResult() {
   recommendResult.hidden = true;
   recommendResult.innerHTML = '';
-  recommendInput.value = '';
+  resetRecommendInput();
   lastQuery = '';
   lastPicks = [];
   lastOriginCoords = null;
@@ -50,9 +56,15 @@ function closeRecommendResult() {
 }
 
 function renderClarifyQuestion(question) {
-  recommendResult.innerHTML = `${actionsHtml(false)}<p class="recommend-clarify">${escapeHtmlForRecommend(question)}</p>`;
-  recommendInput.value = '';
-  recommendInput.focus();
+  recommendResult.innerHTML = `${actionsHtml(false)}<div class="recommend-clarify">
+    <p class="recommend-clarify-question">${escapeHtmlForRecommend(question)}</p>
+    <form id="recommendClarifyForm" class="recommend-clarify-form">
+      <input type="text" id="recommendClarifyInput" class="recommend-clarify-input" placeholder="여기에 답변을 입력해주세요">
+      <button type="submit" class="recommend-clarify-submit">답변하기</button>
+    </form>
+  </div>`;
+  resetRecommendInput();
+  document.getElementById('recommendClarifyInput')?.focus();
 }
 
 function renderRecommendResult(data) {
@@ -169,6 +181,14 @@ async function runRecommend(query, exclude, forcePicks, coords) {
   }
 }
 
+// 되묻기 질문에 대한 답을 처리한다: 원래 질문 + 답변을 이어붙여 forcePicks:true로 재요청(1회 제한).
+function submitClarifyAnswer(typed) {
+  if (!typed) return;
+  const combined = `${lastQuery} ${typed}`.trim();
+  awaitingAnswer = false;
+  runRecommend(combined, [], true, originCoords);
+}
+
 recommendResult.addEventListener('click', (e) => {
   if (e.target.closest('#recommendClose')) {
     closeRecommendResult();
@@ -180,16 +200,22 @@ recommendResult.addEventListener('click', (e) => {
   }
 });
 
+recommendResult.addEventListener('submit', (e) => {
+  if (e.target.id !== 'recommendClarifyForm') return;
+  e.preventDefault();
+  const input = document.getElementById('recommendClarifyInput');
+  submitClarifyAnswer((input?.value || '').trim());
+});
+
 recommendForm.addEventListener('submit', (e) => {
   e.preventDefault();
   const typed = recommendInput.value.trim();
   if (!typed) return;
 
   if (awaitingAnswer) {
-    // 되묻기는 1회로 제한 — 답을 이어붙여 다시 요청하고, 이후엔 forcePicks로 반드시 추천하게 한다.
-    const combined = `${lastQuery} ${typed}`.trim();
-    awaitingAnswer = false;
-    runRecommend(combined, [], true, originCoords);
+    // 되묻기 답변 전용 입력창(recommendClarifyForm)이 따로 있지만, 위쪽 검색창에 바로 입력해도
+    // 동일하게 처리되도록 남겨둔다(보조 경로).
+    submitClarifyAnswer(typed);
     return;
   }
 

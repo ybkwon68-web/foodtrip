@@ -76,6 +76,12 @@
   .recommend-buttons #recommendSubmit {
     flex: 1;
   }
+  .recommend-clarify-form {
+    flex-direction: column;
+  }
+  .recommend-clarify-input {
+    max-width: none;
+  }
   .grid {
     grid-template-columns: 1fr;
     padding: 14px 16px 40px;
@@ -524,14 +530,46 @@ button, a, input, select, textarea {
 }
 .recommend-clarify {
   text-align: center;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--brass);
   border: 1px dashed var(--brass);
   border-radius: var(--radius-card);
   padding: 12px 16px;
   margin: 0 0 10px;
 }
+.recommend-clarify-question {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--brass);
+  margin: 0 0 10px;
+}
+.recommend-clarify-form {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+.recommend-clarify-input {
+  flex: 1;
+  max-width: 320px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--paper-raised);
+  color: var(--ink);
+  font-size: 13.5px;
+  padding: 8px 12px;
+}
+.recommend-clarify-input:focus { outline: none; border-color: var(--accent); }
+.recommend-clarify-submit {
+  flex: none;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-card);
+  background: var(--accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 16px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.recommend-clarify-submit:hover { opacity: 0.9; }
 .recommend-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
