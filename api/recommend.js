@@ -174,6 +174,7 @@ module.exports = async function handler(req, res) {
       notice,
     });
   } catch (err) {
-    res.status(err.quotaExceeded ? 429 : 500).json({ error: err.message });
+    const status = err.quotaExceeded ? 429 : err.serviceUnavailable ? 503 : 500;
+    res.status(status).json({ error: err.message });
   }
 };
