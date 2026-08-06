@@ -40,6 +40,7 @@ const searchInput = document.getElementById('searchInput');
 const sortSelect = document.getElementById('sortSelect');
 const editToggle = document.getElementById('editToggle');
 const addEntryLink = document.getElementById('addEntryLink');
+const adminCheckPanel = document.getElementById('adminCheckPanel');
 
 const pencilIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>';
 
@@ -71,6 +72,7 @@ function setEditing(value) {
     : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>편집 모드';
   grid.classList.toggle('editing', editing);
   if (addEntryLink) addEntryLink.hidden = !editing;
+  if (adminCheckPanel) adminCheckPanel.hidden = !editing;
   if (editing) {
     showStatus('편집 모드가 켜졌습니다. 회차를 선택해 식당 정보를 수정해보세요.', 'success', 2200);
   }
@@ -794,6 +796,101 @@ editToggle.addEventListener('click', async () => {
   passwordInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') submitLogin();
   });
+});
+
+// 폐업·이전 자동 점검 패널 — crawler/check_status.py를 터미널 없이 웹에서 돌리는 UI.
+// 회차 범위를 순회하며 /api/admin/checkStatus를 하나씩(=회차 1개씩) 호출한다 — 서버리스 함수
+// 실행시간 제한 때문에 전체 범위를 한 요청으로 처리할 수 없어, 브라우저가 순차 호출을 주도하고
+// 진행 상황/결과를 그때그때 화면에 반영하는 방식으로 만들었다.
+const checkFromEpisodeInput = document.getElementById('checkFromEpisode');
+const checkToEpisodeInput = document.getElementById('checkToEpisode');
+const checkApplyModeInput = document.getElementById('checkApplyMode');
+const checkStartBtn = document.getElementById('checkStartBtn');
+const checkStopBtn = document.getElementById('checkStopBtn');
+const checkProgress = document.getElementById('checkProgress');
+const checkResults = document.getElementById('checkResults');
+
+let checkStopRequested = false;
+
+function appendCheckResultRow(episodeNum, item) {
+  const reasons = [];
+  if (item.closure_suspected) reasons.push('폐업/휴업 의심');
+  if (item.moved_suspected) reasons.push('이전 의심');
+  const row = document.createElement('p');
+  row.className = 'admin-check-result-row';
+  const label = reasons.length ? reasons.join('·') : '오류';
+  row.innerHTML = `<a href="#/episode/${episodeNum}">${episodeNum}회</a> ${escapeHtml(item.name)} — ${escapeHtml(label)} (${escapeHtml(item.note || '')})`;
+  checkResults.appendChild(row);
+}
+
+async function runAdminCheck() {
+  const from = Number(checkFromEpisodeInput.value);
+  const to = Number(checkToEpisodeInput.value);
+  if (!Number.isInteger(from) || !Number.isInteger(to) || from < 1 || to < from) {
+    alert('시작/끝 회차를 올바르게 입력해주세요.');
+    return;
+  }
+  const apply = checkApplyModeInput.checked;
+  const token = getAdminToken();
+  if (!token) {
+    alert('편집 모드로 로그인해주세요.');
+    return;
+  }
+
+  checkStopRequested = false;
+  checkStartBtn.disabled = true;
+  checkStopBtn.hidden = false;
+  checkResults.innerHTML = '';
+  let totalChecked = 0;
+  let totalSkipped = 0;
+  let totalFlagged = 0;
+  let stoppedAt = null;
+
+  for (let ep = from; ep <= to; ep++) {
+    if (checkStopRequested) {
+      stoppedAt = ep;
+      break;
+    }
+    checkProgress.textContent = `${ep}회 확인 중... (${ep - from + 1}/${to - from + 1}회차, 지금까지 확인 ${totalChecked}곳 · 의심 ${totalFlagged}곳)`;
+    try {
+      const res = await fetch('/api/admin/checkStatus', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ episode: ep, apply }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        if (res.status === 401) {
+          clearAdminSession();
+          setEditing(false);
+          alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
+          stoppedAt = ep;
+          break;
+        }
+        appendCheckResultRow(ep, { name: '(오류)', note: data.error || '점검 실패' });
+        continue;
+      }
+      if (data.notFound) continue;
+      totalChecked += data.checked;
+      totalSkipped += data.skipped;
+      totalFlagged += data.flagged.length;
+      data.flagged.forEach((item) => appendCheckResultRow(ep, item));
+    } catch (err) {
+      appendCheckResultRow(ep, { name: '(오류)', note: '서버에 연결할 수 없습니다.' });
+    }
+  }
+
+  const modeLabel = apply ? '실제 반영됨' : 'dry-run(결과만 확인, 반영 안 됨)';
+  checkProgress.textContent = stoppedAt
+    ? `중지됨 (${from}~${stoppedAt - 1}회차까지 진행) · 확인 ${totalChecked}곳 · 건너뜀(이미 검토됨) ${totalSkipped}곳 · 의심 ${totalFlagged}곳 · ${modeLabel}`
+    : `완료 (${from}~${to}회차) · 확인 ${totalChecked}곳 · 건너뜀(이미 검토됨) ${totalSkipped}곳 · 의심 ${totalFlagged}곳 · ${modeLabel}`;
+  checkStartBtn.disabled = false;
+  checkStopBtn.hidden = true;
+}
+
+checkStartBtn.addEventListener('click', runAdminCheck);
+checkStopBtn.addEventListener('click', () => {
+  checkStopRequested = true;
 });
 
 setEditing(editing);

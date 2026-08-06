@@ -221,10 +221,19 @@ def build_status_check(closure_suspected, moved_suspected, source, confidence, n
     return sc
 
 
-def fetch_episodes(supabase_url, service_key, episode=None):
-    params = {"select": "episode,restaurants"}
+def fetch_episodes(supabase_url, service_key, episode=None, from_episode=None, to_episode=None):
+    params = {"select": "episode,restaurants", "order": "episode.asc"}
     if episode:
         params["episode"] = f"eq.{episode}"
+    else:
+        # PostgREST는 같은 컬럼에 조건을 여러 개 걸 때 배열 파라미터(and=(...))로 묶어야 한다.
+        conds = []
+        if from_episode is not None:
+            conds.append(f"episode.gte.{from_episode}")
+        if to_episode is not None:
+            conds.append(f"episode.lte.{to_episode}")
+        if conds:
+            params["and"] = f"({','.join(conds)})"
     resp = requests.get(
         f"{supabase_url.rstrip('/')}/rest/v1/episodes",
         params=params,
@@ -311,6 +320,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--apply", action="store_true", help="실제로 Supabase에 반영(기본은 dry-run)")
     parser.add_argument("--episode", type=int, help="특정 회차만 검사(테스트용)")
+    parser.add_argument("--from-episode", type=int, help="이 회차부터(포함) 검사 — 여러 번에 나눠 돌릴 때 사용")
+    parser.add_argument("--to-episode", type=int, help="이 회차까지(포함) 검사 — 여러 번에 나눠 돌릴 때 사용")
     parser.add_argument("--limit", type=int, help="검사할 식당 수 제한(테스트용)")
     args = parser.parse_args()
 
@@ -320,7 +331,9 @@ def main():
     if not kakao_key:
         print("[안내] KAKAO_REST_API_KEY가 없어 place_id 없는 식당은 전부 건너뜁니다.")
 
-    episodes = fetch_episodes(supabase_url, service_key, args.episode)
+    episodes = fetch_episodes(supabase_url, service_key, args.episode, args.from_episode, args.to_episode)
+    if episodes:
+        print(f"[안내] {episodes[0]['episode']}회 ~ {episodes[-1]['episode']}회, 총 {len(episodes)}개 회차 검사 시작")
     session = requests.Session()
 
     checked = 0
@@ -333,6 +346,13 @@ def main():
                 continue
             if args.limit and checked >= args.limit:
                 break
+
+            existing = r.get("status_check") or {}
+            if existing.get("admin_decision") == "confirmed" and existing.get("closure_suspected"):
+                # "폐업"으로 확정된 곳만 더 볼 필요가 없어 건너뛴다. "이전"으로 확정된 곳은 그
+                # 식당이 여전히 영업 중(새 주소로)이라는 뜻이므로 나중에 또 폐업/이전할 수 있어
+                # 계속 자동 점검 대상에 남긴다 — 원복(오탐 판정)된 곳도 마찬가지로 계속 지켜본다.
+                continue
 
             print(f"[검사중] {ep['episode']}회 {r['name']}")
             status_check = check_one(session, kakao_key, r)
