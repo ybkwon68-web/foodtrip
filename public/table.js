@@ -26,6 +26,7 @@ function buildRowsFromEpisodes(episodes, reviewLookup) {
           detail_addr: detail,
           address: r.address || '',
           place_id: r.place_id || null,
+          status_check: r.status_check || null,
         });
       });
     } else {
@@ -66,6 +67,55 @@ function cell(value, extraClass) {
   return value ? `<td${cls}>${escapeHtml(value)}</td>` : `<td${cls ? cls.slice(0, -1) + ' empty-cell"' : ' class="empty-cell"'}>-</td>`;
 }
 
+// 폐업/이전 점검 스크립트(crawler/check_status.py)가 남긴 status_check가 의심 상태면 배지를 붙인다.
+// 배지를 누르면 사유(폐업/이전 등)·근거·신뢰도·확인 시각을 보여주는 말풍선이 뜬다.
+// 표로 보기는 편집모드가 없는 읽기 전용 화면이라 확정/원복 버튼은 없음 — 관리자가 회차 상세보기에서
+// 내린 결정(admin_decision)만 그대로 반영해서 보여준다.
+function statusCheckBadge(sc) {
+  if (!sc || (!sc.closure_suspected && !sc.moved_suspected)) return '';
+  if (sc.admin_decision === 'dismissed') return '';
+  const confirmed = sc.admin_decision === 'confirmed';
+  const reasons = [];
+  if (sc.closure_suspected) reasons.push(confirmed ? '폐업' : '폐업/휴업 의심');
+  if (sc.moved_suspected) reasons.push(confirmed ? '이전' : '이전 의심');
+  const confidenceLabel = sc.confidence === 'high' ? '높음' : '낮음';
+  const checkedAt = sc.checked_at ? new Date(sc.checked_at).toLocaleString('ko-KR') : '';
+  const addrRow = sc.moved_suspected && sc.candidate_address
+    ? `<span class="status-check-popup-addr">추정 새 주소: ${escapeHtml(sc.candidate_address)}</span>`
+    : '';
+  const badgeLabel = confirmed ? `🔴 ${reasons.join('·')} 확정` : '⚠️ 확인 필요';
+  const badgeClass = confirmed ? 'badge-status-check badge-status-confirmed' : 'badge-status-check';
+  // 배지가 <p> 안에 놓이는 화면(회차 상세보기·지도 인포윈도우)이 있어, 말풍선도 전부 인라인
+  // 태그(span)로만 구성한다 — <p> 안에 <div>/<p>를 넣으면 브라우저가 파싱 중 자동으로 태그를
+  // 잘라버려 말풍선 자체가 DOM에서 사라지는 문제가 실측으로 확인됨(세로 배치는 CSS display:block으로 처리).
+  return `
+    <span class="status-check-wrap">
+      <button type="button" class="${badgeClass}">${badgeLabel}</button>
+      <span class="status-check-popup" hidden>
+        <span class="status-check-popup-title">${escapeHtml(reasons.join(' · '))}</span>
+        <span class="status-check-popup-note">${escapeHtml(sc.note || '')}</span>
+        ${addrRow}
+        <span class="status-check-popup-meta">신뢰도: ${confidenceLabel}${checkedAt ? ` · ${checkedAt} 확인` : ''}</span>
+      </span>
+    </span>
+  `;
+}
+
+// 배지 클릭 시 해당 말풍선만 토글하고, 그 외 클릭은 열려있는 말풍선을 전부 닫는다.
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.badge-status-check');
+  const openPopups = document.querySelectorAll('.status-check-popup:not([hidden])');
+  if (!btn) {
+    openPopups.forEach((p) => { p.hidden = true; });
+    return;
+  }
+  e.stopPropagation();
+  const popup = btn.nextElementSibling;
+  const wasHidden = popup.hidden;
+  openPopups.forEach((p) => { p.hidden = true; });
+  popup.hidden = !wasHidden;
+});
+
 // 네이버 플레이스 ID가 있으면 정확한 장소 페이지로, 없으면 이름+주소 검색으로 연결
 function mapUrl(r) {
   if (r.place_id) {
@@ -79,10 +129,13 @@ function rowTemplate(r) {
   const mapCell = r.address
     ? `<td><a class="spot-link" href="${mapUrl(r)}" target="_blank" rel="noopener">네이버맵 ↗</a></td>`
     : `<td class="empty-cell">-</td>`;
+  const nameCell = r.restaurant_name
+    ? `<td class="col-name">${escapeHtml(r.restaurant_name)}${statusCheckBadge(r.status_check)}</td>`
+    : `<td class="col-name empty-cell">-</td>`;
   return `
     <tr>
       <td class="col-ep"><a href="./index.html#/episode/${r.episode}">제${r.episode}회</a></td>
-      ${cell(r.restaurant_name, 'col-name')}
+      ${nameCell}
       ${cell(r.menu, 'col-menu')}
       ${cell(r.review, 'col-review')}
       ${cell(r.sido)}

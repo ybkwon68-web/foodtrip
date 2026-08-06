@@ -16,6 +16,11 @@ async function cleanRestaurants(input) {
       lat: typeof r.lat === 'number' ? r.lat : null,
       lng: typeof r.lng === 'number' ? r.lng : null,
       place_id: r.place_id || null,
+      // 폐업/이전 점검 스크립트(crawler/check_status.py)가 남긴 점검 기록. 이 필드는 편집 폼에
+      // 입력칸이 없어 그냥 두면 유실되므로(프론트가 name/address/menu/review/tel/lat/lng/place_id만
+      // 다시 보내옴) 그대로 통과시켜 보존한다 — 안 그러면 이 회차의 아무 식당이나 한 번만 저장해도
+      // 전체 status_check가 조용히 사라지는 문제가 있었음.
+      status_check: r.status_check && typeof r.status_check === 'object' ? r.status_check : null,
     }));
 
   // 좌표가 없는(신규 등록·주소 변경) 식당은 저장 전에 자동으로 지오코딩을 시도한다.

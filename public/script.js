@@ -28,6 +28,9 @@ const authenticateAdmin = editModeFlow?.authenticateAdmin || async function () {
 const saveRestaurantEdit = editModeFlow?.saveRestaurantEdit || async function () {
   return { ok: false, error: '편집 저장 모듈을 불러오지 못했습니다.' };
 };
+const submitStatusCheckDecision = editModeFlow?.submitStatusCheckDecision || async function () {
+  return { ok: false, error: '점검 처리 모듈을 불러오지 못했습니다.' };
+};
 
 const grid = document.getElementById('grid');
 const resultCount = document.getElementById('resultCount');
@@ -208,13 +211,250 @@ function findEpisode(epNum) {
   return episodes.find((e) => String(e.episode) === String(epNum));
 }
 
-function restaurantViewRow(r) {
+// 폐업/이전 점검 스크립트(crawler/check_status.py)가 남긴 status_check가 의심 상태면 배지를 붙인다.
+// 배지를 누르면 사유(폐업/이전 등)·근거·신뢰도·확인 시각을 보여주는 말풍선이 뜬다.
+// admin_decision이 "dismissed"면 배지 자체를 표시하지 않고(정상으로 원복됨), "confirmed"면
+// 색을 바꿔 확정됐음을 표시한다. 편집모드일 때만 "확정"/"정상으로 되돌리기" 버튼을 보여주고,
+// 실제 서버 반영은 이 버튼을 통해서만 이뤄진다(그 외에는 표시만 함).
+function statusCheckBadge(sc, episodeNum, restaurantName) {
+  if (!sc || (!sc.closure_suspected && !sc.moved_suspected)) return '';
+  if (sc.admin_decision === 'dismissed') return '';
+  const confirmed = sc.admin_decision === 'confirmed';
+  const reasons = [];
+  if (sc.closure_suspected) reasons.push(confirmed ? '폐업' : '폐업/휴업 의심');
+  if (sc.moved_suspected) reasons.push(confirmed ? '이전' : '이전 의심');
+  const confidenceLabel = sc.confidence === 'high' ? '높음' : '낮음';
+  const checkedAt = sc.checked_at ? new Date(sc.checked_at).toLocaleString('ko-KR') : '';
+  const addrRow = sc.moved_suspected && sc.candidate_address
+    ? `<span class="status-check-popup-addr">추정 새 주소: ${escapeHtml(sc.candidate_address)}</span>`
+    : '';
+  const badgeLabel = confirmed ? `🔴 ${reasons.join('·')} 확정` : '⚠️ 확인 필요';
+  const badgeClass = confirmed ? 'badge-status-check badge-status-confirmed' : 'badge-status-check';
+  const nameAttr = escapeHtml(restaurantName || '');
+  // 이미 확정된 상태에서 "확정"을 또 눌러도 실질적인 변화가 없어 혼란만 준다는 사용자 피드백으로,
+  // 확정 상태에서는 "정상으로 되돌리기"만 남기고 "확정" 버튼은 숨긴다.
+  const confirmBtn = confirmed
+    ? ''
+    : `<button type="button" class="status-check-action" data-episode="${episodeNum}" data-name="${nameAttr}" data-decision="confirmed">확정</button>`;
+  const actionsRow = editing
+    ? `<span class="status-check-popup-actions">
+        ${confirmBtn}
+        <button type="button" class="status-check-action" data-episode="${episodeNum}" data-name="${nameAttr}" data-decision="dismissed">정상으로 되돌리기</button>
+      </span>`
+    : '';
+  // 배지가 <p> 안에 놓이는 화면(회차 상세보기·지도 인포윈도우)이 있어, 말풍선도 전부 인라인
+  // 태그(span)로만 구성한다 — <p> 안에 <div>/<p>를 넣으면 브라우저가 파싱 중 자동으로 태그를
+  // 잘라버려 말풍선 자체가 DOM에서 사라지는 문제가 실측으로 확인됨(세로 배치는 CSS display:block으로 처리).
+  return `
+    <span class="status-check-wrap">
+      <button type="button" class="${badgeClass}">${badgeLabel}</button>
+      <span class="status-check-popup" hidden>
+        <span class="status-check-popup-title">${escapeHtml(reasons.join(' · '))}</span>
+        <span class="status-check-popup-note">${escapeHtml(sc.note || '')}</span>
+        ${addrRow}
+        <span class="status-check-popup-meta">신뢰도: ${confidenceLabel}${checkedAt ? ` · ${checkedAt} 확인` : ''}</span>
+        ${actionsRow}
+      </span>
+    </span>
+  `;
+}
+
+// 자동 점검이 아직 배지를 안 남긴 식당(정상으로 확인됐거나, 아예 점검 전이거나, 원복된 경우)에
+// 관리자가 직접 폐업/이전을 알게 됐을 때 스스로 등록할 수 있는 작은 링크. 누르면 바로 "확정"
+// 상태로 등록된다(본인이 직접 확인한 것이므로 "의심" 단계를 거칠 필요가 없다는 사용자 요청).
+function manualFlagLink(episodeNum, restaurantName) {
+  if (!editing) return '';
+  const nameAttr = escapeHtml(restaurantName || '');
+  return `
+    <span class="status-check-manual-wrap">
+      <button type="button" class="status-check-manual-link" data-episode="${episodeNum}" data-name="${nameAttr}">폐업/이전 등록</button>
+      <span class="status-check-manual-form" hidden>
+        <label><input type="checkbox" class="sc-manual-closure"> 폐업/휴업</label>
+        <label><input type="checkbox" class="sc-manual-moved"> 이전</label>
+        <input type="text" class="sc-manual-address" placeholder="새 주소(선택)" hidden>
+        <button type="button" class="sc-manual-submit" data-episode="${episodeNum}" data-name="${nameAttr}">등록</button>
+        <button type="button" class="sc-manual-cancel">취소</button>
+      </span>
+    </span>
+  `;
+}
+
+// 배지/말풍선 클릭 시 해당 말풍선만 토글하고, 그 외 클릭은 열려있는 말풍선을 전부 닫는다.
+// "확정"/"정상으로 되돌리기"/"등록" 버튼 클릭은 서버에 반영한 뒤 상세보기를 다시 그린다.
+document.addEventListener('click', (e) => {
+  const actionBtn = e.target.closest('.status-check-action');
+  if (actionBtn) {
+    e.stopPropagation();
+    handleStatusCheckDecision(actionBtn);
+    return;
+  }
+  const manualSubmitBtn = e.target.closest('.sc-manual-submit');
+  if (manualSubmitBtn) {
+    e.stopPropagation();
+    handleManualFlagSubmit(manualSubmitBtn);
+    return;
+  }
+  if (e.target.closest('.sc-manual-cancel')) {
+    e.stopPropagation();
+    e.target.closest('.status-check-manual-form').hidden = true;
+    return;
+  }
+  const manualLink = e.target.closest('.status-check-manual-link');
+  if (manualLink) {
+    e.stopPropagation();
+    const form = manualLink.nextElementSibling;
+    const wasHidden = form.hidden;
+    document.querySelectorAll('.status-check-popup:not([hidden]), .status-check-manual-form:not([hidden])').forEach((p) => { p.hidden = true; });
+    form.hidden = !wasHidden;
+    return;
+  }
+  // 열려있는 등록 폼 안(체크박스·주소 입력칸 등)을 클릭한 거면 폼을 닫지 않는다 — 이 분기가
+  // 없으면 체크박스를 누르는 순간 아래 "그 외 클릭은 전부 닫기" 로직에 걸려 폼이 바로 닫혀버림.
+  if (e.target.closest('.status-check-manual-form')) return;
+  const btn = e.target.closest('.badge-status-check');
+  const openPopups = document.querySelectorAll('.status-check-popup:not([hidden]), .status-check-manual-form:not([hidden])');
+  if (!btn) {
+    openPopups.forEach((p) => { p.hidden = true; });
+    return;
+  }
+  e.stopPropagation();
+  const popup = btn.nextElementSibling;
+  const wasHidden = popup.hidden;
+  openPopups.forEach((p) => { p.hidden = true; });
+  popup.hidden = !wasHidden;
+});
+
+// "이전" 체크박스를 켜면 새 주소 입력칸을 보여준다.
+document.addEventListener('change', (e) => {
+  if (!e.target.classList.contains('sc-manual-moved')) return;
+  const form = e.target.closest('.status-check-manual-form');
+  const addrInput = form.querySelector('.sc-manual-address');
+  addrInput.hidden = !e.target.checked;
+});
+
+async function handleManualFlagSubmit(btn) {
+  const form = btn.closest('.status-check-manual-form');
+  const closureSuspected = form.querySelector('.sc-manual-closure').checked;
+  const movedSuspected = form.querySelector('.sc-manual-moved').checked;
+  const candidateAddress = form.querySelector('.sc-manual-address').value.trim();
+  if (!closureSuspected && !movedSuspected) {
+    alert('폐업/휴업 또는 이전 중 최소 하나는 선택해주세요.');
+    return;
+  }
+
+  const episodeNum = Number(btn.dataset.episode);
+  const name = btn.dataset.name;
+  const token = getAdminToken();
+  if (!token) return;
+
+  btn.disabled = true;
+  const isLocalDev = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  const result = await submitStatusCheckDecision({
+    episodeId: episodeNum,
+    name,
+    decision: 'confirmed',
+    token,
+    extra: { closureSuspected, movedSuspected, candidateAddress },
+    localDevOverride: isLocalDev,
+    decisionRequest: async ({ episodeId, name: rName, decision: rDecision, token: authToken, extra }) => {
+      try {
+        const res = await fetch(`/api/episodes/${episodeId}/status`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${authToken}` },
+          body: JSON.stringify({ name: rName, decision: rDecision, ...extra }),
+        });
+        const data = await res.json();
+        return { ok: res.ok, status: res.status, data, error: data && data.error };
+      } catch (err) {
+        return { ok: false, status: 0, error: '서버에 연결할 수 없습니다.' };
+      }
+    },
+  });
+
+  if (!result.ok) {
+    btn.disabled = false;
+    if (result.expired) {
+      clearAdminSession();
+      editing = false;
+    }
+    alert(result.error || '처리에 실패했습니다.');
+    return;
+  }
+
+  const ep = findEpisode(episodeNum);
+  const target = ep && (ep.restaurants || []).find((r) => r.name === name);
+  // "확정" 시 서버가 address/lat/lng/place_id/tel도 같이 갱신했을 수 있어(이전 등록 확정 시
+  // 실제 위치 반영), status_check만 반영하면 화면이 예전 주소로 다시 그려지는 문제가 있었음 —
+  // 서버가 함께 보내주는 최신 식당 객체 전체를 그대로 덮어쓴다.
+  if (target && result.data?.restaurant) Object.assign(target, result.data.restaurant);
+  else if (target) target.status_check = result.data?.status_check;
+  renderDetail(episodeNum);
+}
+
+async function handleStatusCheckDecision(btn) {
+  const episodeNum = Number(btn.dataset.episode);
+  const name = btn.dataset.name;
+  const decision = btn.dataset.decision;
+  const token = getAdminToken();
+  if (!token) return;
+
+  btn.disabled = true;
+  const isLocalDev = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  const result = await submitStatusCheckDecision({
+    episodeId: episodeNum,
+    name,
+    decision,
+    token,
+    localDevOverride: isLocalDev,
+    decisionRequest: async ({ episodeId, name: rName, decision: rDecision, token: authToken }) => {
+      try {
+        const res = await fetch(`/api/episodes/${episodeId}/status`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${authToken}` },
+          body: JSON.stringify({ name: rName, decision: rDecision }),
+        });
+        const data = await res.json();
+        return { ok: res.ok, status: res.status, data, error: data && data.error };
+      } catch (err) {
+        return { ok: false, status: 0, error: '서버에 연결할 수 없습니다.' };
+      }
+    },
+  });
+
+  if (!result.ok) {
+    btn.disabled = false;
+    if (result.expired) {
+      clearAdminSession();
+      editing = false;
+    }
+    alert(result.error || '처리에 실패했습니다.');
+    return;
+  }
+
+  const ep = findEpisode(episodeNum);
+  const target = ep && (ep.restaurants || []).find((r) => r.name === name);
+  if (target && result.data?.restaurant) {
+    Object.assign(target, result.data.restaurant);
+  } else if (target) {
+    target.status_check = result.data?.status_check
+      ? result.data.status_check
+      : { ...target.status_check, admin_decision: decision };
+  }
+  renderDetail(episodeNum);
+}
+
+function restaurantViewRow(r, episodeNum) {
   const addr = r.address;
   const menuRow = r.menu ? `<p class="spot-field"><strong>소개된 메뉴</strong>${escapeHtml(r.menu)}</p>` : '';
   const reviewRow = r.review ? `<p class="spot-field"><strong>한줄평</strong>${escapeHtml(r.review)}</p>` : '';
+  const sc = r.status_check;
+  const hasVisibleBadge = Boolean(sc && (sc.closure_suspected || sc.moved_suspected) && sc.admin_decision !== 'dismissed');
+  const statusMarkup = hasVisibleBadge
+    ? statusCheckBadge(sc, episodeNum, r.name)
+    : manualFlagLink(episodeNum, r.name);
   return `
     <div class="restaurant-row">
-      <p class="spot-field"><strong>식당명</strong>${escapeHtml(r.name) || '미확인'}</p>
+      <p class="spot-field"><strong>식당명</strong>${escapeHtml(r.name) || '미확인'}${statusMarkup}</p>
       <p class="spot-field"><strong>위치</strong>${addr ? escapeHtml(addr) : '미확인'}</p>
       ${menuRow}
       ${reviewRow}
@@ -265,6 +505,9 @@ function collectRestaurantRows(container) {
         lat: addressUnchanged ? orig.lat ?? null : null,
         lng: addressUnchanged ? orig.lng ?? null : null,
         place_id: addressUnchanged ? orig.place_id ?? null : null,
+        // 편집 폼에 입력칸이 없는 폐업/이전 점검 기록은 주소 변경 여부와 무관하게 항상 보존한다
+        // (안 그러면 이 회차의 아무 식당이나 한 번만 저장해도 전체 status_check가 사라짐).
+        status_check: orig.status_check || null,
       };
     })
     .filter((r) => r.name);
@@ -302,7 +545,7 @@ async function renderDetail(epNum) {
   const bodyHtml = ep.body_html ? DOMPurify.sanitize(ep.body_html) : '<p>본문을 불러오지 못했습니다.</p>';
 
   const viewRows = restaurants.length
-    ? restaurants.map(restaurantViewRow).join('')
+    ? restaurants.map((r) => restaurantViewRow(r, ep.episode)).join('')
     : `<p class="spot-field"><strong>식당명</strong>미확인</p><p class="spot-field"><strong>위치</strong>${
         truncateAddress(ep.region) ? escapeHtml(truncateAddress(ep.region)) : '미확인'
       }</p>`;
