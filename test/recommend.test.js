@@ -10,6 +10,8 @@ const {
   extractRelevanceKeywords,
   extractOwnOrigin,
   extractIntentLocal,
+  computeCentroid,
+  extractMeetupOrigins,
   parseRecommendResponse,
 } = require('../lib/recommend');
 
@@ -207,6 +209,61 @@ test('extractOwnOrigin은 마침표로 절이 끊겨 있으면 뒤 절의 지명
     explicit: false,
     ambiguous: null,
   });
+});
+
+test('computeCentroid는 여러 좌표의 위경도 평균을 반환한다', () => {
+  const result = computeCentroid([
+    { lat: 37.4, lng: 127.0 },
+    { lat: 37.6, lng: 127.2 },
+  ]);
+  assert.strictEqual(result.lat, 37.5);
+  assert.ok(Math.abs(result.lng - 127.1) < 1e-9);
+});
+
+test('extractMeetupOrigins는 "중간지점" 키워드+서로 다른 지명 2곳 이상이 있어야 동작한다', () => {
+  assert.strictEqual(extractMeetupOrigins('과천 맛집 추천해줘'), null); // 키워드 없음
+  assert.strictEqual(extractMeetupOrigins('중간지점에서 만나고 싶어'), null); // 지명 없음
+  assert.strictEqual(extractMeetupOrigins('과천 맛집 중간지점 추천'), null); // 지명 1곳뿐
+});
+
+test('extractMeetupOrigins는 "나는/친구는" 구분 없이 문장에 언급된 서로 다른 지명을 전부 참가자 위치로 모은다', () => {
+  const q = '나는 과천이고 친구들은 성남이랑 강남에 살아서 셋이 모이기 편한곳으로';
+  assert.deepStrictEqual(extractMeetupOrigins(q), {
+    origins: [
+      { name: '과천', region: '경기도 과천시' },
+      { name: '성남', region: '경기도 성남시' },
+      { name: '강남', region: '서울특별시 강남구' },
+    ],
+    ambiguous: null,
+  });
+});
+
+test('extractMeetupOrigins는 언급된 지명 중 동명이지역이 있으면 확정하지 않고 되묻기 신호를 준다', () => {
+  const q = '친구는 성남, 나는 광주인데 모이기 편한곳 추천해줘';
+  const result = extractMeetupOrigins(q);
+  assert.strictEqual(result.origins, null);
+  assert.strictEqual(result.ambiguous.name, '광주');
+  assert.deepStrictEqual(new Set(result.ambiguous.options), new Set(['광주광역시', '경기도 광주시']));
+});
+
+test('extractMeetupOrigins는 allowAmbiguous:true면 동명이지역이어도 되묻지 않고 기본 해석으로 확정한다', () => {
+  const q = '친구는 성남, 나는 광주인데 모이기 편한곳 추천해줘';
+  const result = extractMeetupOrigins(q, { allowAmbiguous: true });
+  assert.strictEqual(result.ambiguous, null);
+  assert.deepStrictEqual(
+    result.origins.map((o) => o.name).sort(),
+    ['광주', '성남']
+  );
+});
+
+test('extractMeetupOrigins는 되묻기 답변을 원문 뒤에 이어붙였을 때 남아있는 짧은 지명("광주")을 답변의 구체적인 지명("경기도 광주")과 같은 사람으로 취급해 중복 채택하지 않는다', () => {
+  const q = '나는 성남이고 친구는 광주에 살아서 모이기 편한곳 추천해줘. 경기도 광주요';
+  const result = extractMeetupOrigins(q, { allowAmbiguous: true });
+  assert.strictEqual(result.ambiguous, null);
+  assert.deepStrictEqual(result.origins, [
+    { name: '성남', region: '경기도 성남시' },
+    { name: '경기도 광주', region: '경기도 광주시' },
+  ]);
 });
 
 test('parseRecommendResponse는 picks 형식 응답에서 후보 목록에 실제로 있는 (episode,name)만 채택하고 최대 3개로 제한한다', () => {

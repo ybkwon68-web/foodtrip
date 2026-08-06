@@ -8,6 +8,10 @@ const {
   minutesToRadiusKm,
   resolveRadiusMinutes,
   extractIntentLocal,
+  extractMeetupOrigins,
+  computeCentroid,
+  clampRadiusKm,
+  haversineKm,
 } = require('../lib/recommend');
 const { pickRecommendations } = require('../lib/gemini');
 
@@ -53,8 +57,20 @@ module.exports = async function handler(req, res) {
 
   // forcePicks(되묻기에 이미 한 번 답한 재요청)면 "광주"처럼 동명이지역이어도 다시 묻지 않고
   // 기본 해석으로 확정한다 — 같은 질문을 무한 반복하지 않기 위함(clarify는 항상 최대 1회).
+  // "중간지점" 등 여러 명이 만날 곳을 찾는 문장이면 그 문장에 언급된 서로 다른 지명을 전부 참가자
+  // 위치로 보는 별도 흐름(meetup)을 우선 적용하고, 아니면 기존 단일 출발지 흐름(intent)을 쓴다.
+  const meetup = extractMeetupOrigins(query, { allowAmbiguous: forcePicks });
+  if (meetup && meetup.ambiguous) {
+    const { name, options } = meetup.ambiguous;
+    res.status(200).json({
+      needsClarification: true,
+      question: `"${name}"는 ${options.join(' 또는 ')}, 이렇게 여러 곳이 있어서 헷갈려요. 어느 지역을 말씀하시는 걸까요?`,
+    });
+    return;
+  }
+
   const intent = extractIntentLocal(query, { allowAmbiguous: forcePicks });
-  if (intent.ambiguousOrigin) {
+  if (!meetup && intent.ambiguousOrigin) {
     const { name, options } = intent.ambiguousOrigin;
     res.status(200).json({
       needsClarification: true,
@@ -70,12 +86,37 @@ module.exports = async function handler(req, res) {
       .select('episode,title,region,restaurants,verified');
     if (error) throw error;
 
-    // 출발지 우선순위: (1) "지금 나는 ~인데"처럼 1인칭으로 명시된 텍스트 위치 — 사용자가 GPS보다
-    // 방금 더 구체적으로 정정한 것이므로 최우선 (2) GPS "내 위치" (3) 그 외 텍스트에서 추정한 위치
+    // 출발지 우선순위: (0) "중간지점" 등 여러 명 만남 문장이면 언급된 지명들의 무게중심 (1) "지금
+    // 나는 ~인데"처럼 1인칭으로 명시된 텍스트 위치 — 사용자가 GPS보다 방금 더 구체적으로 정정한
+    // 것이므로 우선 (2) GPS "내 위치" (3) 그 외 텍스트에서 추정한 위치
     let originPoint = null;
     let originLabel = null;
     let notice = null;
-    if (intent.origin && intent.originExplicit) {
+    let meetupRadiusKm = null;
+
+    if (meetup && meetup.origins) {
+      const geocoded = await Promise.all(
+        meetup.origins.map(async (o) => ({ ...o, point: await geocodeAddress(o.region) }))
+      );
+      const valid = geocoded.filter((g) => g.point);
+      const allNames = meetup.origins.map((o) => o.name).join('·');
+      if (valid.length >= 2) {
+        originPoint = computeCentroid(valid.map((v) => v.point));
+        originLabel = `${valid.map((v) => v.name).join('·')} 중간지점`;
+        const maxDist = Math.max(...valid.map((v) => haversineKm(originPoint, v.point)));
+        meetupRadiusKm = clampRadiusKm(maxDist);
+        notice =
+          valid.length < geocoded.length
+            ? `${allNames} 중 일부 위치를 확인하지 못해 나머지 위치만으로 중간지점을 계산했습니다.`
+            : `${originLabel} 기준으로 찾았습니다.`;
+      } else if (valid.length === 1) {
+        originPoint = valid[0].point;
+        originLabel = valid[0].name;
+        notice = `${allNames} 중 일부 위치를 확인하지 못해 "${valid[0].name}" 기준으로 찾았습니다.`;
+      } else {
+        notice = `${allNames} 위치를 확인하지 못해 지역 조건 없이 추천했습니다.`;
+      }
+    } else if (intent.origin && intent.originExplicit) {
       originPoint = await geocodeAddress(intent.origin);
       originLabel = intent.origin;
     } else if (hasCoords) {
@@ -89,7 +130,12 @@ module.exports = async function handler(req, res) {
       notice = `"${originLabel}" 위치를 확인하지 못해 지역 조건 없이 추천했습니다.`;
     }
 
-    const radiusKm = originPoint ? minutesToRadiusKm(resolveRadiusMinutes(intent.radiusMinutes)) : null;
+    const radiusKm =
+      meetupRadiusKm != null
+        ? meetupRadiusKm
+        : originPoint
+          ? minutesToRadiusKm(resolveRadiusMinutes(intent.radiusMinutes))
+          : null;
     const allCandidates = buildCandidateList(episodes || [], { origin: originPoint, radiusKm, query });
     const candidates = excludeCandidates(allCandidates, exclude);
 
