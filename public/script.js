@@ -457,10 +457,13 @@ function restaurantViewRow(r, episodeNum) {
   return `
     <div class="restaurant-row">
       <p class="spot-field"><strong>식당명</strong>${escapeHtml(r.name) || '미확인'}${statusMarkup}</p>
-      <p class="spot-field"><strong>위치</strong>${addr ? escapeHtml(addr) : '미확인'}</p>
+      <p class="spot-field spot-field-address">
+        <strong>위치</strong>
+        <span class="spot-field-value">${addr ? escapeHtml(addr) : '미확인'}</span>
+        <a class="spot-link" href="${mapUrl(r)}" target="_blank" rel="noopener">네이버맵 ↗</a>
+      </p>
       ${menuRow}
       ${reviewRow}
-      <a class="spot-link" href="${mapUrl(r)}" target="_blank" rel="noopener">네이버맵 ↗</a>
     </div>
   `;
 }
@@ -547,7 +550,7 @@ async function renderDetail(epNum) {
   const bodyHtml = ep.body_html ? DOMPurify.sanitize(ep.body_html) : '<p>본문을 불러오지 못했습니다.</p>';
 
   const viewRows = restaurants.length
-    ? restaurants.map((r) => restaurantViewRow(r, ep.episode)).join('')
+    ? `<div class="restaurant-rows-grid">${restaurants.map((r) => restaurantViewRow(r, ep.episode)).join('')}</div>`
     : `<p class="spot-field"><strong>식당명</strong>미확인</p><p class="spot-field"><strong>위치</strong>${
         truncateAddress(ep.region) ? escapeHtml(truncateAddress(ep.region)) : '미확인'
       }</p>`;
@@ -571,12 +574,12 @@ async function renderDetail(epNum) {
           <div class="spot-panel-actions">
             ${badge}
             ${editing ? '<span class="edit-state-pill">편집 가능</span>' : ''}
+            ${sourceLink}
+            ${editing ? '<button class="spot-edit-btn" id="spotEditBtn" type="button">식당 정보 직접 수정</button>' : ''}
           </div>
         </div>
         <div id="spotView">
           ${viewRows}
-          ${sourceLink}
-          ${editing ? '<div><button class="spot-edit-btn" id="spotEditBtn" type="button">식당 정보 직접 수정</button></div>' : ''}
         </div>
         <form class="spot-edit-form" id="spotEditForm" hidden>
           <div id="restaurantRows">${editRows}</div>
