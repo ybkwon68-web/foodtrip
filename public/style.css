@@ -431,8 +431,8 @@ button, a, input, select, textarea {
 
 .admin-check-panel {
   margin: 18px auto 40px;
-  max-width: 760px;
-  padding: 16px 18px;
+  max-width: 1400px;
+  padding: 16px 28px;
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
   background: var(--paper-raised);
@@ -444,11 +444,19 @@ button, a, input, select, textarea {
   font-size: 15px;
   font-family: var(--font-display);
 }
+.admin-check-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+.admin-check-controls {
+  flex: 0 0 260px;
+}
 .admin-check-form {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
   font-size: 13px;
 }
 .admin-check-form label {
@@ -488,8 +496,9 @@ button, a, input, select, textarea {
   color: var(--ink-soft);
 }
 .admin-check-results {
-  margin-top: 8px;
-  max-height: 300px;
+  flex: 1;
+  min-width: 0;
+  max-height: 420px;
   overflow-y: auto;
 }
 .admin-check-result-row {
@@ -1405,6 +1414,9 @@ button, a, input, select, textarea {
   .table-scroll { max-height: calc(100vh - 217px); }
   .map-page { padding: 14px 16px 40px; }
   #map { height: 65vh; }
+  .admin-check-panel { padding: 16px 18px; }
+  .admin-check-body { flex-direction: column; }
+  .admin-check-controls { flex: 1 1 auto; width: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {

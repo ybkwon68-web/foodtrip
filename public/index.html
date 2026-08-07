@@ -87,15 +87,19 @@
 
 <section id="adminCheckPanel" class="admin-check-panel" hidden>
   <h3>폐업·이전 자동 점검</h3>
-  <div class="admin-check-form">
-    <label>시작 회차 <input type="number" id="checkFromEpisode" min="1" max="352" value="1"></label>
-    <label>끝 회차 <input type="number" id="checkToEpisode" min="1" max="352" value="10"></label>
-    <label class="admin-check-apply"><input type="checkbox" id="checkApplyMode"> 실제 반영(체크 안 하면 결과만 확인)</label>
-    <button type="button" id="checkStartBtn">실행</button>
-    <button type="button" id="checkStopBtn" hidden>중지</button>
+  <div class="admin-check-body">
+    <div class="admin-check-controls">
+      <div class="admin-check-form">
+        <label>시작 회차 <input type="number" id="checkFromEpisode" min="1" max="352" value="1"></label>
+        <label>끝 회차 <input type="number" id="checkToEpisode" min="1" max="352" value="10"></label>
+        <label class="admin-check-apply"><input type="checkbox" id="checkApplyMode"> 실제 반영(체크 안 하면 결과만 확인)</label>
+        <button type="button" id="checkStartBtn">실행</button>
+        <button type="button" id="checkStopBtn" hidden>중지</button>
+      </div>
+      <p id="checkProgress" class="admin-check-progress"></p>
+    </div>
+    <div id="checkResults" class="admin-check-results"></div>
   </div>
-  <p id="checkProgress" class="admin-check-progress"></p>
-  <div id="checkResults" class="admin-check-results"></div>
 </section>
 
 <script src="./lib/episodesLogic.js"></script>
