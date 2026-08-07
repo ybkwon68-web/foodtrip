@@ -1297,6 +1297,7 @@ button, a, input, select, textarea {
   overflow-x: auto;
   overflow-y: auto;
   max-height: calc(100vh - 132px);
+  min-height: 320px; /* 검색 결과가 적어 컨테이너가 줄어들면 상태 확인 팝업이 overflow에 잘려서 보이지 않는 문제 방지 */
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
   background: var(--paper-raised);
