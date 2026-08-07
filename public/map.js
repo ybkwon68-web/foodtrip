@@ -210,7 +210,8 @@ function locateMe() {
   }
 
   mapLocateBtn.disabled = true;
-  mapLocateStatus.hidden = true;
+  mapLocateStatus.textContent = '내 위치를 확인하는 중입니다...';
+  mapLocateStatus.hidden = false;
 
   navigator.geolocation.getCurrentPosition(
     (pos) => {
@@ -232,6 +233,7 @@ function locateMe() {
       map.setCenter(latlng);
       map.setZoom(15);
       mapLocateBtn.disabled = false;
+      mapLocateStatus.hidden = true;
     },
     (err) => {
       mapLocateStatus.textContent =
@@ -241,7 +243,7 @@ function locateMe() {
       mapLocateStatus.hidden = false;
       mapLocateBtn.disabled = false;
     },
-    { timeout: 8000 }
+    { timeout: 8000, maximumAge: 60000 }
   );
 }
 mapLocateBtn.addEventListener('click', locateMe);

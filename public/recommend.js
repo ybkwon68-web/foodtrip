@@ -128,7 +128,7 @@ recommendLocationBtn.addEventListener('click', () => {
       showLocationStatus(message, true);
       recommendLocationBtn.disabled = false;
     },
-    { timeout: 8000 }
+    { timeout: 8000, maximumAge: 60000 }
   );
 });
 
