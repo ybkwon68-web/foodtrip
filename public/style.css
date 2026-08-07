@@ -1043,8 +1043,8 @@ button, a, input, select, textarea {
 
 /* 상세 */
 .detail-wrap {
-  padding: 30px 40px 60px;
-  max-width: 680px;
+  padding: 30px 28px 60px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 .back-link {
@@ -1176,6 +1176,9 @@ button, a, input, select, textarea {
   line-height: 1.8;
   color: var(--ink);
   box-shadow: 0 4px 12px rgba(43, 36, 28, 0.04);
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .detail-body p { margin: 0 0 12px; }
 .detail-body img { max-width: 100%; height: auto; border-radius: 8px; }
