@@ -13,6 +13,7 @@ const {
   computeCentroid,
   extractMeetupOrigins,
   parseRecommendResponse,
+  stripBodyHtml,
 } = require('../lib/recommend');
 
 test('haversineKm은 같은 지점이면 0, 서울-부산은 약 300km대를 반환한다', () => {
@@ -104,6 +105,32 @@ test('toPromptCandidates는 좌표·전화번호 등 불필요한 필드를 제�
   assert.ok(!('lat' in prompt[0]));
   assert.ok(!('place_id' in prompt[0]));
   assert.ok('name' in prompt[0] && 'region' in prompt[0]);
+});
+
+test('toPromptCandidates는 broadcast_excerpt가 있는 후보만 그 필드를 포함한다', () => {
+  const candidates = buildCandidateList(sampleEpisodes, {});
+  candidates[0].broadcast_excerpt = '조용하고 아늑한 분위기의 밥집이었다.';
+  const prompt = toPromptCandidates(candidates);
+  assert.strictEqual(prompt[0].broadcast_excerpt, '조용하고 아늑한 분위기의 밥집이었다.');
+  assert.ok(!('broadcast_excerpt' in prompt[1]));
+});
+
+test('stripBodyHtml은 태그·엔티티를 제거하고 공백을 정리한다', () => {
+  const html = '<p style="font-size: 11pt;">이 집은 <b>정겨운&nbsp;분위기였다.</b></p>\n<p>&quot;맛있다&quot;</p>';
+  assert.strictEqual(stripBodyHtml(html), '이 집은 정겨운 분위기였다. "맛있다"');
+});
+
+test('stripBodyHtml은 maxLen을 넘으면 자르고 말줄임표를 붙인다', () => {
+  const html = `<p>${'가'.repeat(600)}</p>`;
+  const result = stripBodyHtml(html, 500);
+  assert.strictEqual(result.length, 503); // 500자 + '...'
+  assert.ok(result.endsWith('...'));
+});
+
+test('stripBodyHtml은 빈 값이면 빈 문자열을 반환한다', () => {
+  assert.strictEqual(stripBodyHtml(''), '');
+  assert.strictEqual(stripBodyHtml(null), '');
+  assert.strictEqual(stripBodyHtml(undefined), '');
 });
 
 test('excludeCandidates는 이전에 보여준 (episode,name)만 후보에서 제외한다', () => {

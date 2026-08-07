@@ -12,6 +12,8 @@ const {
   computeCentroid,
   clampRadiusKm,
   haversineKm,
+  stripBodyHtml,
+  MAX_BODY_EXCERPT_CANDIDATES,
 } = require('../lib/recommend');
 const { pickRecommendations } = require('../lib/gemini');
 
@@ -158,6 +160,26 @@ module.exports = async function handler(req, res) {
         : '조건에 맞는 후보를 찾지 못했습니다.';
       res.status(200).json({ picks: [], origin: originLabel, radius_km: radiusKm, notice: notice || emptyNotice });
       return;
+    }
+
+    // 후보는 이미 거리(또는 관련도)순으로 정렬돼 있으므로, 앞쪽 상위 몇 곳에 한해서만 방송 본문
+    // 요약을 붙여 Gemini가 분위기를 판단할 근거로 쓰게 한다 — 후보 전체(최대 80곳)에 본문을 전부
+    // 붙이면 프롬프트가 지나치게 커지므로 범위를 좁힘. 본문 조회가 실패해도 추천 자체는 그대로 진행.
+    try {
+      const excerptEpisodes = [...new Set(candidates.slice(0, MAX_BODY_EXCERPT_CANDIDATES).map((c) => c.episode))];
+      if (excerptEpisodes.length) {
+        const { data: bodies } = await supabase
+          .from('episodes')
+          .select('episode,body_html')
+          .in('episode', excerptEpisodes);
+        const excerptMap = new Map((bodies || []).map((b) => [b.episode, stripBodyHtml(b.body_html)]));
+        candidates.forEach((c) => {
+          const excerpt = excerptMap.get(c.episode);
+          if (excerpt) c.broadcast_excerpt = excerpt;
+        });
+      }
+    } catch (err) {
+      // 본문 요약은 부가 정보라 조회 실패해도 추천 자체를 막지 않는다.
     }
 
     const result = await pickRecommendations(query, candidates, { forcePicks });
