@@ -79,6 +79,19 @@ module.exports = async function handler(req, res) {
     return;
   }
 
+  // 위치 단서가 전혀 없으면(문장에 지명 없음 + GPS 꺼짐 + 여러 명 만남 위치도 없음) 음식/분위기가
+  // 아무리 구체적이어도 항상 되묻는다 — 위치 없이 추천하면 후보가 전국구로 흩어져 실질적으로 갈 수
+  // 없는 곳이 섞여 나온다는 실사용 리포트로 도입. forcePicks(되묻기에 이미 한 번 답함)면 다시 묻지
+  // 않고 위치 없이 진행한다(clarify는 항상 최대 1회 원칙).
+  const hasMeetupOrigins = Boolean(meetup && meetup.origins && meetup.origins.length);
+  if (!forcePicks && !hasCoords && !hasMeetupOrigins && !intent.origin) {
+    res.status(200).json({
+      needsClarification: true,
+      question: '어느 지역에서 찾아드릴까요? 지역을 알려주시거나(예: "강남에서"), 위쪽 "내 위치" 버튼을 켜주시면 더 정확하게 추천해드릴 수 있어요.',
+    });
+    return;
+  }
+
   try {
     const supabase = getSupabase();
     const { data: episodes, error } = await supabase
