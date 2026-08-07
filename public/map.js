@@ -56,7 +56,7 @@ function statusCheckBadge(sc) {
   const addrRow = sc.moved_suspected && sc.candidate_address
     ? `<span class="status-check-popup-addr">추정 새 주소: ${escapeHtml(sc.candidate_address)}</span>`
     : '';
-  const badgeLabel = confirmed ? `🔴 ${reasons.join('·')} 확정` : '⚠️ 확인 필요';
+  const badgeLabel = confirmed ? `🔴 ${reasons.join('·')}` : '⚠️ 확인 필요';
   const badgeClass = confirmed ? 'badge-status-check badge-status-confirmed' : 'badge-status-check';
   // 배지가 <p> 안에 놓이는 화면(회차 상세보기·지도 인포윈도우)이 있어, 말풍선도 전부 인라인
   // 태그(span)로만 구성한다 — <p> 안에 <div>/<p>를 넣으면 브라우저가 파싱 중 자동으로 태그를

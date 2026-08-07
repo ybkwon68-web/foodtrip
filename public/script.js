@@ -230,7 +230,7 @@ function statusCheckBadge(sc, episodeNum, restaurantName) {
   const addrRow = sc.moved_suspected && sc.candidate_address
     ? `<span class="status-check-popup-addr">추정 새 주소: ${escapeHtml(sc.candidate_address)}</span>`
     : '';
-  const badgeLabel = confirmed ? `🔴 ${reasons.join('·')} 확정` : '⚠️ 확인 필요';
+  const badgeLabel = confirmed ? `🔴 ${reasons.join('·')}` : '⚠️ 확인 필요';
   const badgeClass = confirmed ? 'badge-status-check badge-status-confirmed' : 'badge-status-check';
   const nameAttr = escapeHtml(restaurantName || '');
   // 이미 확정된 상태에서 "확정"을 또 눌러도 실질적인 변화가 없어 혼란만 준다는 사용자 피드백으로,
