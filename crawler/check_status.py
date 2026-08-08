@@ -67,7 +67,19 @@ def normalize_sido(addr):
 def addresses_differ(stored, fetched):
     if not stored or not fetched:
         return False
-    return normalize_sido(stored).replace(" ", "") != normalize_sido(fetched).replace(" ", "")
+    a = normalize_sido(stored).replace(" ", "")
+    b = normalize_sido(fetched).replace(" ", "")
+    if a == b:
+        return False
+    # 번지 뒤에 "주택"처럼 건물 유형/이름이 붙었다 안 붙었다 하는 경우(313회 나들이식당 실측:
+    # 저장된 주소만 "...17-1 주택"으로 끝나고 네이버 조회 결과는 "...17-1"로 끝남) 실제로는
+    # 같은 주소인데 문자열이 달라 오탐이 났다. 한쪽이 다른 쪽의 접두어이고, 갈리는 지점 바로
+    # 뒤 글자가 숫자가 아니면(번지 숫자 자체가 잘린 게 아니라 뒤에 다른 말이 붙은 것뿐이면)
+    # 같은 주소로 본다 — 숫자면("17-1" vs "17-10"처럼 번지 자체가 다른 경우) 그대로 다르다고 판정.
+    shorter, longer = (a, b) if len(a) <= len(b) else (b, a)
+    if not shorter or not longer.startswith(shorter):
+        return True
+    return longer[len(shorter)].isdigit()
 
 
 def check_naver_place(session, place_id):
