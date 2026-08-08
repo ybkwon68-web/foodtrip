@@ -22,10 +22,18 @@ function clusterIconDef(size, sizeClass) {
   };
 }
 const CLUSTER_ICONS = [
-  clusterIconDef(34, 'map-cluster-sm'),
-  clusterIconDef(42, 'map-cluster-md'),
-  clusterIconDef(52, 'map-cluster-lg'),
+  clusterIconDef(40, 'map-cluster-sm'),
+  clusterIconDef(50, 'map-cluster-md'),
+  clusterIconDef(62, 'map-cluster-lg'),
 ];
+
+// 네이버 기본 마커는 파란색이라 바탕지도의 파란 요소(도로 번호, 하천, 건물 아이콘)와
+// 섞여 잘 안 보인다는 사용자 지적에 따라, 클러스터 배지와 같은 계열(accent) 원형 마커로 교체.
+const RESTAURANT_ICON = {
+  content: '<div class="map-pin"></div>',
+  size: new naver.maps.Size(20, 20),
+  anchor: new naver.maps.Point(10, 10),
+};
 
 function escapeHtml(str) {
   const div = document.createElement('div');
@@ -113,7 +121,7 @@ function buildMarkers() {
 
       const position = new naver.maps.LatLng(r.lat, r.lng);
       // map은 지정하지 않는다 — 클러스터링 인스턴스가 표시 여부를 관리한다.
-      const marker = new naver.maps.Marker({ position, title: r.name });
+      const marker = new naver.maps.Marker({ position, title: r.name, icon: RESTAURANT_ICON });
       const content = `
         <div class="map-info">
           <span class="map-info-ep">제${ep.episode}회</span>

@@ -1427,9 +1427,20 @@ button, a, input, select, textarea {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   border: 2px solid var(--paper);
 }
-.map-cluster-sm { font-size: 13px; }
-.map-cluster-md { font-size: 15px; }
-.map-cluster-lg { font-size: 17px; }
+.map-cluster-sm { font-size: 17px; }
+.map-cluster-md { font-size: 20px; }
+.map-cluster-lg { font-size: 24px; }
+
+/* 바탕지도(네이버)의 파란색 요소(도로 번호·하천·건물 아이콘)와 구별되도록
+   식당 위치 마커는 클러스터 배지와 같은 accent 색 원형으로 표시한다. */
+.map-pin {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--paper);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
 
 @media (max-width: 1180px) {
   .grid { grid-template-columns: repeat(3, 1fr); }
