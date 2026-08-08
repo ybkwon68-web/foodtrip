@@ -158,6 +158,20 @@ def check_kakao_nearby(session, kakao_key, lat, lng, name):
     return {"ok": True, "same_name_found": bool(same_name), "closest_other": closest_other}
 
 
+def edit_distance(a, b):
+    """두 문자열 사이의 편집거리(Levenshtein distance)."""
+    prev = list(range(len(b) + 1))
+    for i, ca in enumerate(a, start=1):
+        curr = [i] + [0] * len(b)
+        for j, cb in enumerate(b, start=1):
+            if ca == cb:
+                curr[j] = prev[j - 1]
+            else:
+                curr[j] = 1 + min(prev[j], curr[j - 1], prev[j - 1])
+        prev = curr
+    return prev[len(b)]
+
+
 def names_similar(a, b):
     """이름이 완전히 무관하지 않고 앞부분이 겹치면(예: "철뚝소머리집"↔"철뚝소머리국밥",
     "물레야소주방"↔"물레야다찌") 같은 업체의 표기 차이/리브랜딩으로 보고 "다른 업체로 바뀜"
@@ -174,7 +188,13 @@ def names_similar(a, b):
             break
         common_prefix_len += 1
     shorter_len = min(len(a), len(b))
-    return shorter_len > 0 and common_prefix_len / shorter_len >= 0.5
+    if shorter_len > 0 and common_prefix_len / shorter_len >= 0.5:
+        return True
+    # 접두어 비교는 이름 앞부분에서 글자가 갈리면 못 잡아낸다 — "부잣집보쌈"↔"부자집보쌈"(사이시옷
+    # 표기 차이), "착한칼국수"↔"착한손칼국수"(글자 하나 삽입)처럼 실사용에서 오탐으로 보고된
+    # 사례가 모두 편집거리 1짜리 표기 차이였다. 오탈자/표기 차이 수준(편집거리 1)까지는 같은
+    # 업체로 본다.
+    return edit_distance(a, b) <= 1
 
 
 # 좌표 교차검증(check_kakao_nearby) 결과를 1차 판정(status_check)에 반영한다.
