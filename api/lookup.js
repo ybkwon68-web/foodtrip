@@ -249,12 +249,17 @@ module.exports = async function handler(req, res) {
       return;
     }
 
+    // 식당별 출처를 개별로 기록하기 위해, 이번 조회로 찾아낸 식당 전체에 근거 URL을 함께 붙여 보낸다.
+    const restaurantsWithSource = source_url
+      ? restaurants.map((r) => ({ ...r, source_url }))
+      : restaurants;
+
     res.status(200).json({
       found: true,
       source,
       source_url,
       broadcast,
-      restaurants,
+      restaurants: restaurantsWithSource,
       candidate_urls: candidateUrls,
     });
   } catch (error) {

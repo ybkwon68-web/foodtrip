@@ -445,10 +445,16 @@ async function handleStatusCheckDecision(btn) {
   renderDetail(episodeNum);
 }
 
-function restaurantViewRow(r, episodeNum) {
+function restaurantViewRow(r, episodeNum, fallbackSourceUrl) {
   const addr = r.address;
   const menuRow = r.menu ? `<p class="spot-field"><strong>소개된 메뉴</strong>${escapeHtml(r.menu)}</p>` : '';
   const reviewRow = r.review ? `<p class="spot-field"><strong>한줄평</strong>${escapeHtml(r.review)}</p>` : '';
+  // 식당마다 출처가 다를 수 있어 개별 source_url을 우선 쓰고, 없으면(옛날에 등록된 식당)
+  // 회차 단위 기존 링크로 폴백한다 — 정확도는 떨어지지만 링크 자체가 사라지진 않는다.
+  const sourceUrl = r.source_url || fallbackSourceUrl;
+  const sourceRow = sourceUrl
+    ? `<p class="spot-field"><a class="spot-link spot-source" href="${sourceUrl}" target="_blank" rel="noopener">참고한 블로그 글 보기 ↗</a></p>`
+    : '';
   const sc = r.status_check;
   const hasVisibleBadge = Boolean(sc && (sc.closure_suspected || sc.moved_suspected) && sc.admin_decision !== 'dismissed');
   const statusMarkup = hasVisibleBadge
@@ -464,6 +470,7 @@ function restaurantViewRow(r, episodeNum) {
       </p>
       ${menuRow}
       ${reviewRow}
+      ${sourceRow}
     </div>
   `;
 }
@@ -513,6 +520,8 @@ function collectRestaurantRows(container) {
         // 편집 폼에 입력칸이 없는 폐업/이전 점검 기록은 주소 변경 여부와 무관하게 항상 보존한다
         // (안 그러면 이 회차의 아무 식당이나 한 번만 저장해도 전체 status_check가 사라짐).
         status_check: orig.status_check || null,
+        // 식당별 출처(source_url)도 같은 이유로, 편집 폼에 입력칸이 없으니 항상 그대로 보존한다.
+        source_url: orig.source_url || null,
       };
     })
     .filter((r) => r.name);
@@ -550,13 +559,10 @@ async function renderDetail(epNum) {
   const bodyHtml = ep.body_html ? DOMPurify.sanitize(ep.body_html) : '<p>본문을 불러오지 못했습니다.</p>';
 
   const viewRows = restaurants.length
-    ? `<div class="restaurant-rows-grid">${restaurants.map((r) => restaurantViewRow(r, ep.episode)).join('')}</div>`
+    ? `<div class="restaurant-rows-grid">${restaurants.map((r) => restaurantViewRow(r, ep.episode, ep.restaurants_source_url)).join('')}</div>`
     : `<p class="spot-field"><strong>식당명</strong>미확인</p><p class="spot-field"><strong>위치</strong>${
         truncateAddress(ep.region) ? escapeHtml(truncateAddress(ep.region)) : '미확인'
       }</p>`;
-  const sourceLink = ep.restaurants_source_url
-    ? `<a class="spot-link spot-source" href="${ep.restaurants_source_url}" target="_blank" rel="noopener">참고한 블로그 글 보기 ↗</a>`
-    : '';
   const editRows = restaurants.length
     ? restaurants.map(restaurantEditRow).join('')
     : restaurantEditRow({}, 0);
@@ -574,7 +580,6 @@ async function renderDetail(epNum) {
           <div class="spot-panel-actions">
             ${badge}
             ${editing ? '<span class="edit-state-pill">편집 가능</span>' : ''}
-            ${sourceLink}
             ${editing ? '<button class="spot-edit-btn" id="spotEditBtn" type="button">식당 정보 직접 수정</button>' : ''}
           </div>
         </div>

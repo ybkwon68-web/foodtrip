@@ -74,6 +74,8 @@ function collectRestaurantRows(container) {
         lat: addressUnchanged ? orig.lat ?? null : null,
         lng: addressUnchanged ? orig.lng ?? null : null,
         place_id: addressUnchanged ? orig.place_id ?? null : null,
+        // 자동 검색(lookup)으로 채워진 식당이면 그 근거 URL을 편집 폼 입력칸 없이도 그대로 보존한다.
+        source_url: orig.source_url || null,
       };
     })
     .filter((r) => r.name);

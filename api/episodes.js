@@ -16,6 +16,7 @@ async function cleanRestaurants(input) {
       lat: typeof r.lat === 'number' ? r.lat : null,
       lng: typeof r.lng === 'number' ? r.lng : null,
       place_id: r.place_id || null,
+      source_url: typeof r.source_url === 'string' ? r.source_url : null,
     }));
 
   await Promise.all(

@@ -78,6 +78,7 @@ def fetch_post(blog_id: str, log_no: str, session: requests.Session) -> tuple[st
                     "lat": latlng.get("latitude"),
                     "lng": latlng.get("longitude"),
                     "place_id": place_id,
+                    "source_url": f"https://blog.naver.com/{blog_id}/{log_no}",
                 }
             )
     return title, places
