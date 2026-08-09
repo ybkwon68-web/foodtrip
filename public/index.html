@@ -32,30 +32,35 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg>
         <input type="text" id="searchInput" placeholder="제목, 지역으로 검색">
       </div>
-      <select class="sort-select" id="sortSelect">
-        <option value="latest">최신순</option>
-        <option value="episode">회차순</option>
-      </select>
-      <a class="edit-toggle" href="./manual.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-        사용법
-      </a>
-      <a class="edit-toggle" href="./table.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="1.5"></rect><path d="M3 10h18M9 10v10"></path></svg>
-        표로 보기
-      </a>
-      <a class="edit-toggle" href="./map.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 20l-6-3V5l6 3 6-3 6 3v12l-6-3-6 3z"></path><path d="M9 5v15M15 8v15"></path></svg>
-        지도로 보기
-      </a>
-      <a class="edit-toggle" id="addEntryLink" href="./add.html" hidden>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 5v14M5 12h14"></path></svg>
-        추가등록
-      </a>
-      <button class="edit-toggle" id="editToggle" type="button">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
-        편집 모드
+      <button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="메뉴 열기" aria-expanded="false" aria-controls="navLinks">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"></path></svg>
       </button>
+      <nav class="nav-links" id="navLinks">
+        <select class="sort-select" id="sortSelect">
+          <option value="latest">최신순</option>
+          <option value="episode">회차순</option>
+        </select>
+        <a class="edit-toggle" href="./manual.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+          사용법
+        </a>
+        <a class="edit-toggle" href="./table.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="1.5"></rect><path d="M3 10h18M9 10v10"></path></svg>
+          표로 보기
+        </a>
+        <a class="edit-toggle" href="./map.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 20l-6-3V5l6 3 6-3 6 3v12l-6-3-6 3z"></path><path d="M9 5v15M15 8v15"></path></svg>
+          지도로 보기
+        </a>
+        <a class="edit-toggle" id="addEntryLink" href="./add.html" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 5v14M5 12h14"></path></svg>
+          추가등록
+        </a>
+        <button class="edit-toggle" id="editToggle" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
+          편집 모드
+        </button>
+      </nav>
     </div>
     <div class="right-links">
       <a class="site-link" id="auctionLink" href="https://auction-two-alpha.vercel.app/" target="_blank" rel="noopener">auction</a>
@@ -67,18 +72,24 @@
 
 <main id="app">
   <section id="recommendBox" class="recommend-box">
-    <form id="recommendForm">
-      <label for="recommendInput" class="recommend-label">오늘 뭐 먹지? 조건을 알려주면 어울리는 식당을 찾아드려요</label>
-      <div class="recommend-input-row">
-        <textarea id="recommendInput" rows="1" placeholder="예: 지금 나는 과천인데, 가끔 보는 친구들과 가볍게 저녁식사를 하면서 술을 한잔 할 수 있는 조용한 분위기의 식당을 알려줘. 과천에서 이동거리 1시간 이내로 해서"></textarea>
-        <div class="recommend-buttons">
-          <button type="button" id="recommendLocationBtn" class="recommend-location-btn" title="현재 위치를 사용해 추천받기">📍 내 위치</button>
-          <button type="submit" id="recommendSubmit">추천받기</button>
+    <button type="button" class="recommend-toggle" id="recommendToggle" aria-expanded="false" aria-controls="recommendPanel">
+      <span>오늘 뭐 먹지? 조건을 알려주면 어울리는 식당을 찾아드려요</span>
+      <svg class="recommend-toggle-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"></path></svg>
+    </button>
+    <div class="recommend-panel" id="recommendPanel">
+      <form id="recommendForm">
+        <label for="recommendInput" class="recommend-label">오늘 뭐 먹지? 조건을 알려주면 어울리는 식당을 찾아드려요</label>
+        <div class="recommend-input-row">
+          <textarea id="recommendInput" rows="1" placeholder="예: 지금 나는 과천인데, 가끔 보는 친구들과 가볍게 저녁식사를 하면서 술을 한잔 할 수 있는 조용한 분위기의 식당을 알려줘. 과천에서 이동거리 1시간 이내로 해서"></textarea>
+          <div class="recommend-buttons">
+            <button type="button" id="recommendLocationBtn" class="recommend-location-btn" title="현재 위치를 사용해 추천받기">📍 내 위치</button>
+            <button type="submit" id="recommendSubmit">추천받기</button>
+          </div>
         </div>
-      </div>
-      <p id="recommendLocationStatus" class="recommend-location-status" hidden></p>
-    </form>
-    <div id="recommendResult" class="recommend-result" hidden></div>
+        <p id="recommendLocationStatus" class="recommend-location-status" hidden></p>
+      </form>
+      <div id="recommendResult" class="recommend-result" hidden></div>
+    </div>
   </section>
 
   <section id="listView">
@@ -108,6 +119,7 @@
 
 <script src="./lib/episodesLogic.js"></script>
 <script src="./lib/editModeFlow.js"></script>
+<script src="./lib/navMenu.js"></script>
 <script src="./script.js"></script>
 <script src="./recommend.js"></script>
 </body>

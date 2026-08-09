@@ -47,15 +47,46 @@
     padding: 8px 12px;
     min-height: 38px;
   }
-  .sort-select,
-  .edit-toggle {
-    flex: 1;
-    min-width: 0;
+  /* 화면전환/정렬 버튼이 많아 헤더가 꽉 차 보이던 문제 — 검색창만 남기고 나머지는
+     햄버거 버튼(.mobile-menu-btn) 뒤 드롭다운(.nav-links)으로 모은다. */
+  .mobile-menu-btn {
+    display: flex;
+    align-items: center;
     justify-content: center;
-    min-height: 36px;
-    padding: 7px 6px;
-    font-size: 12px;
-    white-space: nowrap;
+    flex: none;
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    background: var(--paper-raised);
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .mobile-menu-btn:hover { color: var(--accent); border-color: var(--accent); }
+  .mobile-menu-btn svg { width: 18px; height: 18px; }
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 14px;
+    left: 14px;
+    z-index: 40;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 6px;
+    padding: 10px;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    box-shadow: 0 10px 24px rgba(43, 36, 28, 0.18);
+  }
+  .nav-links.open { display: flex; }
+  .nav-links .sort-select,
+  .nav-links .edit-toggle {
+    width: 100%;
+    justify-content: flex-start;
+    min-height: 40px;
+    font-size: 13px;
   }
   /* 모바일에서는 콘텐츠 영역을 넓게 쓰도록 관리자 전용 기능(추가등록/편집모드) 숨김 */
   #addEntryLink,
@@ -140,6 +171,72 @@
   .table-page {
     padding: 14px 16px 40px;
   }
+
+  /* 8개 컬럼짜리 표를 가로 스크롤로 우겨넣던 방식은 모바일에서 거의 안 읽혀서,
+     표 대신 회차별 카드 목록으로 통째로 바꾼다. 지역 필터는 thead가 사라지는 대신
+     목록 위 mobile-filter-bar로 옮기고(같은 .col-filter-btn 클래스라 JS 수정 없이 동작). */
+  .mobile-filter-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .mobile-filter-bar .col-filter-btn {
+    flex: 1;
+    font-size: 12.5px;
+    font-weight: 600;
+    text-align: center;
+    padding: 9px 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    background: var(--paper-raised);
+    color: var(--ink-soft);
+  }
+  .mobile-filter-bar .col-filter-btn.active { color: var(--accent); border-color: var(--accent); }
+  .table-scroll {
+    overflow-x: hidden;
+    overflow-y: visible;
+    max-height: none;
+    min-height: 0;
+    border: none;
+    background: none;
+  }
+  .ep-table thead { display: none; }
+  .ep-table, .ep-table tbody { display: block; width: 100%; }
+  .ep-table tr {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    background: var(--paper-raised);
+    padding: 10px 12px;
+    margin-bottom: 10px;
+  }
+  .ep-table td {
+    display: flex;
+    gap: 8px;
+    padding: 3px 0;
+    border: none;
+    font-size: 12.8px;
+    line-height: 1.45;
+  }
+  .ep-table td::before {
+    content: attr(data-label);
+    flex: none;
+    width: 74px;
+    color: var(--ink-soft);
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .ep-table td.empty-cell { display: none; }
+  .ep-table td.col-ep {
+    padding-bottom: 7px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid var(--line);
+  }
+  .ep-table td.col-ep::before { display: none; }
+  .ep-table td.col-name { font-size: 14.5px; font-weight: 700; }
+  .ep-table td.col-name::before { display: none; }
+
   .map-page {
     padding: 14px 16px 24px;
   }
@@ -147,7 +244,64 @@
     min-height: 320px;
     height: 68vh;
   }
+
+  /* 관리 기능(식당 정보 수정/폐업·이전 확정/자동 점검)은 세밀한 입력이 필요해 모바일에
+     적합하지 않으므로 PC 전용으로 제한한다 — 편집모드 버튼 자체는 이미 위에서 숨겼지만,
+     넓은 화면에서 로그인한 뒤 창을 좁히는 경우까지 대비해 관련 UI를 한 번 더 막아둔다. */
+  .spot-edit-btn,
+  .edit-state-pill,
+  #spotEditForm,
+  .admin-check-panel,
+  .status-check-popup-actions,
+  .status-check-manual-wrap,
+  .desktop-only-content {
+    display: none !important;
+  }
+  .mobile-desktop-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 18px 16px;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    background: var(--paper-raised);
+    color: var(--ink-soft);
+    font-size: 13.3px;
+    line-height: 1.55;
+  }
+  .mobile-desktop-notice svg { flex: none; margin-top: 1px; color: var(--brass); }
+  .mobile-desktop-notice b { color: var(--ink); }
+
+  /* 오늘 뭐 먹지 추천 상자 — 진입하자마자 화면을 다 차지해 회차 목록이 안 보이던 문제라,
+     모바일에서는 기본 접힘 상태로 시작하고 탭해야 펼쳐지게 한다. */
+  .recommend-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    padding: 14px 16px;
+    background: none;
+    border: none;
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+  }
+  .recommend-toggle-icon { flex: none; color: var(--ink-soft); transition: transform 0.15s ease; }
+  .recommend-box.open .recommend-toggle-icon { transform: rotate(180deg); }
+  .recommend-panel { display: none; padding: 0 16px 18px; }
+  .recommend-box.open .recommend-panel { display: block; }
+  .recommend-panel .recommend-label { display: none; } /* 토글 버튼에 같은 문구가 이미 보이므로 펼친 뒤 중복 표시 방지 */
+  .recommend-box { padding: 0; }
 }
+
+/* 편집 폼(add.html)처럼 세밀한 입력이 필요한 관리 기능은 PC 전용 — 폼 대신
+   화면 크기를 안내하는 문구를 보여준다. 데스크톱에서는 기본적으로 숨김. */
+.mobile-desktop-notice { display: none; }
 
 * { box-sizing: border-box; }
 html, body { margin: 0; }
@@ -272,7 +426,13 @@ button, a, input, select, textarea {
 .edit-toggle.active { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
 .edit-toggle svg { width: 13px; height: 13px; }
 
+/* 화면전환/정렬 링크 묶음 — 데스크톱에서는 평소처럼 한 줄로, 모바일에서는
+   .mobile-menu-btn(햄버거)이 대신 나타나고 이 묶음은 그 뒤 드롭다운으로 바뀐다(위 모바일 미디어쿼리 참고). */
+.nav-links { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; position: relative; }
+.mobile-menu-btn { display: none; }
+
 /* 요약표 컬럼 헤더의 엑셀식 자동필터 드롭다운 */
+.mobile-filter-bar { display: none; } /* 모바일 전용 — 위 모바일 미디어쿼리에서 노출 */
 .filterable-th { position: relative; }
 .col-filter-btn {
   margin-left: 4px;
@@ -511,6 +671,7 @@ button, a, input, select, textarea {
 .admin-check-result-row a { color: var(--accent); }
 
 /* 자연어 추천 */
+.recommend-toggle { display: none; } /* 모바일 전용 — 위 모바일 미디어쿼리에서 노출 */
 .recommend-box {
   max-width: 760px;
   margin: 22px auto 0;

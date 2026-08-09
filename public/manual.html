@@ -463,18 +463,23 @@
   </a>
   <div class="controls">
     <div class="controls-row">
-      <a class="edit-toggle" href="./index.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11a8 8 0 0 0 16 0Z"></path><path d="M4 11h16"></path></svg>
-        카드로 보기
-      </a>
-      <a class="edit-toggle" href="./table.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="1.5"></rect><path d="M3 10h18M9 10v10"></path></svg>
-        표로 보기
-      </a>
-      <a class="edit-toggle" href="./map.html">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 20l-6-3V5l6 3 6-3 6 3v12l-6-3-6 3z"></path><path d="M9 5v15M15 8v15"></path></svg>
-        지도로 보기
-      </a>
+      <button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="메뉴 열기" aria-expanded="false" aria-controls="navLinks">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"></path></svg>
+      </button>
+      <nav class="nav-links" id="navLinks">
+        <a class="edit-toggle" href="./index.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11a8 8 0 0 0 16 0Z"></path><path d="M4 11h16"></path></svg>
+          카드로 보기
+        </a>
+        <a class="edit-toggle" href="./table.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="1.5"></rect><path d="M3 10h18M9 10v10"></path></svg>
+          표로 보기
+        </a>
+        <a class="edit-toggle" href="./map.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 20l-6-3V5l6 3 6-3 6 3v12l-6-3-6 3z"></path><path d="M9 5v15M15 8v15"></path></svg>
+          지도로 보기
+        </a>
+      </nav>
     </div>
   </div>
 </header>
@@ -938,6 +943,7 @@
   <footer class="manual-footer">백반기행 아카이브 · 허영만의 백반기행 회차별 정리 · 이 설명서는 실제 화면 구조를 바탕으로 그려졌으며, 실제 최신 화면과 세부 문구는 조금 다를 수 있습니다.</footer>
 </div>
 
+<script src="./lib/navMenu.js"></script>
 <script>
   (function () {
     var links = Array.prototype.slice.call(document.querySelectorAll('nav.toc a'));

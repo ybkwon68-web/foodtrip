@@ -5,6 +5,18 @@ const recommendSubmit = document.getElementById('recommendSubmit');
 const recommendResult = document.getElementById('recommendResult');
 const recommendLocationBtn = document.getElementById('recommendLocationBtn');
 const recommendLocationStatus = document.getElementById('recommendLocationStatus');
+const recommendBox = document.getElementById('recommendBox');
+const recommendToggle = document.getElementById('recommendToggle');
+
+// 모바일에서는 이 상자가 화면을 다 차지해 회차 목록이 안 보이는 문제가 있어 기본 접힘으로
+// 시작한다(데스크톱에서는 토글 버튼 자체가 CSS로 숨겨져 있어 항상 펼쳐진 상태로 보임).
+if (recommendToggle) {
+  recommendToggle.addEventListener('click', () => {
+    const open = recommendBox.classList.toggle('open');
+    recommendToggle.setAttribute('aria-expanded', String(open));
+    if (open) recommendInput.focus();
+  });
+}
 
 let lastQuery = '';
 let lastPicks = [];

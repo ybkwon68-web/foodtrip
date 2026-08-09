@@ -62,9 +62,14 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
-function cell(value, extraClass) {
+// data-label은 화면 폭이 좁을 때(표 대신 카드 목록으로 바뀌는 모바일 레이아웃)
+// 각 칸 앞에 붙는 항목명으로 쓰인다 — CSS의 td::before { content: attr(data-label) }.
+function cell(value, extraClass, label) {
   const cls = extraClass ? ` class="${extraClass}"` : '';
-  return value ? `<td${cls}>${escapeHtml(value)}</td>` : `<td${cls ? cls.slice(0, -1) + ' empty-cell"' : ' class="empty-cell"'}>-</td>`;
+  const labelAttr = label ? ` data-label="${label}"` : '';
+  return value
+    ? `<td${cls}${labelAttr}>${escapeHtml(value)}</td>`
+    : `<td${cls ? cls.slice(0, -1) + ' empty-cell"' : ' class="empty-cell"'}${labelAttr}>-</td>`;
 }
 
 // 폐업/이전 점검 스크립트(crawler/check_status.py)가 남긴 status_check가 의심 상태면 배지를 붙인다.
@@ -145,20 +150,20 @@ function mapUrl(r) {
 
 function rowTemplate(r) {
   const mapCell = r.address
-    ? `<td><a class="spot-link" href="${mapUrl(r)}" target="_blank" rel="noopener">네이버맵 ↗</a></td>`
-    : `<td class="empty-cell">-</td>`;
+    ? `<td data-label="지도"><a class="spot-link" href="${mapUrl(r)}" target="_blank" rel="noopener">네이버맵 ↗</a></td>`
+    : `<td class="empty-cell" data-label="지도">-</td>`;
   const nameCell = r.restaurant_name
-    ? `<td class="col-name">${escapeHtml(r.restaurant_name)}${statusCheckBadge(r.status_check)}</td>`
-    : `<td class="col-name empty-cell">-</td>`;
+    ? `<td class="col-name" data-label="식당명">${escapeHtml(r.restaurant_name)}${statusCheckBadge(r.status_check)}</td>`
+    : `<td class="col-name empty-cell" data-label="식당명">-</td>`;
   return `
     <tr>
-      <td class="col-ep"><a href="./index.html#/episode/${r.episode}">제${r.episode}회</a></td>
+      <td class="col-ep" data-label="회차"><a href="./index.html#/episode/${r.episode}">제${r.episode}회</a></td>
       ${nameCell}
-      ${cell(r.menu, 'col-menu')}
-      ${cell(r.review, 'col-review')}
-      ${cell(r.sido)}
-      ${cell(r.sigungu)}
-      ${cell(r.detail_addr, 'col-addr')}
+      ${cell(r.menu, 'col-menu', '소개된 메뉴')}
+      ${cell(r.review, 'col-review', '한줄평')}
+      ${cell(r.sido, '', '도/광역시')}
+      ${cell(r.sigungu, '', '시/군/구')}
+      ${cell(r.detail_addr, 'col-addr', '상세주소')}
       ${mapCell}
     </tr>
   `;
