@@ -148,22 +148,28 @@ function mapUrl(r) {
   return `https://map.naver.com/p/search/${encodeURIComponent(q)}`;
 }
 
+// 폭이 좁은 화면(표 4칸 축소)에서 회차·식당명 칸을 합쳐 보여주기 위한 조각 —
+// 데스크톱에서는 CSS로 숨겨지고, 모바일에서만 식당명 앞에 붙어 보인다.
+const mapPinIcon = '<svg class="map-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.5 7-11.5A7 7 0 0 0 5 9.5C5 14.5 12 21 12 21Z"></path><circle cx="12" cy="9.5" r="2.3"></circle></svg>';
+
 function rowTemplate(r) {
+  const mobileEp = `<span class="mobile-ep">제${r.episode}회 · </span>`;
   const mapCell = r.address
-    ? `<td data-label="지도"><a class="spot-link" href="${mapUrl(r)}" target="_blank" rel="noopener">네이버맵 ↗</a></td>`
+    ? `<td data-label="지도"><a class="spot-link map-link" href="${mapUrl(r)}" target="_blank" rel="noopener">${mapPinIcon}<span class="map-link-text">네이버맵 ↗</span></a></td>`
     : `<td class="empty-cell" data-label="지도">-</td>`;
   const nameCell = r.restaurant_name
-    ? `<td class="col-name" data-label="식당명">${escapeHtml(r.restaurant_name)}${statusCheckBadge(r.status_check)}</td>`
-    : `<td class="col-name empty-cell" data-label="식당명">-</td>`;
+    ? `<td class="col-name" data-label="식당명">${mobileEp}${escapeHtml(r.restaurant_name)}${statusCheckBadge(r.status_check)}</td>`
+    : `<td class="col-name empty-cell" data-label="식당명">${mobileEp}-</td>`;
   return `
     <tr>
       <td class="col-ep" data-label="회차"><a href="./index.html#/episode/${r.episode}">제${r.episode}회</a></td>
       ${nameCell}
       ${cell(r.menu, 'col-menu', '소개된 메뉴')}
       ${cell(r.review, 'col-review', '한줄평')}
-      ${cell(r.sido, '', '도/광역시')}
-      ${cell(r.sigungu, '', '시/군/구')}
+      ${cell(r.sido, 'col-sido', '도/광역시')}
+      ${cell(r.sigungu, 'col-sigungu', '시/군/구')}
       ${cell(r.detail_addr, 'col-addr', '상세주소')}
+      ${cell(r.address, 'col-addr-mobile', '주소')}
       ${mapCell}
     </tr>
   `;
@@ -328,5 +334,5 @@ async function load() {
 tableSearch.addEventListener('input', render);
 
 load().catch((err) => {
-  tableBody.innerHTML = `<tr><td colspan="8">${escapeHtml(err.message)}</td></tr>`;
+  tableBody.innerHTML = `<tr><td colspan="9">${escapeHtml(err.message)}</td></tr>`;
 });
