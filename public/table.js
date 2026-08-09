@@ -64,11 +64,13 @@ function escapeHtml(str) {
 
 // data-label은 화면 폭이 좁을 때(표 대신 카드 목록으로 바뀌는 모바일 레이아웃)
 // 각 칸 앞에 붙는 항목명으로 쓰인다 — CSS의 td::before { content: attr(data-label) }.
+// 내용은 .cell-clamp로 감싸 모바일에서 칸이 2줄을 넘기지 않도록 자른다(데스크톱에서는
+// 그냥 투명한 span이라 영향 없음).
 function cell(value, extraClass, label) {
   const cls = extraClass ? ` class="${extraClass}"` : '';
   const labelAttr = label ? ` data-label="${label}"` : '';
   return value
-    ? `<td${cls}${labelAttr}>${escapeHtml(value)}</td>`
+    ? `<td${cls}${labelAttr}><span class="cell-clamp">${escapeHtml(value)}</span></td>`
     : `<td${cls ? cls.slice(0, -1) + ' empty-cell"' : ' class="empty-cell"'}${labelAttr}>-</td>`;
 }
 
@@ -155,11 +157,15 @@ const mapPinIcon = '<svg class="map-link-icon" viewBox="0 0 24 24" fill="none" s
 function rowTemplate(r) {
   const mobileEp = `<span class="mobile-ep">제${r.episode}회 · </span>`;
   const mapCell = r.address
-    ? `<td data-label="지도"><a class="spot-link map-link" href="${mapUrl(r)}" target="_blank" rel="noopener">${mapPinIcon}<span class="map-link-text">네이버맵 ↗</span></a></td>`
-    : `<td class="empty-cell" data-label="지도">-</td>`;
+    ? `<td class="col-map" data-label="지도"><a class="spot-link map-link" href="${mapUrl(r)}" target="_blank" rel="noopener">${mapPinIcon}<span class="map-link-text">네이버맵 ↗</span></a></td>`
+    : `<td class="col-map empty-cell" data-label="지도">-</td>`;
+  // 식당명 칸(모바일에서는 회차까지 합쳐서 보임) 전체를 그 회차 상세보기로 가는 링크로
+  // 감싼다 — 상태 배지(확인 필요/폐업/이전)는 링크 밖에 둬서 배지를 눌러도 페이지 이동 없이
+  // 말풍선만 뜨게 한다(사용자 요청: 회차·식당 칸을 누르면 방송 상세로 이동).
+  const detailHref = `./index.html#/episode/${r.episode}`;
   const nameCell = r.restaurant_name
-    ? `<td class="col-name" data-label="식당명">${mobileEp}${escapeHtml(r.restaurant_name)}${statusCheckBadge(r.status_check)}</td>`
-    : `<td class="col-name empty-cell" data-label="식당명">${mobileEp}-</td>`;
+    ? `<td class="col-name" data-label="식당명"><a class="mobile-row-link" href="${detailHref}"><span class="cell-clamp">${mobileEp}${escapeHtml(r.restaurant_name)}</span></a>${statusCheckBadge(r.status_check)}</td>`
+    : `<td class="col-name empty-cell" data-label="식당명"><a class="mobile-row-link" href="${detailHref}"><span class="cell-clamp">${mobileEp}-</span></a></td>`;
   return `
     <tr>
       <td class="col-ep" data-label="회차"><a href="./index.html#/episode/${r.episode}">제${r.episode}회</a></td>

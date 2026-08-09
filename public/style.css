@@ -1290,6 +1290,7 @@ button, a, input, select, textarea {
 .ep-table td.col-addr { color: var(--ink-soft); min-width: 220px; }
 .ep-table td .spot-link { white-space: nowrap; }
 .ep-table td .map-link { display: inline-flex; align-items: center; gap: 4px; }
+.ep-table .mobile-row-link { color: inherit; text-decoration: none; }
 /* 모바일 전용 요소 — 표를 4칸으로 줄일 때만 쓰인다(위 720px 미디어쿼리에서 노출) */
 .ep-table th.col-addr-mobile,
 .ep-table td.col-addr-mobile,
@@ -1620,6 +1621,20 @@ button, a, input, select, textarea {
   .ep-table td.col-name .mobile-ep { display: inline; color: var(--brass); font-weight: 700; }
   .map-link-text { display: none; }
   .map-link-icon { display: inline-block; width: 18px; height: 18px; }
+  /* 남은 4칸의 너비 배분 — 주소를 가장 넓게, 지도는 아이콘만 들어갈 최소 너비로 */
+  .ep-table th.col-name, .ep-table td.col-name { width: 24%; }
+  .ep-table th.col-menu, .ep-table td.col-menu { width: 18%; }
+  .ep-table th.col-addr-mobile, .ep-table td.col-addr-mobile { width: 48%; }
+  .ep-table th.col-map, .ep-table td.col-map { width: 10%; text-align: center; }
+  /* 칸마다 내용이 길어도 2줄까지만 보이고 나머지는 잘라서 숨긴다(사용자 요청) */
+  .cell-clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  /* 회차·식당 칸을 누르면 방송 상세보기로 이동 — 링크처럼 보이지 않게 글자색·밑줄은 그대로 둔다 */
+  .ep-table .mobile-row-link { display: block; }
 
   .map-page {
     padding: 14px 16px 24px;
