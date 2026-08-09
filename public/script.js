@@ -225,23 +225,50 @@ function statusCheckBadge(sc, episodeNum, restaurantName) {
   const reasons = [];
   if (sc.closure_suspected) reasons.push(confirmed ? '폐업' : '폐업/휴업 의심');
   if (sc.moved_suspected) reasons.push(confirmed ? '이전' : '이전 의심');
+  const badgeLabel = confirmed ? `🔴 ${reasons.join('·')}` : '⚠️ 확인 필요';
+  const badgeClass = confirmed ? 'badge-status-check badge-status-confirmed' : 'badge-status-check';
+  const nameAttr = escapeHtml(restaurantName || '');
+
+  if (confirmed) {
+    // 이미 확정·반영이 끝난 뒤라 자동탐지 당시의 의심 근거(note/추정 주소/신뢰도)는 더 이상 의미가
+    // 없고, "정상으로 되돌리기"도 이미 바뀐 실제 주소를 되돌리진 못해 오히려 오해만 준다(사용자 피드백:
+    // 이전 확정 후에도 예전 의심 메시지·되돌리기 버튼이 그대로 남아있는 게 혼란스러움) — 확정 후에는
+    // 참고용으로 "이전 전 주소"만(있으면) 보여주고 그 외 근거·조작 버튼은 전부 뺀다.
+    const prevAddrRow = sc.moved_suspected && sc.previous_address
+      ? `<span class="status-check-popup-addr">이전 전 주소: ${escapeHtml(sc.previous_address)}</span>`
+      : '';
+    return `
+      <span class="status-check-wrap">
+        <button type="button" class="${badgeClass}">${badgeLabel}</button>
+        <span class="status-check-popup" hidden>
+          <span class="status-check-popup-title">${escapeHtml(reasons.join(' · '))}</span>
+          ${prevAddrRow}
+        </span>
+      </span>
+    `;
+  }
+
   const confidenceLabel = sc.confidence === 'high' ? '높음' : '낮음';
   const checkedAt = sc.checked_at ? new Date(sc.checked_at).toLocaleString('ko-KR') : '';
   const addrRow = sc.moved_suspected && sc.candidate_address
     ? `<span class="status-check-popup-addr">추정 새 주소: ${escapeHtml(sc.candidate_address)}</span>`
     : '';
-  const badgeLabel = confirmed ? `🔴 ${reasons.join('·')}` : '⚠️ 확인 필요';
-  const badgeClass = confirmed ? 'badge-status-check badge-status-confirmed' : 'badge-status-check';
-  const nameAttr = escapeHtml(restaurantName || '');
-  // 이미 확정된 상태에서 "확정"을 또 눌러도 실질적인 변화가 없어 혼란만 준다는 사용자 피드백으로,
-  // 확정 상태에서는 "정상으로 되돌리기"만 남기고 "확정" 버튼은 숨긴다.
-  const confirmBtn = confirmed
-    ? ''
-    : `<button type="button" class="status-check-action" data-episode="${episodeNum}" data-name="${nameAttr}" data-decision="confirmed">확정</button>`;
+  const confirmBtn = `<button type="button" class="status-check-action" data-episode="${episodeNum}" data-name="${nameAttr}" data-decision="confirmed">확정</button>`;
+  // 자동 탐지가 "폐업"으로 의심했지만 실제로는 "이전"으로 확인되는 경우가 있어(예: 위치는 그대로인데
+  // 다른 업체가 들어온 게 아니라 상호만 바뀐 걸 폐업으로 오탐), 확정/원복 외에 이 자리에서 바로
+  // 새 주소를 입력해 "이전"으로 전환·확정할 수 있게 한다.
+  const moveAddrValue = sc.candidate_address ? escapeHtml(sc.candidate_address) : '';
+  const moveRow = `<button type="button" class="status-check-move-toggle" data-episode="${episodeNum}" data-name="${nameAttr}">이전(새 주소)</button>
+      <span class="status-check-move-form" hidden>
+        <input type="text" class="sc-move-address" placeholder="새 주소" value="${moveAddrValue}">
+        <button type="button" class="sc-move-submit" data-episode="${episodeNum}" data-name="${nameAttr}">이전 확정</button>
+        <button type="button" class="sc-move-cancel">취소</button>
+      </span>`;
   const actionsRow = editing
     ? `<span class="status-check-popup-actions">
         ${confirmBtn}
         <button type="button" class="status-check-action" data-episode="${episodeNum}" data-name="${nameAttr}" data-decision="dismissed">정상으로 되돌리기</button>
+        ${moveRow}
       </span>`
     : '';
   // 배지가 <p> 안에 놓이는 화면(회차 상세보기·지도 인포윈도우)이 있어, 말풍선도 전부 인라인
@@ -301,6 +328,27 @@ document.addEventListener('click', (e) => {
     e.target.closest('.status-check-manual-form').hidden = true;
     return;
   }
+  const moveToggleBtn = e.target.closest('.status-check-move-toggle');
+  if (moveToggleBtn) {
+    e.stopPropagation();
+    const form = moveToggleBtn.nextElementSibling;
+    form.hidden = !form.hidden;
+    return;
+  }
+  const moveSubmitBtn = e.target.closest('.sc-move-submit');
+  if (moveSubmitBtn) {
+    e.stopPropagation();
+    handleMoveSubmit(moveSubmitBtn);
+    return;
+  }
+  if (e.target.closest('.sc-move-cancel')) {
+    e.stopPropagation();
+    e.target.closest('.status-check-move-form').hidden = true;
+    return;
+  }
+  // 이전 등록 폼 안(주소 입력칸 등)을 클릭한 거면 팝업을 닫지 않는다 — 아래 "그 외 클릭은
+  // 전부 닫기" 로직에 걸려 입력 중 팝업이 닫혀버리는 걸 막기 위함.
+  if (e.target.closest('.status-check-move-form')) return;
   const manualLink = e.target.closest('.status-check-manual-link');
   if (manualLink) {
     e.stopPropagation();
@@ -388,6 +436,63 @@ async function handleManualFlagSubmit(btn) {
   // "확정" 시 서버가 address/lat/lng/place_id/tel도 같이 갱신했을 수 있어(이전 등록 확정 시
   // 실제 위치 반영), status_check만 반영하면 화면이 예전 주소로 다시 그려지는 문제가 있었음 —
   // 서버가 함께 보내주는 최신 식당 객체 전체를 그대로 덮어쓴다.
+  if (target && result.data?.restaurant) Object.assign(target, result.data.restaurant);
+  else if (target) target.status_check = result.data?.status_check;
+  renderDetail(episodeNum);
+}
+
+// 자동 탐지된 "확인 필요" 배지를 확정/원복 대신 "이전"으로 전환·확정할 때 쓴다.
+// closureSuspected는 false로 보내 폐업 오탐 사유를 지우고, moved_suspected+candidate_address로
+// 덮어써 서버가 실제 address/좌표까지 새 주소로 갱신하게 한다(api/episodes/[id]/status.js 참고).
+async function handleMoveSubmit(btn) {
+  const form = btn.closest('.status-check-move-form');
+  const candidateAddress = form.querySelector('.sc-move-address').value.trim();
+  if (!candidateAddress) {
+    alert('새 주소를 입력해주세요.');
+    return;
+  }
+
+  const episodeNum = Number(btn.dataset.episode);
+  const name = btn.dataset.name;
+  const token = getAdminToken();
+  if (!token) return;
+
+  btn.disabled = true;
+  const isLocalDev = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  const result = await submitStatusCheckDecision({
+    episodeId: episodeNum,
+    name,
+    decision: 'confirmed',
+    token,
+    extra: { closureSuspected: false, movedSuspected: true, candidateAddress },
+    localDevOverride: isLocalDev,
+    decisionRequest: async ({ episodeId, name: rName, decision: rDecision, token: authToken, extra }) => {
+      try {
+        const res = await fetch(`/api/episodes/${episodeId}/status`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${authToken}` },
+          body: JSON.stringify({ name: rName, decision: rDecision, ...extra }),
+        });
+        const data = await res.json();
+        return { ok: res.ok, status: res.status, data, error: data && data.error };
+      } catch (err) {
+        return { ok: false, status: 0, error: '서버에 연결할 수 없습니다.' };
+      }
+    },
+  });
+
+  if (!result.ok) {
+    btn.disabled = false;
+    if (result.expired) {
+      clearAdminSession();
+      editing = false;
+    }
+    alert(result.error || '처리에 실패했습니다.');
+    return;
+  }
+
+  const ep = findEpisode(episodeNum);
+  const target = ep && (ep.restaurants || []).find((r) => r.name === name);
   if (target && result.data?.restaurant) Object.assign(target, result.data.restaurant);
   else if (target) target.status_check = result.data?.status_check;
   renderDetail(episodeNum);

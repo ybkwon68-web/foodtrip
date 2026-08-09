@@ -960,6 +960,58 @@ button, a, input, select, textarea {
   opacity: 0.5;
   cursor: default;
 }
+.status-check-move-toggle {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 3px 7px;
+  margin-right: 4px;
+  font-family: inherit;
+  cursor: pointer;
+}
+.status-check-move-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.status-check-move-form {
+  display: block;
+  margin-top: 6px;
+}
+.status-check-move-form .sc-move-address {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 6px;
+  padding: 4px 6px;
+  font-size: 12px;
+  font-family: inherit;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: var(--paper);
+  color: var(--ink);
+}
+.status-check-move-form .sc-move-submit,
+.status-check-move-form .sc-move-cancel {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 3px 7px;
+  margin-right: 4px;
+  font-family: inherit;
+  cursor: pointer;
+}
+.status-check-move-form .sc-move-submit:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
 .status-check-manual-wrap {
   position: relative;
   display: inline-block;

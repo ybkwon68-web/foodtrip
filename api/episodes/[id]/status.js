@@ -105,6 +105,8 @@ module.exports = async function handler(req, res) {
   }
 
   if (decision === 'confirmed' && target.status_check.moved_suspected && target.status_check.candidate_address) {
+    // 확정 후 화면에서 "이전 전 주소"를 안내할 수 있도록, 덮어쓰기 전 주소를 status_check에 남겨둔다.
+    target.status_check.previous_address = target.address;
     target.address = target.status_check.candidate_address;
     target.place_id = null; // 예전 위치의 place_id는 새 주소와 무관해지므로 초기화
     target.tel = null;

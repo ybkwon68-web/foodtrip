@@ -59,13 +59,31 @@ function statusCheckBadge(sc) {
   const reasons = [];
   if (sc.closure_suspected) reasons.push(confirmed ? '폐업' : '폐업/휴업 의심');
   if (sc.moved_suspected) reasons.push(confirmed ? '이전' : '이전 의심');
+  const badgeLabel = confirmed ? `🔴 ${reasons.join('·')}` : '⚠️ 확인 필요';
+  const badgeClass = confirmed ? 'badge-status-check badge-status-confirmed' : 'badge-status-check';
+
+  if (confirmed) {
+    // 확정 후에는 자동탐지 당시의 의심 근거(note/추정 주소/신뢰도)가 더 이상 의미 없으므로
+    // 참고용 "이전 전 주소"만(있으면) 보여준다 — public/script.js의 동일 분기 참고.
+    const prevAddrRow = sc.moved_suspected && sc.previous_address
+      ? `<span class="status-check-popup-addr">이전 전 주소: ${escapeHtml(sc.previous_address)}</span>`
+      : '';
+    return `
+      <span class="status-check-wrap">
+        <button type="button" class="${badgeClass}">${badgeLabel}</button>
+        <span class="status-check-popup" hidden>
+          <span class="status-check-popup-title">${escapeHtml(reasons.join(' · '))}</span>
+          ${prevAddrRow}
+        </span>
+      </span>
+    `;
+  }
+
   const confidenceLabel = sc.confidence === 'high' ? '높음' : '낮음';
   const checkedAt = sc.checked_at ? new Date(sc.checked_at).toLocaleString('ko-KR') : '';
   const addrRow = sc.moved_suspected && sc.candidate_address
     ? `<span class="status-check-popup-addr">추정 새 주소: ${escapeHtml(sc.candidate_address)}</span>`
     : '';
-  const badgeLabel = confirmed ? `🔴 ${reasons.join('·')}` : '⚠️ 확인 필요';
-  const badgeClass = confirmed ? 'badge-status-check badge-status-confirmed' : 'badge-status-check';
   // 배지가 <p> 안에 놓이는 화면(회차 상세보기·지도 인포윈도우)이 있어, 말풍선도 전부 인라인
   // 태그(span)로만 구성한다 — <p> 안에 <div>/<p>를 넣으면 브라우저가 파싱 중 자동으로 태그를
   // 잘라버려 말풍선 자체가 DOM에서 사라지는 문제가 실측으로 확인됨(세로 배치는 CSS display:block으로 처리).
