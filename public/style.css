@@ -28,251 +28,11 @@
   }
 }
 
-@media (max-width: 720px) {
-  .site-header {
-    padding: 10px 14px;
-    align-items: flex-start;
-  }
-  .controls {
-    width: 100%;
-    align-items: stretch;
-    gap: 6px;
-  }
-  .controls-row {
-    align-items: stretch;
-  }
-  .search-box {
-    min-width: 0;
-    width: 100%;
-    padding: 8px 12px;
-    min-height: 38px;
-  }
-  /* 화면전환 버튼이 많아 헤더가 꽉 차 보이던 문제 — 로고 자리는 항상 "카드로 보기"로
-     통하므로 카드 링크는 없애고, 검색창 등 나머지 컨트롤과 별개로 로고 옆(첫 줄 오른쪽)에
-     표/지도 전환 알약 버튼 두 개만 남긴다(.mobile-view-switch). "사용법"은 모바일에서 뺀다. */
-  .mobile-view-switch {
-    display: flex;
-    gap: 6px;
-    flex: none;
-  }
-  .view-pill {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 6px 14px;
-    border: 1px solid var(--line);
-    border-radius: 20px;
-    background: var(--paper-raised);
-    color: var(--ink-soft);
-    font-size: 12.5px;
-    font-weight: 700;
-    text-decoration: none;
-  }
-  .view-pill.active { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
-  /* 위 알약 버튼으로 대체되었으니 컨트롤 줄 안의 원래 화면전환/사용법 링크는 숨긴다
-     (검색창·정렬 드롭다운만 남음). 관리자 전용 기능(추가등록/편집모드)도 모바일에서 숨김. */
-  .controls-row a.edit-toggle,
-  #addEntryLink,
-  #editToggle {
-    display: none;
-  }
-  .sort-select { width: 100%; }
-  .creator-credit {
-    align-self: flex-start;
-  }
-  .result-count {
-    padding: 0 16px;
-  }
-  .recommend-box {
-    padding: 14px 16px 18px;
-  }
-  .recommend-input-row {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .recommend-input-row button {
-    min-height: 40px;
-  }
-  .recommend-buttons {
-    flex-direction: row;
-  }
-  .recommend-buttons #recommendSubmit {
-    flex: 1;
-  }
-  .recommend-clarify-form {
-    flex-direction: column;
-  }
-  .recommend-clarify-input {
-    max-width: none;
-  }
-  .grid {
-    grid-template-columns: 1fr;
-    padding: 14px 16px 40px;
-    gap: 12px;
-  }
-  .card {
-    min-height: 90px;
-  }
-  .card-body {
-    padding: 14px 14px 16px;
-  }
-  .detail-wrap {
-    padding: 20px 16px 48px;
-  }
-  .detail-footer {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .spot-panel {
-    padding: 14px 14px 16px;
-  }
-  .spot-panel-head {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .spot-panel-actions {
-    width: 100%;
-    gap: 10px;
-  }
-  .spot-edit-btn,
-  .spot-remove-btn {
-    min-height: 42px;
-    padding: 10px 12px;
-  }
-  .r-field-row {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .spot-edit-actions {
-    flex-direction: column;
-  }
-  .btn-save,
-  .btn-cancel {
-    width: 100%;
-    min-height: 44px;
-    padding: 10px 14px;
-  }
-  .table-page {
-    padding: 14px 16px 40px;
-  }
-
-  /* 8개 컬럼짜리 표를 가로 스크롤로 우겨넣던 방식은 모바일에서 거의 안 읽혀서,
-     회차·한줄평·도/시군구·상세주소 칸은 숨기고 회차+식당명(합쳐서 표시)·메뉴·주소·지도
-     4칸짜리 표로 줄인다(칼럼 수만 줄이는 것이라 별도 JS 없이 표 형태 그대로 유지).
-     지역 필터는 thead가 숨는 대신 목록 위 mobile-filter-bar로 옮긴다(같은
-     .col-filter-btn 클래스라 JS 수정 없이 동작). */
-  .mobile-filter-bar {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 12px;
-  }
-  .mobile-filter-bar .col-filter-btn {
-    flex: 1;
-    font-size: 12.5px;
-    font-weight: 600;
-    text-align: center;
-    padding: 9px 10px;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-card);
-    background: var(--paper-raised);
-    color: var(--ink-soft);
-  }
-  .mobile-filter-bar .col-filter-btn.active { color: var(--accent); border-color: var(--accent); }
-  .table-scroll {
-    overflow-x: hidden;
-    max-height: none;
-    min-height: 0;
-  }
-  .ep-table { table-layout: fixed; }
-  .ep-table th,
-  .ep-table td {
-    padding: 8px 8px;
-    font-size: 12.3px;
-  }
-  .ep-table .col-ep,
-  .ep-table .col-review,
-  .ep-table .col-sido,
-  .ep-table .col-sigungu,
-  .ep-table .col-addr {
-    display: none;
-  }
-  .ep-table .th-full-label { display: none; }
-  .ep-table .th-mobile-label { display: inline; }
-  .ep-table th.col-addr-mobile,
-  .ep-table td.col-addr-mobile {
-    display: table-cell;
-  }
-  .ep-table td.col-addr-mobile { color: var(--ink-soft); }
-  .ep-table td.col-name { font-weight: 700; }
-  .ep-table td.col-name .mobile-ep { display: inline; color: var(--brass); font-weight: 700; }
-  .map-link-text { display: none; }
-  .map-link-icon { display: inline-block; width: 18px; height: 18px; }
-
-  .map-page {
-    padding: 14px 16px 24px;
-  }
-  #map {
-    min-height: 320px;
-    height: 68vh;
-  }
-
-  /* 관리 기능(식당 정보 수정/폐업·이전 확정/자동 점검)은 세밀한 입력이 필요해 모바일에
-     적합하지 않으므로 PC 전용으로 제한한다 — 편집모드 버튼 자체는 이미 위에서 숨겼지만,
-     넓은 화면에서 로그인한 뒤 창을 좁히는 경우까지 대비해 관련 UI를 한 번 더 막아둔다. */
-  .spot-edit-btn,
-  .edit-state-pill,
-  #spotEditForm,
-  .admin-check-panel,
-  .status-check-popup-actions,
-  .status-check-manual-wrap,
-  .desktop-only-content {
-    display: none !important;
-  }
-  .mobile-desktop-notice {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    margin: 18px 16px;
-    padding: 14px 16px;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-card);
-    background: var(--paper-raised);
-    color: var(--ink-soft);
-    font-size: 13.3px;
-    line-height: 1.55;
-  }
-  .mobile-desktop-notice svg { flex: none; margin-top: 1px; color: var(--brass); }
-  .mobile-desktop-notice b { color: var(--ink); }
-
-  /* 오늘 뭐 먹지 추천 상자 — 진입하자마자 화면을 다 차지해 회차 목록이 안 보이던 문제라,
-     모바일에서는 기본 접힘 상태로 시작하고 탭해야 펼쳐지게 한다. */
-  .recommend-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    width: 100%;
-    padding: 14px 16px;
-    background: none;
-    border: none;
-    color: var(--ink);
-    font-family: inherit;
-    font-size: 13.5px;
-    font-weight: 600;
-    text-align: left;
-    cursor: pointer;
-  }
-  .recommend-toggle-icon { flex: none; color: var(--ink-soft); transition: transform 0.15s ease; }
-  .recommend-box.open .recommend-toggle-icon { transform: rotate(180deg); }
-  .recommend-panel { display: none; padding: 0 16px 18px; }
-  .recommend-box.open .recommend-panel { display: block; }
-  .recommend-panel .recommend-label { display: none; } /* 토글 버튼에 같은 문구가 이미 보이므로 펼친 뒤 중복 표시 방지 */
-  .recommend-box { padding: 0; }
-}
-
 /* 편집 폼(add.html)처럼 세밀한 입력이 필요한 관리 기능은 PC 전용 — 폼 대신
    화면 크기를 안내하는 문구를 보여준다. 데스크톱에서는 기본적으로 숨김. */
 .mobile-desktop-notice { display: none; }
+/* 회차 상세보기의 모바일 전용 방문식당 표(아래 모바일 미디어쿼리에서 노출) */
+.mobile-spot-wrap { display: none; }
 
 * { box-sizing: border-box; }
 html, body { margin: 0; }
@@ -325,6 +85,10 @@ button, a, input, select, textarea {
 }
 .controls { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
 .controls-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+/* 화면전환/사용법/편집 링크 묶음 — display:contents로 평소엔 감싼 태그가 없는 것처럼
+   부모(.controls-row)의 flex 배치에 자식들이 그대로 참여하고, 모바일에서만 통째로 숨긴다
+   (아래 720px 미디어쿼리 참고 — .mobile-view-switch 알약 버튼으로 대체됨). */
+.desktop-nav-links { display: contents; }
 .creator-credit {
   font-size: 11px;
   color: var(--ink-soft);
@@ -1632,6 +1396,291 @@ button, a, input, select, textarea {
   background: var(--accent);
   border: 2px solid var(--paper);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+
+/* ── 모바일(720px 이하) ─────────────────────────────────────────────
+   이 블록은 반드시 위의 모든 기본(데스크톱) 규칙보다 뒤에 와야 한다 — 같은 우선순위의
+   선택자는 CSS에서 나중에 나온 규칙이 이기므로, 이 블록이 파일 앞쪽에 있으면
+   미디어쿼리 조건이 참이어도 뒤에 나오는 데스크톱 기본값한테 매번 진다(과거 실측 버그:
+   .mobile-view-switch 등 "기본 숨김→모바일에서 노출" 패턴 요소가 화면 폭과 무관하게
+   항상 숨어 있었음 — 지도로 보기 버튼이 안 보이던 원인). */
+@media (max-width: 720px) {
+  .site-header {
+    padding: 10px 14px;
+    align-items: flex-start;
+  }
+  .controls {
+    width: 100%;
+    align-items: stretch;
+    gap: 6px;
+  }
+  .controls-row {
+    align-items: stretch;
+  }
+  .search-box {
+    min-width: 0;
+    width: 100%;
+    padding: 8px 12px;
+    min-height: 38px;
+  }
+  /* 화면전환 버튼이 많아 헤더가 꽉 차 보이던 문제 — 로고 자리는 항상 "카드로 보기"로
+     통하므로 카드 링크는 없애고, 검색창 등 나머지 컨트롤과 별개로 로고 옆(첫 줄 오른쪽)에
+     표/지도 전환 알약 버튼 두 개만 남긴다(.mobile-view-switch). "사용법"은 모바일에서 뺀다. */
+  .mobile-view-switch {
+    display: flex;
+    gap: 6px;
+    flex: none;
+  }
+  .view-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 14px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: var(--paper-raised);
+    color: var(--ink-soft);
+    font-size: 12.5px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .view-pill.active { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+  /* 위 알약 버튼으로 대체되었으니 컨트롤 줄 안의 원래 화면전환/사용법 링크 묶음
+     (.desktop-nav-links)은 통째로 숨긴다 — 검색창·정렬 드롭다운만 남음.
+     관리자 전용 기능(추가등록/편집모드)도 모바일에서 숨김. */
+  .desktop-nav-links,
+  #addEntryLink,
+  #editToggle {
+    display: none;
+  }
+  .sort-select { width: 100%; }
+  .creator-credit {
+    align-self: flex-start;
+  }
+  .result-count {
+    padding: 0 16px;
+  }
+  .recommend-box {
+    padding: 14px 16px 18px;
+  }
+  .recommend-input-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .recommend-input-row button {
+    min-height: 40px;
+  }
+  .recommend-buttons {
+    flex-direction: row;
+  }
+  .recommend-buttons #recommendSubmit {
+    flex: 1;
+  }
+  .recommend-clarify-form {
+    flex-direction: column;
+  }
+  .recommend-clarify-input {
+    max-width: none;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+    padding: 14px 16px 40px;
+    gap: 12px;
+  }
+  .card {
+    min-height: 90px;
+  }
+  .card-body {
+    padding: 14px 14px 16px;
+  }
+  .detail-wrap {
+    padding: 20px 16px 48px;
+  }
+  /* 상세보기 상단(← 목록으로 / 회차 배지 / 제목 / 방송일)은 모바일에서 공간만 차지해서
+     뺀다 — 로고를 누르면 어차피 목록으로 돌아가고, 어느 회차인지는 아래 방문식당
+     표에서 바로 확인 가능하므로 굳이 반복해서 보여줄 필요가 없다는 사용자 피드백. */
+  .back-link,
+  .detail-badge,
+  .detail-title,
+  .detail-meta {
+    display: none;
+  }
+  .detail-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .spot-panel {
+    padding: 14px 14px 16px;
+  }
+  .spot-panel-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .spot-panel-actions {
+    width: 100%;
+    gap: 10px;
+  }
+  .spot-edit-btn,
+  .spot-remove-btn {
+    min-height: 42px;
+    padding: 10px 12px;
+  }
+  .r-field-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .spot-edit-actions {
+    flex-direction: column;
+  }
+  .btn-save,
+  .btn-cancel {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 14px;
+  }
+  /* 방문식당 목록 — 식당이 여러 곳이면 필드별로 늘어선 카드가 여러 번 반복돼 한눈에
+     비교가 안 되던 문제라, 표(식당명/메뉴/주소/지도)로 바꿔서 구분이 쉽게 한다. */
+  #spotView { display: none; }
+  .mobile-spot-wrap { display: block; }
+  .mobile-spot-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 12.5px;
+  }
+  .mobile-spot-table th,
+  .mobile-spot-table td {
+    border: 1px solid var(--line);
+    padding: 7px 8px;
+    text-align: left;
+    vertical-align: top;
+  }
+  .mobile-spot-table th {
+    background: var(--paper);
+    color: var(--ink-soft);
+    font-size: 10.8px;
+    font-weight: 700;
+  }
+  .mobile-spot-table .mobile-spot-name { font-weight: 700; }
+  .mobile-spot-table .mobile-spot-map { width: 34px; text-align: center; }
+  .mobile-spot-table .mobile-spot-map a { display: inline-flex; color: var(--accent); }
+  .mobile-spot-table .mobile-spot-map svg { width: 16px; height: 16px; }
+  .table-page {
+    padding: 14px 16px 40px;
+  }
+
+  /* 8개 컬럼짜리 표를 가로 스크롤로 우겨넣던 방식은 모바일에서 거의 안 읽혀서,
+     회차·한줄평·도/시군구·상세주소 칸은 숨기고 회차+식당명(합쳐서 표시)·메뉴·주소·지도
+     4칸짜리 표로 줄인다(칼럼 수만 줄이는 것이라 별도 JS 없이 표 형태 그대로 유지).
+     지역 필터는 thead가 숨는 대신 목록 위 mobile-filter-bar로 옮긴다(같은
+     .col-filter-btn 클래스라 JS 수정 없이 동작). */
+  .mobile-filter-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .mobile-filter-bar .col-filter-btn {
+    flex: 1;
+    font-size: 12.5px;
+    font-weight: 600;
+    text-align: center;
+    padding: 9px 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    background: var(--paper-raised);
+    color: var(--ink-soft);
+  }
+  .mobile-filter-bar .col-filter-btn.active { color: var(--accent); border-color: var(--accent); }
+  .table-scroll {
+    overflow-x: hidden;
+    max-height: none;
+    min-height: 0;
+  }
+  .ep-table { table-layout: fixed; }
+  .ep-table th,
+  .ep-table td {
+    padding: 8px 8px;
+    font-size: 12.3px;
+  }
+  .ep-table .col-ep,
+  .ep-table .col-review,
+  .ep-table .col-sido,
+  .ep-table .col-sigungu,
+  .ep-table .col-addr {
+    display: none;
+  }
+  .ep-table .th-full-label { display: none; }
+  .ep-table .th-mobile-label { display: inline; }
+  .ep-table th.col-addr-mobile,
+  .ep-table td.col-addr-mobile {
+    display: table-cell;
+  }
+  .ep-table td.col-addr-mobile { color: var(--ink-soft); }
+  .ep-table td.col-name { font-weight: 700; }
+  .ep-table td.col-name .mobile-ep { display: inline; color: var(--brass); font-weight: 700; }
+  .map-link-text { display: none; }
+  .map-link-icon { display: inline-block; width: 18px; height: 18px; }
+
+  .map-page {
+    padding: 14px 16px 24px;
+  }
+  #map {
+    min-height: 320px;
+    height: 68vh;
+  }
+
+  /* 관리 기능(식당 정보 수정/폐업·이전 확정/자동 점검)은 세밀한 입력이 필요해 모바일에
+     적합하지 않으므로 PC 전용으로 제한한다 — 편집모드 버튼 자체는 이미 위에서 숨겼지만,
+     넓은 화면에서 로그인한 뒤 창을 좁히는 경우까지 대비해 관련 UI를 한 번 더 막아둔다. */
+  .spot-edit-btn,
+  .edit-state-pill,
+  #spotEditForm,
+  .admin-check-panel,
+  .status-check-popup-actions,
+  .status-check-manual-wrap,
+  .desktop-only-content {
+    display: none !important;
+  }
+  .mobile-desktop-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 18px 16px;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    background: var(--paper-raised);
+    color: var(--ink-soft);
+    font-size: 13.3px;
+    line-height: 1.55;
+  }
+  .mobile-desktop-notice svg { flex: none; margin-top: 1px; color: var(--brass); }
+  .mobile-desktop-notice b { color: var(--ink); }
+
+  /* 오늘 뭐 먹지 추천 상자 — 진입하자마자 화면을 다 차지해 회차 목록이 안 보이던 문제라,
+     모바일에서는 기본 접힘 상태로 시작하고 탭해야 펼쳐지게 한다. */
+  .recommend-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    padding: 14px 16px;
+    background: none;
+    border: none;
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+  }
+  .recommend-toggle-icon { flex: none; color: var(--ink-soft); transition: transform 0.15s ease; }
+  .recommend-box.open .recommend-toggle-icon { transform: rotate(180deg); }
+  .recommend-panel { display: none; padding: 0 16px 18px; }
+  .recommend-box.open .recommend-panel { display: block; }
+  .recommend-panel .recommend-label { display: none; } /* 토글 버튼에 같은 문구가 이미 보이므로 펼친 뒤 중복 표시 방지 */
+  .recommend-box { padding: 0; }
 }
 
 @media (max-width: 1180px) {

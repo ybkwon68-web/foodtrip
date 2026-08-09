@@ -580,6 +580,26 @@ function restaurantViewRow(r, episodeNum, fallbackSourceUrl) {
   `;
 }
 
+// 모바일 전용 방문식당 표(1행 = 식당 1곳). 식당이 여러 곳이면 필드별 카드가 여러 번
+// 반복되는 #spotView 대신, 식당명/메뉴/주소를 표로 비교하기 쉽게 보여준다(사용자 요청).
+// 편집 관련 UI(수정/폐업·이전 처리 버튼)는 모바일에서 전부 숨기므로 여기선 열람만 지원한다.
+function restaurantMobileRow(r, episodeNum) {
+  const sc = r.status_check;
+  const hasVisibleBadge = Boolean(sc && (sc.closure_suspected || sc.moved_suspected) && sc.admin_decision !== 'dismissed');
+  const statusMarkup = hasVisibleBadge ? statusCheckBadge(sc, episodeNum, r.name) : '';
+  const mapCell = r.address
+    ? `<td class="mobile-spot-map"><a href="${mapUrl(r)}" target="_blank" rel="noopener">${pinIcon}</a></td>`
+    : `<td class="mobile-spot-map empty-cell">-</td>`;
+  return `
+    <tr>
+      <td class="mobile-spot-name">${escapeHtml(r.name) || '미확인'}${statusMarkup}</td>
+      <td>${r.menu ? escapeHtml(r.menu) : '-'}</td>
+      <td>${r.address ? escapeHtml(r.address) : '미확인'}</td>
+      ${mapCell}
+    </tr>
+  `;
+}
+
 // 전화/좌표/placeId는 편집 폼에 입력칸이 없으므로, 주소를 안 건드리면 기존 값을 그대로
 // 보존하기 위해 원본 데이터를 행에 함께 담아둔다 (저장 시 restoreGeoIfUnchanged에서 사용).
 function restaurantEditRow(r, idx) {
@@ -671,6 +691,14 @@ async function renderDetail(epNum) {
   const editRows = restaurants.length
     ? restaurants.map(restaurantEditRow).join('')
     : restaurantEditRow({}, 0);
+  // 모바일에서는 #spotView(필드별 카드) 대신 이 표를 보여준다(CSS로 토글, script.js 최상단
+  // 미디어쿼리 관련 CSS 참고) — 데스크톱 마크업은 그대로 두고 화면 폭에 따라 둘 중 하나만 보이게 함.
+  const mobileSpotBody = restaurants.length
+    ? `<table class="mobile-spot-table">
+        <thead><tr><th>식당명</th><th>메뉴</th><th>주소</th><th></th></tr></thead>
+        <tbody>${restaurants.map((r) => restaurantMobileRow(r, ep.episode)).join('')}</tbody>
+      </table>`
+    : `<p class="spot-field"><strong>식당명</strong>미확인</p>`;
 
   detailView.innerHTML = `
     <div class="detail-wrap">
@@ -691,6 +719,7 @@ async function renderDetail(epNum) {
         <div id="spotView">
           ${viewRows}
         </div>
+        <div class="mobile-spot-wrap">${mobileSpotBody}</div>
         <form class="spot-edit-form" id="spotEditForm" hidden>
           <div id="restaurantRows">${editRows}</div>
           <button type="button" class="spot-edit-btn" id="addRestaurantBtn">+ 식당 추가</button>
