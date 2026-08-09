@@ -1,0 +1,960 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>사용 설명서 · 백반기행 아카이브</title>
+<meta name="description" content="백반기행 아카이브 사용 설명서 — 카드/표/지도로 보기, 추천받기, 편집 모드, 폐업·이전 처리까지 화면별 안내">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="백반기행 아카이브">
+<meta property="og:title" content="사용 설명서 · 백반기행 아카이브">
+<meta property="og:description" content="백반기행 아카이브 사용 설명서 — 카드/표/지도로 보기, 추천받기, 편집 모드, 폐업·이전 처리까지 화면별 안내">
+<meta property="og:url" content="https://foodtrip-six.vercel.app/manual.html">
+<link rel="stylesheet" href="./style.css">
+<style>
+  /* 이 페이지 전용 보조 색상(style.css의 공통 토큰에는 없는 그림자 값) */
+  :root {
+    --shadow-card: 0 10px 24px rgba(43, 36, 28, 0.10);
+    --shadow-mock: 0 16px 34px rgba(43, 36, 28, 0.14);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --shadow-card: 0 10px 24px rgba(0, 0, 0, 0.35);
+      --shadow-mock: 0 16px 34px rgba(0, 0, 0, 0.45);
+    }
+  }
+
+  html { scroll-behavior: smooth; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 700; text-wrap: balance; color: var(--ink); }
+  code { font-family: ui-monospace, "SFMono-Regular", Consolas, monospace; background: var(--paper-sunken, var(--paper-raised)); padding: 1px 5px; border-radius: 3px; font-size: 0.88em; }
+
+  /* ── 레이아웃 ───────────────────────────── */
+  .manual-page {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 40px;
+  }
+  @media (max-width: 900px) {
+    .manual-page { grid-template-columns: 1fr; padding: 0 16px 60px; }
+  }
+
+  /* ── 표지 ───────────────────────────── */
+  .cover {
+    grid-column: 1 / -1;
+    padding: 36px 4px 28px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 8px;
+  }
+  .cover h1 {
+    margin: 0 0 10px;
+    font-size: clamp(24px, 4vw, 32px);
+    letter-spacing: -0.01em;
+  }
+  .cover p.lead {
+    margin: 0 0 20px;
+    max-width: 62ch;
+    color: var(--ink-soft);
+    font-size: 15px;
+  }
+  .cover-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 10px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+  }
+  .cover-meta span { display: inline-flex; align-items: center; gap: 5px; }
+  .cover-meta .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--ink-soft); }
+
+  /* ── 좌측 목차 ───────────────────────────── */
+  nav.toc {
+    position: sticky;
+    top: 24px;
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    padding-right: 6px;
+  }
+  nav.toc .toc-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 0 0 8px 10px;
+  }
+  nav.toc a {
+    text-decoration: none;
+    color: var(--ink-soft);
+    font-size: 13.3px;
+    padding: 7px 10px;
+    border-radius: 6px;
+    border-left: 2px solid transparent;
+    transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+  }
+  nav.toc a:hover { background: var(--paper-raised); color: var(--ink); }
+  nav.toc a.active { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); font-weight: 600; }
+  @media (max-width: 900px) {
+    nav.toc {
+      position: static;
+      flex-direction: row;
+      flex-wrap: wrap;
+      max-height: none;
+      gap: 6px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 20px;
+    }
+    nav.toc .toc-label { display: none; }
+    nav.toc a { border: 1px solid var(--line); border-left: 1px solid var(--line); }
+    nav.toc a.active { border-color: var(--accent); }
+  }
+
+  /* ── 본문 ───────────────────────────── */
+  main.manual-main { min-width: 0; }
+  section.chapter {
+    padding: 46px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  section.chapter:last-of-type { border-bottom: none; }
+  .chapter-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--brass);
+    margin-bottom: 8px;
+  }
+  .chapter-eyebrow .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    font-family: var(--font-display);
+    font-size: 11px;
+  }
+  section.chapter h2 { margin: 0 0 12px; font-size: 22px; }
+  .chapter-desc { max-width: 66ch; color: var(--ink-soft); margin: 0 0 26px; font-size: 14.5px; }
+
+  .note {
+    max-width: 66ch;
+    margin: 18px 0;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--paper-raised);
+    font-size: 13.3px;
+    color: var(--ink-soft);
+    display: flex;
+    gap: 9px;
+  }
+  .note svg { flex: none; margin-top: 1px; color: var(--brass); }
+  .note.warn { border-color: var(--accent); background: var(--accent-soft); }
+  .note.warn svg { color: var(--accent); }
+  .note strong, .note b { color: var(--ink); }
+
+  ol.steps {
+    max-width: 66ch;
+    margin: 0 0 22px;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  ol.steps li {
+    counter-increment: step;
+    display: flex;
+    gap: 12px;
+    font-size: 14px;
+  }
+  ol.steps li::before {
+    content: counter(step);
+    flex: none;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--paper);
+    font-size: 11.5px;
+    font-weight: 700;
+    font-family: var(--font-display);
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px;
+  }
+  ol.steps li b { color: var(--ink); }
+  ol.steps li .sub { display: block; color: var(--ink-soft); font-size: 12.8px; margin-top: 2px; }
+
+  /* ── 목업 프레임 ───────────────────────────── */
+  .mock {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--paper-raised);
+    box-shadow: var(--shadow-mock);
+    margin: 6px 0 18px;
+    max-width: 720px;
+  }
+  .mock-bar {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 12px;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+  }
+  .mock-bar i { width: 8px; height: 8px; border-radius: 50%; background: var(--line); display: block; }
+  .mock-bar .url {
+    margin-left: 6px;
+    font-size: 11px;
+    color: var(--ink-soft);
+    font-family: ui-monospace, Consolas, monospace;
+  }
+  .mock-body { background: var(--paper); padding: 16px 18px; font-size: 12.5px; color: var(--ink); }
+  .mock-body.tight { padding: 0; }
+
+  .legend {
+    max-width: 720px;
+    margin: 0 0 26px;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 6px 18px;
+  }
+  .legend li { display: flex; gap: 8px; font-size: 12.8px; color: var(--ink-soft); }
+  .legend b.chip {
+    flex: none;
+    width: 17px; height: 17px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--paper);
+    font-size: 10px;
+    font-weight: 700;
+    font-family: var(--font-display);
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px;
+  }
+  .legend span b { color: var(--ink); font-weight: 600; }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--paper);
+    font-size: 9px;
+    font-weight: 700;
+    font-family: var(--font-display);
+    margin-right: 4px;
+    flex: none;
+  }
+  .tagged { background: var(--accent-soft); border-radius: 4px; padding: 1px 5px; }
+
+  /* ── 목업 내부: 사이트 헤더 재현 ───────────────────────────── */
+  .mk-header {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+    gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--line); background: var(--paper);
+  }
+  .mk-brand { display: flex; align-items: center; gap: 7px; color: var(--ink); }
+  .mk-brand svg { color: var(--accent); }
+  .mk-brand span { font-family: var(--font-display); font-size: 13px; font-weight: 700; }
+  .mk-controls { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .mk-search {
+    display: flex; align-items: center; gap: 5px; border: 1px solid var(--line); border-radius: 4px;
+    padding: 5px 9px; background: var(--paper-raised); color: var(--ink-soft); font-size: 11px;
+  }
+  .mk-btn {
+    display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--line); border-radius: 4px;
+    padding: 5px 9px; background: var(--paper-raised); color: var(--ink-soft); font-size: 11px; font-weight: 600;
+  }
+  .mk-btn svg { width: 11px; height: 11px; }
+
+  /* ── 목업 내부: 카드 그리드 ───────────────────────────── */
+  .mk-toolbar { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; font-size: 11px; color: var(--ink-soft); }
+  .mk-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 0 14px 16px; }
+  .mk-card { border: 1px solid var(--line); border-radius: 4px; background: var(--paper-raised); padding: 10px 11px; }
+  .mk-ep { display: inline-block; font-size: 9.5px; font-weight: 700; color: var(--paper); background: var(--brass); padding: 2px 6px; border-radius: 3px; margin-bottom: 6px; }
+  .mk-card .t { font-family: var(--font-display); font-size: 12px; font-weight: 600; margin: 0 0 6px; line-height: 1.4; }
+  .mk-card .n { display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; margin: 0 0 4px; }
+  .mk-card .n svg { width: 10px; height: 10px; color: var(--accent); }
+  .mk-card .a { display: flex; align-items: center; gap: 4px; font-size: 10.5px; color: var(--jade); margin: 0 0 6px; }
+  .mk-card .a svg { width: 10px; height: 10px; }
+  .mk-card .d { font-size: 10.5px; color: var(--ink-soft); }
+  .mk-badge-ok, .mk-badge-un {
+    display: inline-block; font-size: 8.5px; font-weight: 700; padding: 1px 5px; border-radius: 3px; margin-left: 5px;
+  }
+  .mk-badge-ok { background: var(--jade); color: var(--paper); }
+  .mk-badge-un { background: var(--accent-soft); color: var(--ink); }
+
+  /* ── 목업 내부: 상세보기 ───────────────────────────── */
+  .mk-detail { padding: 16px 18px; }
+  .mk-back { font-size: 11px; color: var(--ink-soft); margin-bottom: 10px; display: block; }
+  .mk-h1 { font-family: var(--font-display); font-size: 16px; font-weight: 700; margin: 4px 0 4px; }
+  .mk-sub { font-size: 11px; color: var(--ink-soft); margin-bottom: 14px; }
+  .mk-panel { border: 1px solid var(--line); border-radius: 6px; background: var(--paper-raised); padding: 12px 14px; margin-bottom: 14px; }
+  .mk-panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .mk-panel-head .title { font-weight: 700; font-size: 12px; }
+  .mk-row { font-size: 12px; }
+  .mk-row .f { display: flex; gap: 8px; margin-bottom: 5px; }
+  .mk-row .f strong { flex: none; width: 60px; color: var(--ink-soft); font-weight: 600; font-size: 10.8px; }
+  .mk-row .f a { font-size: 11px; }
+  .mk-body-html { font-size: 12px; color: var(--ink-soft); line-height: 1.7; }
+
+  /* ── 목업 내부: 표 ───────────────────────────── */
+  .mk-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .mk-table th, .mk-table td { border: 1px solid var(--line); padding: 7px 9px; text-align: left; }
+  .mk-table th { background: var(--paper); font-weight: 700; color: var(--ink-soft); font-size: 10.5px; white-space: nowrap; }
+  .mk-table th .fbtn { color: var(--accent); margin-left: 3px; font-weight: 900; }
+  .mk-filter {
+    position: relative; display: inline-block; margin-top: 8px; border: 1px solid var(--line); border-radius: 6px;
+    background: var(--paper-raised); box-shadow: var(--shadow-card); padding: 8px; font-size: 10.5px; width: 150px;
+  }
+  .mk-filter .fs { border: 1px solid var(--line); border-radius: 3px; padding: 4px 6px; color: var(--ink-soft); margin-bottom: 6px; background: var(--paper); }
+  .mk-filter label { display: flex; align-items: center; gap: 5px; padding: 2px 0; }
+  .mk-filter .fbtns { display: flex; gap: 5px; margin-top: 6px; }
+  .mk-filter .fbtns span { flex: 1; text-align: center; border-radius: 3px; padding: 4px; border: 1px solid var(--line); }
+  .mk-filter .fbtns span.go { background: var(--accent); color: var(--paper); border: none; font-weight: 700; }
+
+  /* ── 목업 내부: 지도 ───────────────────────────── */
+  .mk-map {
+    position: relative; height: 230px;
+    background:
+      radial-gradient(circle at 20% 30%, var(--jade-soft, rgba(68,94,76,.15)), transparent 45%),
+      radial-gradient(circle at 75% 60%, var(--jade-soft, rgba(68,94,76,.15)), transparent 40%),
+      repeating-linear-gradient(0deg, var(--line) 0 1px, transparent 1px 46px),
+      repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 46px),
+      var(--paper);
+  }
+  .mk-pin { position: absolute; width: 18px; height: 18px; border-radius: 50% 50% 50% 0; background: var(--accent); transform: rotate(-45deg); box-shadow: 0 2px 6px rgba(0,0,0,.25); }
+  .mk-pin.p1 { top: 40%; left: 28%; }
+  .mk-pin.p2 { top: 62%; left: 48%; }
+  .mk-cluster {
+    position: absolute; top: 55%; left: 78%; width: 30px; height: 30px; border-radius: 50%;
+    background: var(--accent-soft); border: 1px solid var(--accent); color: var(--accent);
+    display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700;
+  }
+  .mk-info {
+    position: absolute; top: 18%; left: 46%; width: 168px; background: var(--paper-raised); border: 1px solid var(--line);
+    border-radius: 6px; box-shadow: var(--shadow-card); padding: 9px 10px; font-size: 10.5px;
+  }
+  .mk-info .ep { color: var(--brass); font-weight: 700; font-size: 9.5px; }
+  .mk-info .nm { font-weight: 700; margin: 3px 0; }
+  .mk-info .ad { color: var(--ink-soft); margin-bottom: 6px; }
+  .mk-info .ln { color: var(--accent); font-size: 9.5px; }
+  .mk-locate {
+    position: absolute; right: 10px; bottom: 10px; width: 30px; height: 30px; border-radius: 50%;
+    background: var(--paper-raised); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--shadow-card); font-size: 13px;
+  }
+
+  /* ── 목업 내부: 추천 상자 ───────────────────────────── */
+  .mk-rlabel { font-size: 11.5px; font-weight: 700; margin-bottom: 8px; }
+  .mk-rbox { border: 1px solid var(--line); border-radius: 6px; background: var(--paper-raised); padding: 10px; font-size: 11px; color: var(--ink-soft); margin-bottom: 8px; }
+  .mk-rbtns { display: flex; gap: 6px; justify-content: flex-end; }
+  .mk-rresult { border: 1px solid var(--line); border-radius: 6px; background: var(--paper-raised); padding: 10px 12px; margin-top: 12px; font-size: 11px; }
+  .mk-rresult .rn { font-weight: 700; margin-bottom: 3px; }
+  .mk-rresult .re { color: var(--brass); font-size: 10px; margin-bottom: 4px; }
+  .mk-rresult .rr { color: var(--jade); font-style: italic; }
+
+  /* ── 목업 내부: 입력 폼 ───────────────────────────── */
+  .mk-form { padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+  .mk-field { display: flex; flex-direction: column; gap: 3px; }
+  .mk-field label { font-size: 10.5px; color: var(--ink-soft); font-weight: 600; }
+  .mk-field .in { border: 1px solid var(--line); border-radius: 4px; background: var(--paper-raised); padding: 6px 8px; font-size: 11px; color: var(--ink-soft); }
+  .mk-form-row { display: flex; gap: 8px; }
+  .mk-form-row .mk-field { flex: 1; }
+  .mk-form-actions { display: flex; gap: 6px; justify-content: flex-end; margin-top: 4px; }
+  .mk-btn2 { border-radius: 4px; padding: 6px 12px; font-size: 11px; font-weight: 700; border: 1px solid var(--line); background: var(--paper-raised); color: var(--ink-soft); }
+  .mk-btn2.primary { background: var(--accent); color: var(--paper); border: none; }
+
+  /* ── 목업 내부: 폐업/이전 상태 배지 ───────────────────────────── */
+  .mk-badge-warn, .mk-badge-red {
+    display: inline-flex; align-items: center; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 3px; margin-left: 6px;
+  }
+  .mk-badge-warn { background: var(--brass); color: var(--paper); }
+  .mk-badge-red { background: var(--accent); color: var(--paper); }
+  .mk-popup { border: 1px solid var(--line); border-radius: 4px; background: var(--paper-raised); box-shadow: var(--shadow-card); padding: 10px 12px; font-size: 11px; max-width: 260px; margin-top: 8px; }
+  .mk-popup .pt { font-weight: 700; color: var(--brass); margin-bottom: 4px; }
+  .mk-popup .pn { color: var(--ink-soft); margin-bottom: 6px; }
+  .mk-popup .pm { color: var(--ink-soft); font-size: 10px; margin-bottom: 8px; }
+  .mk-popup .pa { display: flex; gap: 5px; flex-wrap: wrap; padding-top: 8px; border-top: 1px solid var(--line); }
+  .mk-mini-btn { border: 1px solid var(--line); border-radius: 3px; padding: 3px 7px; font-size: 10px; font-weight: 700; background: var(--paper); color: var(--ink); }
+  .mk-mini-btn.accent { color: var(--accent); border-color: var(--accent); }
+
+  .flow {
+    display: flex; align-items: stretch; gap: 0; flex-wrap: wrap; max-width: 720px; margin: 4px 0 22px;
+  }
+  .flow .fbox {
+    border: 1px solid var(--line); background: var(--paper-raised); border-radius: 6px; padding: 10px 12px;
+    font-size: 12px; min-width: 128px; display: flex; flex-direction: column; justify-content: center;
+  }
+  .flow .fbox b { display: block; font-size: 12.5px; margin-bottom: 2px; }
+  .flow .fbox span { color: var(--ink-soft); font-size: 10.8px; }
+  .flow .farrow { display: flex; align-items: center; justify-content: center; color: var(--ink-soft); padding: 0 8px; font-size: 15px; }
+  .flow .fbox.accentbox { border-color: var(--accent); background: var(--accent-soft); }
+  @media (max-width: 620px) {
+    .flow { flex-direction: column; }
+    .flow .farrow { transform: rotate(90deg); padding: 2px 0; }
+  }
+
+  details.faq {
+    max-width: 720px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--paper-raised);
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  details.faq summary {
+    padding: 13px 16px;
+    font-weight: 700;
+    font-size: 13.8px;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  details.faq summary::-webkit-details-marker { display: none; }
+  details.faq summary::after { content: "+"; color: var(--accent); font-size: 18px; font-weight: 400; margin-left: 10px; }
+  details.faq[open] summary::after { content: "−"; }
+  details.faq .a { padding: 0 16px 15px; color: var(--ink-soft); font-size: 13.3px; line-height: 1.65; }
+  details.faq .a code { white-space: nowrap; }
+
+  .badge-scope {
+    display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700;
+    padding: 3px 9px; border-radius: 20px; margin-bottom: 14px;
+  }
+  .badge-scope.admin { background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent); }
+
+  footer.manual-footer {
+    grid-column: 1 / -1;
+    padding-top: 30px;
+    margin-top: 10px;
+    border-top: 1px solid var(--line);
+    color: var(--ink-soft);
+    font-size: 12px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="./index.html">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="brand-icon">
+      <path d="M4 11a8 8 0 0 0 16 0Z"></path>
+      <path d="M4 11h16"></path>
+      <path d="M12 3v3M8 4l1 3M16 4l-1 3"></path>
+    </svg>
+    <span class="wordmark">백반기행 아카이브<small>사용 설명서</small></span>
+  </a>
+  <div class="controls">
+    <div class="controls-row">
+      <a class="edit-toggle" href="./index.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11a8 8 0 0 0 16 0Z"></path><path d="M4 11h16"></path></svg>
+        카드로 보기
+      </a>
+      <a class="edit-toggle" href="./table.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="1.5"></rect><path d="M3 10h18M9 10v10"></path></svg>
+        표로 보기
+      </a>
+      <a class="edit-toggle" href="./map.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 20l-6-3V5l6 3 6-3 6 3v12l-6-3-6 3z"></path><path d="M9 5v15M15 8v15"></path></svg>
+        지도로 보기
+      </a>
+    </div>
+  </div>
+</header>
+
+<div class="manual-page">
+
+  <div class="cover">
+    <h1>사용 설명서</h1>
+    <p class="lead">허영만의 백반기행 방송을 회차별로 정리한 아카이브 사이트, 하나하나 따라 하면서 익힐 수 있도록 화면별로 정리했습니다. 컴퓨터에 익숙하지 않아도 괜찮습니다 — 그림을 보면서 순서대로 눌러보세요.</p>
+    <div class="cover-meta">
+      <span>총 11개 장</span><span class="dot"></span>
+      <span>둘러보기용 화면 재현 그림 포함</span>
+    </div>
+  </div>
+
+  <nav class="toc" id="toc">
+    <p class="toc-label">목차</p>
+    <a href="#start">1. 시작하기</a>
+    <a href="#cards">2. 카드로 보기</a>
+    <a href="#detail">3. 회차 상세보기</a>
+    <a href="#table">4. 표로 보기</a>
+    <a href="#map">5. 지도로 보기</a>
+    <a href="#recommend">6. 오늘 뭐 먹지?</a>
+    <a href="#editmode">7. 편집 모드 켜기</a>
+    <a href="#editrow">8. 식당 정보 수정하기</a>
+    <a href="#status">9. 폐업 · 이전 처리하기</a>
+    <a href="#add">10. 새 회차 등록하기</a>
+    <a href="#faq">11. 자주 묻는 질문</a>
+  </nav>
+
+  <main class="manual-main" id="top">
+
+    <!-- 1. 시작하기 -->
+    <section class="chapter" id="start">
+      <p class="chapter-eyebrow"><span class="num">1</span>시작하기</p>
+      <h2>이 사이트는 무엇인가요?</h2>
+      <p class="chapter-desc">TV조선 「식객 허영만의 백반기행」에 나온 식당들을 회차별로 찾아볼 수 있는 개인 아카이브입니다. 같은 정보를 세 가지 다른 방식으로 볼 수 있고, 위치 기반으로 식당을 추천받을 수도 있습니다.</p>
+
+      <div class="flow">
+        <div class="fbox"><b>🗂 카드로 보기</b><span>회차를 하나씩 훑어보기</span></div>
+        <div class="farrow">·</div>
+        <div class="fbox"><b>📋 표로 보기</b><span>지역·식당명으로 골라내기</span></div>
+        <div class="farrow">·</div>
+        <div class="fbox"><b>🗺 지도로 보기</b><span>가까운 식당 찾기</span></div>
+      </div>
+
+      <p class="chapter-desc" style="margin-top:-6px">셋 다 같은 데이터를 보여주며, 화면 위쪽 버튼으로 언제든 서로 이동할 수 있습니다. 이 설명서도 같은 순서로 안내합니다.</p>
+
+      <div class="note">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4M12 8h.01"></path></svg>
+        <span>대부분의 기능(둘러보기, 검색, 추천받기)은 <b>로그인 없이</b> 누구나 사용할 수 있습니다. 정보를 새로 등록하거나 고치는 기능만 <b>편집 모드</b> 로그인이 필요하며, 7장부터 자세히 설명합니다.</span>
+      </div>
+    </section>
+
+    <!-- 2. 카드로 보기 -->
+    <section class="chapter" id="cards">
+      <p class="chapter-eyebrow"><span class="num">2</span>메인 화면</p>
+      <h2>카드로 보기</h2>
+      <p class="chapter-desc">사이트에 들어오면 가장 먼저 보이는 화면입니다. 회차 하나하나가 카드 한 장으로 표시됩니다.</p>
+
+      <div class="mock">
+        <div class="mock-bar"><i></i><i></i><i></i><span class="url">foodtrip-six.vercel.app</span></div>
+        <div class="mock-body tight">
+          <div class="mk-header">
+            <div class="mk-brand">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 11a8 8 0 0 0 16 0Z"></path><path d="M4 11h16"></path><path d="M12 3v3M8 4l1 3M16 4l-1 3"></path></svg>
+              <span>백반기행 아카이브</span>
+            </div>
+            <div class="mk-controls">
+              <span class="mk-search"><span class="tag">1</span>제목, 지역으로 검색</span>
+              <span class="mk-btn"><span class="tag">2</span>최신순 ▾</span>
+              <span class="mk-btn"><span class="tag">3</span>표로 보기</span>
+              <span class="mk-btn"><span class="tag">3</span>지도로 보기</span>
+            </div>
+          </div>
+          <div class="mk-toolbar"><span class="tagged"><span class="tag">4</span>총 352개 회차 · 원하는 회차를 탭해 상세를 확인하세요</span></div>
+          <div class="mk-grid">
+            <div class="mk-card tagged" style="margin:0">
+              <span class="mk-ep">제353회</span>
+              <p class="t">봄이 오는 소리, 남도 밥상</p>
+              <p class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3v6a1.5 1.5 0 0 0 1.5 1.5h0A1.5 1.5 0 0 0 9 9V3M7.5 10.5V21M16 3c-1.66 0-3 1.79-3 5v3h3M16 11v10"></path></svg>정성맛집 외 2곳</p>
+              <p class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.5 7-11.5A7 7 0 0 0 5 9.5C5 14.5 12 21 12 21Z"></path><circle cx="12" cy="9.5" r="2.3"></circle></svg>충청남도 서산시<span class="mk-badge-ok">확인됨</span></p>
+              <p class="d">2026.08.02</p>
+            </div>
+            <div class="mk-card">
+              <span class="mk-ep">제352회</span>
+              <p class="t">항구를 품은 밥상</p>
+              <p class="n"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3v6a1.5 1.5 0 0 0 1.5 1.5h0A1.5 1.5 0 0 0 9 9V3M7.5 10.5V21M16 3c-1.66 0-3 1.79-3 5v3h3M16 11v10"></path></svg>바다식당</p>
+              <p class="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.5 7-11.5A7 7 0 0 0 5 9.5C5 14.5 12 21 12 21Z"></path><circle cx="12" cy="9.5" r="2.3"></circle></svg>전라남도 여수시<span class="mk-badge-un">미검수</span></p>
+              <p class="d">2026.07.26</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ul class="legend">
+        <li><b class="chip">1</b><span><b>검색창</b> — 제목·지역·식당명 아무거나 입력하면 즉시 걸러집니다.</span></li>
+        <li><b class="chip">2</b><span><b>정렬</b> — 최신순(기본) 또는 회차순으로 바꿀 수 있습니다.</span></li>
+        <li><b class="chip">3</b><span><b>화면 전환</b> — 표로 보기 · 지도로 보기로 즉시 이동합니다.</span></li>
+        <li><b class="chip">4</b><span><b>결과 안내</b> — 지금 몇 개 회차가 보이는지 알려줍니다.</span></li>
+      </ul>
+
+      <p class="chapter-desc" style="margin-top:0">카드에는 회차 번호, 제목, 대표 식당명(2곳 이상이면 <code>외 N곳</code>), 대표 주소, 방송일이 담겨 있습니다. 주소 옆의 초록 배지는 <b>확인됨</b>(정보가 검증됨), 붉은 배지는 <b>미검수</b>(아직 확인이 필요한 정보)를 뜻합니다. <b>카드를 클릭하면</b> 그 회차의 상세보기로 넘어갑니다.</p>
+
+      <div class="note">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4M12 8h.01"></path></svg>
+        <span>검색 결과가 하나도 없으면 <b>"검색 결과가 없습니다."</b> 라는 안내가 뜹니다. 이때는 검색어를 짧게 줄이거나 지워보세요.</span>
+      </div>
+    </section>
+
+    <!-- 3. 상세보기 -->
+    <section class="chapter" id="detail">
+      <p class="chapter-eyebrow"><span class="num">3</span>회차 자세히 보기</p>
+      <h2>회차 상세보기</h2>
+      <p class="chapter-desc">카드를 클릭하면 열리는 화면입니다. 그 회차에 나온 식당들의 상세 정보와 방송 원문 요약이 들어 있습니다.</p>
+
+      <div class="mock">
+        <div class="mock-bar"><i></i><i></i><i></i><span class="url">foodtrip-six.vercel.app/#/episode/353</span></div>
+        <div class="mock-body tight">
+          <div class="mk-detail">
+            <span class="mk-back">← 목록으로</span>
+            <span class="mk-ep">제353회</span>
+            <p class="mk-h1">봄이 오는 소리, 남도 밥상</p>
+            <p class="mk-sub">방송일 2026.08.02</p>
+            <div class="mk-panel">
+              <div class="mk-panel-head"><span class="title">방문 식당</span><span class="mk-badge-ok" style="margin-left:0">확인됨</span></div>
+              <div class="mk-row">
+                <div class="f"><strong>식당명</strong><span class="tagged"><span class="tag">1</span>정성맛집</span></div>
+                <div class="f"><strong>위치</strong><span>충청남도 서산시 시장2로 6</span><a href="#" onclick="return false">네이버맵 ↗</a></div>
+                <div class="f"><strong>소개된 메뉴</strong><span>바지락초무침</span></div>
+                <div class="f"><strong>한줄평</strong><span>담백하고 정갈한 한 상</span></div>
+                <div class="f"><strong></strong><a href="#" onclick="return false"><span class="tag">2</span>참고한 블로그 글 보기 ↗</a></div>
+              </div>
+            </div>
+            <p class="mk-body-html tagged"><span class="tag">3</span>본문: 방송에서 소개된 이야기가 이 아래에 이어집니다…</p>
+          </div>
+        </div>
+      </div>
+      <ul class="legend">
+        <li><b class="chip">1</b><span>식당명 옆에 <b>확인 필요 배지</b>가 있으면 폐업·이전 의심 정보입니다(9장 참고).</span></li>
+        <li><b class="chip">2</b><span>정보를 가져온 <b>원본 블로그 글 링크</b>입니다.</span></li>
+        <li><b class="chip">3</b><span>방송 본문 요약이 이어서 나오고, 맨 아래엔 <b>원본 페이지 링크</b>가 있습니다.</span></li>
+      </ul>
+      <p class="chapter-desc" style="margin-top:0">패널 위쪽 배지가 <b>확인됨</b>이면 사람이 직접 검증한 정보, <b>미검수 · 정보 확인 필요</b>면 자동으로 수집돼 아직 확인되지 않은 정보라는 뜻입니다. 식당이 여러 곳이면 같은 형태의 행이 아래로 반복됩니다.</p>
+    </section>
+
+    <!-- 4. 표로 보기 -->
+    <section class="chapter" id="table">
+      <p class="chapter-eyebrow"><span class="num">4</span>목록형 화면</p>
+      <h2>표로 보기</h2>
+      <p class="chapter-desc">모든 식당을 엑셀표처럼 한눈에 보고, 지역으로 걸러내고 싶을 때 씁니다. 상단의 <b>표로 보기</b> 버튼으로 들어갑니다.</p>
+
+      <div class="mock">
+        <div class="mock-bar"><i></i><i></i><i></i><span class="url">foodtrip-six.vercel.app/table.html</span></div>
+        <div class="mock-body">
+          <table class="mk-table">
+            <thead>
+              <tr>
+                <th>회차</th><th>식당명</th><th>소개된 메뉴</th>
+                <th class="tagged"><span class="tag">1</span>도/광역시 <span class="fbtn">▾</span></th>
+                <th>시/군/구 <span class="fbtn">▾</span></th><th>지도</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>제353회</td><td>정성맛집</td><td>바지락초무침</td><td>충청남도</td><td>서산시</td><td>↗</td></tr>
+              <tr><td>제352회</td><td>바다식당</td><td>전복물회</td><td>전라남도</td><td>여수시</td><td>↗</td></tr>
+            </tbody>
+          </table>
+          <div class="mk-filter">
+            <div class="fs">검색</div>
+            <label><input type="checkbox" checked disabled>(모두 선택)</label>
+            <label><input type="checkbox" checked disabled>충청남도</label>
+            <label><input type="checkbox" checked disabled>전라남도</label>
+            <label><input type="checkbox" disabled>경상북도</label>
+            <div class="fbtns"><span class="go">확인</span><span>취소</span></div>
+          </div>
+        </div>
+      </div>
+      <ul class="legend">
+        <li><b class="chip">1</b><span>열 제목의 <b>▾</b> 버튼을 누르면 엑셀 자동필터처럼 원하는 지역만 체크해 골라볼 수 있습니다. <b>확인</b>을 눌러야 실제로 적용됩니다.</span></li>
+      </ul>
+      <p class="chapter-desc" style="margin-top:0">이 화면은 <b>보기 전용</b>입니다 — 여기서는 정보를 고칠 수 없고, 검색과 필터로 원하는 식당을 빠르게 찾는 용도입니다.</p>
+    </section>
+
+    <!-- 5. 지도로 보기 -->
+    <section class="chapter" id="map">
+      <p class="chapter-eyebrow"><span class="num">5</span>위치 기반 화면</p>
+      <h2>지도로 보기</h2>
+      <p class="chapter-desc">좌표가 확인된 식당을 지도 위 마커로 보여줍니다. 여러 식당이 가까이 모여 있으면 숫자가 적힌 원(클러스터)으로 묶여 표시됩니다.</p>
+
+      <div class="mock">
+        <div class="mock-bar"><i></i><i></i><i></i><span class="url">foodtrip-six.vercel.app/map.html</span></div>
+        <div class="mock-body tight">
+          <div class="mk-map">
+            <div class="mk-pin p1"></div>
+            <div class="mk-pin p2"></div>
+            <div class="mk-cluster tagged"><span class="tag">1</span>12</div>
+            <div class="mk-info">
+              <p class="ep">제353회</p>
+              <p class="nm">정성맛집</p>
+              <p class="ad">충청남도 서산시 시장2로 6</p>
+              <p class="ln">회차 상세보기 · 네이버맵 ↗</p>
+            </div>
+            <div class="mk-locate">📍</div>
+          </div>
+        </div>
+      </div>
+      <ul class="legend">
+        <li><b class="chip">1</b><span>마커가 여러 개 겹치면 숫자 원으로 묶이고, 클릭하면 확대되며 흩어집니다.</span></li>
+      </ul>
+      <p class="chapter-desc" style="margin-top:0">마커를 클릭하면 정보창이 뜨고, <b>회차 상세보기</b>로 바로 이동할 수 있습니다. 오른쪽 아래 <b>📍 버튼</b>을 누르면 위치 권한을 허용하는 경우 내 현재 위치를 지도에 표시해줍니다.</p>
+      <div class="note">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4M12 8h.01"></path></svg>
+        <span>주소만 있고 좌표가 없는 식당은 지도에 나타나지 않습니다 — 표로 보기나 카드로 보기에서 대신 확인하세요.</span>
+      </div>
+    </section>
+
+    <!-- 6. 추천받기 -->
+    <section class="chapter" id="recommend">
+      <p class="chapter-eyebrow"><span class="num">6</span>대화로 찾기</p>
+      <h2>오늘 뭐 먹지? — 추천받기</h2>
+      <p class="chapter-desc">카드로 보기 화면 위쪽에 있는 상자입니다. 조건을 문장으로 편하게 적으면 어울리는 식당을 골라줍니다.</p>
+
+      <div class="mock">
+        <div class="mock-bar"><i></i><i></i><i></i><span class="url">foodtrip-six.vercel.app</span></div>
+        <div class="mock-body">
+          <p class="mk-rlabel">오늘 뭐 먹지? 조건을 알려주면 어울리는 식당을 찾아드려요</p>
+          <div class="mk-rbox tagged"><span class="tag">1</span>지금 나는 과천인데, 가끔 보는 친구들과 가볍게 저녁식사를 하면서 술을 한잔 할 수 있는 조용한 분위기의 식당을 알려줘. 과천에서 이동거리 1시간 이내로 해서</div>
+          <div class="mk-rbtns">
+            <span class="mk-btn tagged"><span class="tag">2</span>📍 내 위치</span>
+            <span class="mk-btn2 primary tagged"><span class="tag">3</span>추천받기</span>
+          </div>
+          <div class="mk-rresult">
+            <p class="rn">정성맛집 <span style="color:var(--ink-soft);font-weight:400">— 제353회 · 봄이 오는 소리, 남도 밥상</span></p>
+            <p class="re">과천에서 약 42km · 바지락초무침</p>
+            <p class="rr">"조용한 골목 안쪽, 저녁에 술 한잔 곁들이기 좋은 분위기예요"</p>
+          </div>
+        </div>
+      </div>
+      <ul class="legend">
+        <li><b class="chip">1</b><span>사람에게 말하듯 편하게 조건을 적으세요 — 지역, 분위기, 인원, 이동 시간 등 무엇이든 좋습니다.</span></li>
+        <li><b class="chip">2</b><span>위치를 직접 안 적어도 <b>📍 내 위치</b>를 켜면 GPS로 근처를 찾아줍니다.</span></li>
+        <li><b class="chip">3</b><span><b>추천받기</b>를 누르면 잠시 후 결과 카드가 아래에 나타납니다.</span></li>
+      </ul>
+      <p class="chapter-desc" style="margin-top:0">지역을 전혀 알 수 없는 질문이면(예: "맛있는 데 알려줘"만 입력) 어느 지역인지 한 번 되물어봅니다. 이때는 뜨는 질문에 답만 이어서 입력하면 됩니다. 결과가 마음에 안 들면 <b>다른 곳으로 다시 추천받기</b>를 눌러 새 후보를 받을 수 있습니다.</p>
+    </section>
+
+    <!-- 7. 편집 모드 -->
+    <section class="chapter" id="editmode">
+      <p class="chapter-eyebrow"><span class="num">7</span>관리 기능</p>
+      <h2>편집 모드 켜기</h2>
+      <span class="badge-scope admin">관리자 전용</span>
+      <p class="chapter-desc">정보를 새로 등록하거나 고치려면 먼저 편집 모드로 로그인해야 합니다. 오른쪽 위 <b>편집 모드</b> 버튼을 누르면 로그인 창이 나타납니다.</p>
+
+      <ol class="steps">
+        <li><b>화면 오른쪽 위 <code>편집 모드</code> 버튼</b>을 클릭합니다.<span class="sub">✎ 연필 아이콘이 그려진 버튼입니다.</span></li>
+        <li><b>관리자 비밀번호</b>를 입력창에 넣습니다.<span class="sub">비밀번호는 저장되지 않고, 로그인 세션만 유지됩니다.</span></li>
+        <li><b>로그인</b> 버튼을 누르면 완료입니다.<span class="sub">성공하면 "로그인되었습니다" 안내가 뜨고, 버튼이 <code>편집 모드 끄기</code>로 바뀝니다.</span></li>
+      </ol>
+
+      <div class="mock" style="max-width:420px">
+        <div class="mock-bar"><i></i><i></i><i></i><span class="url">로그인 창</span></div>
+        <div class="mock-body">
+          <div class="mk-form" style="padding:0">
+            <div class="mk-field">
+              <label>관리자 비밀번호</label>
+              <div class="in">비밀번호 입력</div>
+            </div>
+            <p style="font-size:10.5px;color:var(--ink-soft);margin:0">비밀번호는 저장되지 않고 세션만 유지됩니다.</p>
+            <div class="mk-form-actions"><span class="mk-btn2 primary">로그인</span></div>
+          </div>
+        </div>
+      </div>
+
+      <p class="chapter-desc" style="margin-top:0">편집 모드가 켜지면 <b>추가등록</b> 버튼이 새로 나타나고, 회차 상세보기에서 <b>식당 정보 직접 수정</b> 버튼과 폐업·이전 처리 버튼들을 쓸 수 있게 됩니다. 다 마쳤으면 같은 버튼(이제 <code>편집 모드 끄기</code>)을 눌러 종료하세요.</p>
+
+      <div class="note warn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"></path><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"></path></svg>
+        <span>로그인 세션에는 유효 시간이 있습니다. 시간이 지나면 저장 시도할 때 "로그인이 만료되었습니다"라는 안내와 함께 편집 모드가 자동으로 꺼지니, 다시 로그인해주세요.</span>
+      </div>
+    </section>
+
+    <!-- 8. 식당 정보 수정 -->
+    <section class="chapter" id="editrow">
+      <p class="chapter-eyebrow"><span class="num">8</span>관리 기능</p>
+      <h2>식당 정보 직접 수정하기</h2>
+      <span class="badge-scope admin">관리자 전용 · 편집 모드 필요</span>
+      <p class="chapter-desc">편집 모드 상태에서 회차 상세보기를 열면 <b>식당 정보 직접 수정</b> 버튼이 나타납니다. 식당명·주소·소개된 메뉴·한줄평을 바로 고칠 수 있습니다.</p>
+
+      <div class="mock">
+        <div class="mock-bar"><i></i><i></i><i></i><span class="url">회차 상세보기 · 편집 중</span></div>
+        <div class="mock-body">
+          <div class="mk-form" style="padding:0">
+            <div class="mk-form-row">
+              <div class="mk-field tagged"><span class="tag">1</span><label>식당명</label><div class="in">정성맛집</div></div>
+              <div class="mk-field"><label>주소</label><div class="in">충청남도 서산시 시장2로 6</div></div>
+            </div>
+            <div class="mk-form-row">
+              <div class="mk-field"><label>소개된 메뉴</label><div class="in">바지락초무침</div></div>
+              <div class="mk-field"><label>한줄평</label><div class="in">담백하고 정갈한 한 상</div></div>
+            </div>
+            <div class="mk-form-actions">
+              <span class="mk-btn2 tagged"><span class="tag">2</span>+ 식당 추가</span>
+              <span class="mk-btn2 primary">저장</span>
+              <span class="mk-btn2">취소</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ul class="legend">
+        <li><b class="chip">1</b><span>필드를 눌러 바로 고치면 됩니다. 행 오른쪽의 <b>삭제</b> 버튼으로 식당을 뺄 수도 있습니다.</span></li>
+        <li><b class="chip">2</b><span>이 버튼으로 새 식당 행을 추가할 수 있습니다.</span></li>
+      </ul>
+
+      <div class="note">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4M12 8h.01"></path></svg>
+        <span><b>전화번호·좌표는 이 화면에서 고칠 수 없습니다.</b> 주소를 바꾸지 않으면 기존 좌표가 그대로 유지되지만, 주소를 바꾸면 예전 좌표는 비워집니다(새 좌표는 서버가 자동으로 다시 찾아줍니다). <code>저장</code>을 누르면 이 식당 정보는 <b>확인됨</b> 상태로 바뀝니다.</span>
+      </div>
+    </section>
+
+    <!-- 9. 폐업/이전 -->
+    <section class="chapter" id="status">
+      <p class="chapter-eyebrow"><span class="num">9</span>관리 기능</p>
+      <h2>폐업 · 이전 확인하고 처리하기</h2>
+      <span class="badge-scope admin">확정/처리는 편집 모드 필요 · 배지 열람은 누구나 가능</span>
+      <p class="chapter-desc">자동 점검 프로그램이 "이 식당, 문을 닫았거나 다른 곳으로 옮긴 것 같다"고 의심되면 배지를 남깁니다. 관리자는 이 배지를 열어 실제로 어떤 상황인지 확정하거나, 잘못된 의심이면 되돌릴 수 있습니다.</p>
+
+      <div class="flow">
+        <div class="fbox"><b>① 자동 점검</b><span>의심 신호 발견</span></div>
+        <div class="farrow">→</div>
+        <div class="fbox accentbox"><b>② ⚠️ 확인 필요</b><span>관리자 확인 대기</span></div>
+        <div class="farrow">→</div>
+        <div class="fbox"><b>③ 관리자 판단</b><span>확정 · 되돌리기 · 이전 처리</span></div>
+      </div>
+
+      <h3 style="font-size:15px;margin:26px 0 10px">① 자동으로 뜨는 "확인 필요" 배지</h3>
+      <div class="mock">
+        <div class="mock-bar"><i></i><i></i><i></i><span class="url">회차 상세보기</span></div>
+        <div class="mock-body">
+          <div style="font-size:12px;font-weight:700">정성맛집<span class="mk-badge-warn">⚠️ 확인 필요</span></div>
+          <div class="mk-popup">
+            <p class="pt">폐업/휴업 의심</p>
+            <p class="pn">해당 위치(좌표)에서 다른 업체("서산맛집 서산동부시장점")가 영업 중으로 확인됨 — 폐업 후 업종/상호가 바뀐 것으로 보입니다.</p>
+            <p class="pm">신뢰도: 높음 · 2026.08.07 확인</p>
+            <div class="pa">
+              <span class="mk-mini-btn tagged"><span class="tag">1</span>확정</span>
+              <span class="mk-mini-btn tagged"><span class="tag">2</span>정상으로 되돌리기</span>
+              <span class="mk-mini-btn accent tagged"><span class="tag">3</span>이전(새 주소)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ul class="legend">
+        <li><b class="chip">1</b><span><b>확정</b> — 자동 점검이 맞다고 판단되면(진짜 폐업) 눌러 확정합니다.</span></li>
+        <li><b class="chip">2</b><span><b>정상으로 되돌리기</b> — 잘못된 의심(오탐)이면 눌러 배지를 없앱니다.</span></li>
+        <li><b class="chip">3</b><span><b>이전(새 주소)</b> — 사실은 폐업이 아니라 <b>이전</b>이었을 때 씁니다. 누르면 주소 입력칸이 펼쳐지고, 새 주소를 넣고 <b>이전 확정</b>을 누르면 실제 주소·지도 좌표가 새 주소로 바로 업데이트됩니다.</span></li>
+      </ul>
+
+      <h3 style="font-size:15px;margin:26px 0 10px">② 확정 후 배지</h3>
+      <div class="mock">
+        <div class="mock-bar"><i></i><i></i><i></i><span class="url">회차 상세보기 · 처리 완료</span></div>
+        <div class="mock-body">
+          <div style="font-size:12px;font-weight:700">정성맛집<span class="mk-badge-red">🔴 이전</span></div>
+          <div class="mk-popup" style="max-width:220px">
+            <p class="pt" style="color:var(--accent)">이전</p>
+            <p class="pn" style="margin-bottom:0">이전 전 주소: 충청남도 서산시 옛시장길 12</p>
+          </div>
+        </div>
+      </div>
+      <p class="chapter-desc" style="margin-top:0">한 번 확정하면 배지는 <b>🔴(빨강)</b> 색으로 바뀌고, 클릭해도 예전 의심 근거 대신 처리 결과(이전인 경우 예전 주소)만 간단히 보여줍니다. 이미 실제 주소가 바뀐 뒤라 되돌리기 버튼도 더는 필요 없어 사라집니다.</p>
+
+      <h3 style="font-size:15px;margin:26px 0 10px">③ 자동 점검 전에 직접 알게 됐다면</h3>
+      <p class="chapter-desc">자동 점검이 아직 배지를 남기지 않은 식당도, 관리자가 먼저 폐업·이전 사실을 알게 됐다면 직접 등록할 수 있습니다. 식당명 옆의 작은 <b>폐업/이전 등록</b> 글자를 누르세요.</p>
+      <div class="mock" style="max-width:360px">
+        <div class="mock-bar"><i></i><i></i><i></i><span class="url">수동 등록</span></div>
+        <div class="mock-body">
+          <div class="mk-form" style="padding:0">
+            <label style="font-size:11px;display:flex;gap:6px;align-items:center"><input type="checkbox" checked disabled>폐업/휴업</label>
+            <label style="font-size:11px;display:flex;gap:6px;align-items:center"><input type="checkbox" disabled>이전</label>
+            <div class="mk-field"><label>새 주소(선택)</label><div class="in" style="color:var(--ink-soft)">이전인 경우에만 입력</div></div>
+            <div class="mk-form-actions"><span class="mk-btn2 primary">등록</span><span class="mk-btn2">취소</span></div>
+          </div>
+        </div>
+      </div>
+      <p class="chapter-desc" style="margin-top:0">체크박스는 최소 하나 선택해야 합니다. 이 방법으로 등록하면 관리자가 직접 확인한 것으로 간주해 "의심" 단계 없이 바로 확정 처리됩니다.</p>
+
+      <div class="note">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4M12 8h.01"></path></svg>
+        <span>표로 보기·지도로 보기에서도 같은 배지가 보이지만, 그 두 화면은 <b>보기 전용</b>입니다. 확정·되돌리기·이전 처리 같은 실제 조작은 <b>카드로 보기 → 회차 상세보기</b>에서, 편집 모드 상태일 때만 가능합니다.</span>
+      </div>
+    </section>
+
+    <!-- 10. 추가등록 -->
+    <section class="chapter" id="add">
+      <p class="chapter-eyebrow"><span class="num">10</span>관리 기능</p>
+      <h2>새 회차 등록하기</h2>
+      <span class="badge-scope admin">관리자 전용 · 편집 모드 필요</span>
+      <p class="chapter-desc">편집 모드 상태에서만 나타나는 <b>추가등록</b> 버튼으로 들어갑니다. 회차 번호만 넣으면 기존에 이미 등록된 회차인지 먼저 확인해주고, 참고 URL을 넣으면 제목·식당 정보를 자동으로 채워줍니다.</p>
+
+      <ol class="steps">
+        <li><b>회차 번호</b>를 입력합니다.<span class="sub">입력하는 즉시 같은 회차가 이미 있는지 자동으로 확인해 알려줍니다.</span></li>
+        <li>(선택) <b>고급 옵션</b>을 펼쳐 <b>참고 URL</b>이나 파일을 넣고 <b>자동 발견</b>을 누릅니다.<span class="sub">블로그·방송사 페이지 주소를 넣으면 제목·식당명·주소·메뉴를 자동으로 가져옵니다.</span></li>
+        <li>자동으로 채워진 내용을 <b>등록 준비</b>로 확인하거나 직접 <b>수동 수정</b>합니다.<span class="sub">지역·주소가 실제와 맞는지 꼭 한 번 확인하세요.</span></li>
+        <li>내용을 검토한 뒤 <b>등록하기</b>를 누르면 완료됩니다.<span class="sub">새로 등록된 회차는 항상 "미검수" 상태로 시작하며, 이후 검토가 끝나면 확인됨으로 바뀝니다.</span></li>
+      </ol>
+
+      <div class="mock">
+        <div class="mock-bar"><i></i><i></i><i></i><span class="url">foodtrip-six.vercel.app/add.html</span></div>
+        <div class="mock-body">
+          <div class="mk-form" style="padding:0">
+            <div class="mk-form-row">
+              <div class="mk-field"><label>회차 번호</label><div class="in">예: 353</div></div>
+              <div class="mk-field"><label>방송일</label><div class="in">2026-08-02</div></div>
+            </div>
+            <div class="mk-field"><label>제목</label><div class="in">봄이 오는 소리, 남도 밥상</div></div>
+            <div class="mk-field"><label>원본 URL</label><div class="in" style="color:var(--ink-soft)">https://…</div></div>
+            <div class="mk-form-actions"><span class="mk-btn2 primary">등록하기</span><span class="mk-btn2">취소</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="note warn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"></path><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"></path></svg>
+        <span>편집 모드 로그인 없이 <code>add.html</code> 주소로 바로 들어가면 안내창과 함께 메인 화면으로 돌려보냅니다. 먼저 7장의 방법으로 로그인하세요.</span>
+      </div>
+    </section>
+
+    <!-- 11. FAQ -->
+    <section class="chapter" id="faq">
+      <p class="chapter-eyebrow"><span class="num">11</span>도움말</p>
+      <h2>자주 묻는 질문</h2>
+      <p class="chapter-desc">막히는 부분이 있다면 먼저 여기를 확인해보세요.</p>
+
+      <details class="faq" open>
+        <summary>편집 모드 버튼이 안 눌러지거나 로그인이 안 돼요.</summary>
+        <div class="a">관리자 비밀번호를 정확히 입력했는지 확인하세요. 여러 번 틀리면 잠시 후 다시 시도해야 할 수 있습니다(과도한 시도 방지 기능). 로그인 후 시간이 많이 지났다면 세션이 만료됐을 수 있으니 다시 로그인해보세요.</div>
+      </details>
+      <details class="faq">
+        <summary>지도에 분명히 등록된 식당인데 마커가 안 보여요.</summary>
+        <div class="a">주소는 있지만 위도·경도 좌표가 아직 확인되지 않은 식당은 지도에 표시되지 않습니다. 표로 보기나 카드로 보기의 상세정보에서 주소가 제대로 들어있는지 확인해보세요. 주소를 편집 모드에서 다시 저장하면 서버가 좌표를 새로 찾아줍니다.</div>
+      </details>
+      <details class="faq">
+        <summary>추천받기에서 계속 지역을 되물어봐요.</summary>
+        <div class="a">문장 안에 지역 이름이 없고 <code>📍 내 위치</code>도 꺼져 있으면, 어느 지역에서 찾아야 할지 몰라 한 번 되묻습니다. 뜬 질문 아래 입력칸에 지역만 짧게 답하거나, 처음부터 <code>📍 내 위치</code>를 켜고 요청하면 됩니다.</div>
+      </details>
+      <details class="faq">
+        <summary>폐업/이전 배지에서 "확정"과 "이전(새 주소)"는 뭐가 달라요?</summary>
+        <div class="a"><b>확정</b>은 자동 점검이 남긴 의심 사유(폐업이든 이전이든)를 그대로 인정한다는 뜻입니다. 반면 자동 점검은 "폐업"으로 의심했지만 실제로는 <b>다른 곳으로 옮긴 것</b>으로 확인됐다면, <b>이전(새 주소)</b>를 눌러 새 주소를 입력하고 확정해야 실제 주소·좌표까지 정확하게 갱신됩니다.</div>
+      </details>
+      <details class="faq">
+        <summary>식당 정보를 수정했는데 지도 위치가 이상해요.</summary>
+        <div class="a">주소를 바꾸면 기존 좌표는 비워지고 서버가 새 주소를 기준으로 좌표를 다시 찾습니다. 주소 표기가 너무 간략하거나 모호하면 엉뚱한 위치로 잡힐 수 있으니, 도로명 주소를 최대한 자세히 입력해주세요.</div>
+      </details>
+      <details class="faq">
+        <summary>표로 보기의 지역 필터를 눌렀는데 목록이 안 바뀌어요.</summary>
+        <div class="a">체크박스를 바꾼 뒤 반드시 드롭다운 안의 <code>확인</code> 버튼을 눌러야 실제로 적용됩니다. <code>취소</code>를 누르면 변경 사항이 무시됩니다.</div>
+      </details>
+    </section>
+
+  </main>
+
+  <footer class="manual-footer">백반기행 아카이브 · 허영만의 백반기행 회차별 정리 · 이 설명서는 실제 화면 구조를 바탕으로 그려졌으며, 실제 최신 화면과 세부 문구는 조금 다를 수 있습니다.</footer>
+</div>
+
+<script>
+  (function () {
+    var links = Array.prototype.slice.call(document.querySelectorAll('nav.toc a'));
+    var sections = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+    function onScroll() {
+      var pos = window.scrollY + 120;
+      var current = sections[0];
+      for (var i = 0; i < sections.length; i++) {
+        if (sections[i] && sections[i].offsetTop <= pos) current = sections[i];
+      }
+      links.forEach(function (a) {
+        a.classList.toggle('active', current && a.getAttribute('href') === '#' + current.id);
+      });
+    }
+    document.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+</script>
+</body>
+</html>
