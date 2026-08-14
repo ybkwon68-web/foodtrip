@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>제보 관리 · 백반기행 아카이브</title>
+<meta name="description" content="방문자가 남긴 식당 폐업·이전 제보를 확인하고 처리하는 관리자 페이지입니다.">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="./index.html">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="brand-icon">
+      <path d="M4 11a8 8 0 0 0 16 0Z"></path>
+      <path d="M4 11h16"></path>
+      <path d="M12 3v3M8 4l1 3M16 4l-1 3"></path>
+    </svg>
+    <span class="wordmark">백반기행 아카이브<small>제보 관리</small></span>
+  </a>
+  <div class="mobile-view-switch">
+    <a class="view-pill" href="./index.html">목록으로</a>
+  </div>
+  <div class="controls">
+    <div class="controls-row">
+      <div class="desktop-nav-links">
+        <a class="edit-toggle" href="./manual.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+          사용법
+        </a>
+        <a class="edit-toggle" href="./index.html">목록으로</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-desktop-notice">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><path d="M8 21h8M12 17v4"></path></svg>
+  <span>제보 관리는 <b>PC 화면</b>에서 이용해주세요. 모바일에서는 카드로 보기·표로 보기·지도로 보기만 지원합니다.</span>
+</div>
+
+<main class="add-page desktop-only-content">
+  <section class="detail-wrap">
+    <h1 class="detail-title">제보 관리</h1>
+    <p class="detail-meta">방문자가 식당별로 남긴 폐업·이전 제보는 작성 즉시 공개됩니다. 부적절한 제보는 삭제하고, 필요하면 바로 폐업·이전 처리를 할 수 있습니다.</p>
+
+    <div id="commentList" class="comment-admin-list"></div>
+    <p id="commentEmpty" class="spot-note" hidden>표시할 제보가 없습니다.</p>
+  </section>
+</main>
+
+<script src="./lib/editModeFlow.js"></script>
+<script src="./lib/mobileHome.js"></script>
+<script src="./comments.js"></script>
+</body>
+</html>

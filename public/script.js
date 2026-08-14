@@ -32,6 +32,8 @@ const submitStatusCheckDecision = editModeFlow?.submitStatusCheckDecision || asy
   return { ok: false, error: '점검 처리 모듈을 불러오지 못했습니다.' };
 };
 
+let commentModalEl = null;
+
 const grid = document.getElementById('grid');
 const resultCount = document.getElementById('resultCount');
 const listView = document.getElementById('listView');
@@ -40,6 +42,7 @@ const searchInput = document.getElementById('searchInput');
 const sortSelect = document.getElementById('sortSelect');
 const editToggle = document.getElementById('editToggle');
 const addEntryLink = document.getElementById('addEntryLink');
+const commentsEntryLink = document.getElementById('commentsEntryLink');
 const adminCheckPanel = document.getElementById('adminCheckPanel');
 
 const pencilIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>';
@@ -72,6 +75,7 @@ function setEditing(value) {
     : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>편집 모드';
   grid.classList.toggle('editing', editing);
   if (addEntryLink) addEntryLink.hidden = !editing;
+  if (commentsEntryLink) commentsEntryLink.hidden = !editing;
   if (adminCheckPanel) adminCheckPanel.hidden = !editing;
   if (editing) {
     showStatus('편집 모드가 켜졌습니다. 회차를 선택해 식당 정보를 수정해보세요.', 'success', 2200);
@@ -308,9 +312,124 @@ function manualFlagLink(episodeNum, restaurantName) {
   `;
 }
 
+function formatCommentDate(iso) {
+  if (!iso) return '';
+  return iso.slice(0, 10).replaceAll('-', '.');
+}
+
+// 제보(댓글) 개수 배지 — 누르면 내용 목록이 담긴 말풍선이 뜬다. 제보가 없으면 표시하지 않는다.
+function commentCountBadge(comments) {
+  if (!comments || !comments.length) return '';
+  const items = comments
+    .map(
+      (c) => `
+      <span class="comment-popup-item">
+        <span class="comment-popup-date">${formatCommentDate(c.created_at)}</span>
+        <span class="comment-popup-text">${escapeHtml(c.content)}</span>
+      </span>
+    `
+    )
+    .join('');
+  return `
+    <span class="comment-badge-wrap">
+      <button type="button" class="comment-count-badge">제보 ${comments.length}건</button>
+      <span class="comment-popup" hidden>${items}</span>
+    </span>
+  `;
+}
+
+// 폐업/이전 등 정보 제보 버튼 — 로그인 여부와 무관하게 누구나 이용 가능(공개 기능). 관리자 전용인
+// manualFlagLink("폐업/이전 등록")와는 별개로 항상 노출된다. 누르면 팝업(openCommentModal)이 뜬다.
+function commentReportButton(episodeNum, restaurantName) {
+  const nameAttr = escapeHtml(restaurantName || '');
+  return `<button type="button" class="comment-report-btn" data-episode="${episodeNum}" data-name="${nameAttr}">제보하기</button>`;
+}
+
+function closeCommentModal() {
+  if (commentModalEl) {
+    commentModalEl.remove();
+    commentModalEl = null;
+  }
+}
+
+// 제보 작성 팝업. 카드/모바일 표 어디서 열든 document.body에 오버레이로 띄운다(로그인 불필요).
+function openCommentModal(episodeNum, restaurantName) {
+  closeCommentModal();
+  const backdrop = document.createElement('div');
+  backdrop.className = 'comment-modal-backdrop';
+  backdrop.innerHTML = `
+    <div class="comment-modal" role="dialog" aria-modal="true" aria-label="정보 제보">
+      <h3 class="comment-modal-title">${escapeHtml(restaurantName)} · 정보 제보</h3>
+      <p class="comment-modal-desc">폐업, 이전, 상호 변경 등 확인하신 내용을 알려주세요. 관리자 확인 후 반영됩니다.</p>
+      <textarea class="comment-modal-textarea" maxlength="500" placeholder="예: 가보니 문이 닫혀 있고 다른 간판이 붙어 있었어요."></textarea>
+      <p class="comment-modal-error" hidden></p>
+      <div class="comment-modal-actions">
+        <button type="button" class="btn-save comment-modal-submit">제보하기</button>
+        <button type="button" class="btn-cancel comment-modal-cancel">취소</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(backdrop);
+  commentModalEl = backdrop;
+
+  const textarea = backdrop.querySelector('.comment-modal-textarea');
+  const errorEl = backdrop.querySelector('.comment-modal-error');
+  const submitBtn = backdrop.querySelector('.comment-modal-submit');
+  textarea.focus();
+
+  backdrop.addEventListener('click', (e) => {
+    if (e.target === backdrop) closeCommentModal();
+  });
+  backdrop.querySelector('.comment-modal-cancel').addEventListener('click', closeCommentModal);
+
+  submitBtn.addEventListener('click', async () => {
+    const content = textarea.value.trim();
+    if (!content) {
+      errorEl.textContent = '내용을 입력해주세요.';
+      errorEl.hidden = false;
+      return;
+    }
+    submitBtn.disabled = true;
+    submitBtn.textContent = '제출 중...';
+    errorEl.hidden = true;
+    try {
+      const res = await fetch(`/api/episodes/${episodeNum}/comments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ restaurant_name: restaurantName, content }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        errorEl.textContent = data.error || '제보에 실패했습니다.';
+        errorEl.hidden = false;
+        submitBtn.disabled = false;
+        submitBtn.textContent = '제보하기';
+        return;
+      }
+      closeCommentModal();
+      showStatus('제보가 접수되었습니다. 검토 후 반영됩니다.', 'success', 3200);
+    } catch (err) {
+      errorEl.textContent = '서버에 연결할 수 없습니다.';
+      errorEl.hidden = false;
+      submitBtn.disabled = false;
+      submitBtn.textContent = '제보하기';
+    }
+  });
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && commentModalEl) closeCommentModal();
+});
+
 // 배지/말풍선 클릭 시 해당 말풍선만 토글하고, 그 외 클릭은 열려있는 말풍선을 전부 닫는다.
 // "확정"/"정상으로 되돌리기"/"등록" 버튼 클릭은 서버에 반영한 뒤 상세보기를 다시 그린다.
 document.addEventListener('click', (e) => {
+  const commentReportBtn = e.target.closest('.comment-report-btn');
+  if (commentReportBtn) {
+    e.stopPropagation();
+    openCommentModal(Number(commentReportBtn.dataset.episode), commentReportBtn.dataset.name);
+    return;
+  }
   const actionBtn = e.target.closest('.status-check-action');
   if (actionBtn) {
     e.stopPropagation();
@@ -361,8 +480,9 @@ document.addEventListener('click', (e) => {
   // 열려있는 등록 폼 안(체크박스·주소 입력칸 등)을 클릭한 거면 폼을 닫지 않는다 — 이 분기가
   // 없으면 체크박스를 누르는 순간 아래 "그 외 클릭은 전부 닫기" 로직에 걸려 폼이 바로 닫혀버림.
   if (e.target.closest('.status-check-manual-form')) return;
-  const btn = e.target.closest('.badge-status-check');
-  const openPopups = document.querySelectorAll('.status-check-popup:not([hidden]), .status-check-manual-form:not([hidden])');
+  const commentBadgeBtn = e.target.closest('.comment-count-badge');
+  const btn = commentBadgeBtn || e.target.closest('.badge-status-check');
+  const openPopups = document.querySelectorAll('.status-check-popup:not([hidden]), .status-check-manual-form:not([hidden]), .comment-popup:not([hidden])');
   if (!btn) {
     openPopups.forEach((p) => { p.hidden = true; });
     return;
@@ -550,7 +670,7 @@ async function handleStatusCheckDecision(btn) {
   renderDetail(episodeNum);
 }
 
-function restaurantViewRow(r, episodeNum, fallbackSourceUrl) {
+function restaurantViewRow(r, episodeNum, fallbackSourceUrl, allComments) {
   const addr = r.address;
   const menuRow = r.menu ? `<p class="spot-field"><strong>소개된 메뉴</strong>${escapeHtml(r.menu)}</p>` : '';
   const reviewRow = r.review ? `<p class="spot-field"><strong>한줄평</strong>${escapeHtml(r.review)}</p>` : '';
@@ -565,9 +685,11 @@ function restaurantViewRow(r, episodeNum, fallbackSourceUrl) {
   const statusMarkup = hasVisibleBadge
     ? statusCheckBadge(sc, episodeNum, r.name)
     : manualFlagLink(episodeNum, r.name);
+  const comments = (allComments || []).filter((c) => c.restaurant_name === r.name);
+  const commentMarkup = `${commentCountBadge(comments)}${commentReportButton(episodeNum, r.name)}`;
   return `
     <div class="restaurant-row">
-      <p class="spot-field"><strong>식당명</strong>${escapeHtml(r.name) || '미확인'}${statusMarkup}</p>
+      <p class="spot-field"><strong>식당명</strong>${escapeHtml(r.name) || '미확인'}${statusMarkup}${commentMarkup}</p>
       <p class="spot-field spot-field-address">
         <strong>위치</strong>
         <span class="spot-field-value">${addr ? escapeHtml(addr) : '미확인'}</span>
@@ -583,16 +705,19 @@ function restaurantViewRow(r, episodeNum, fallbackSourceUrl) {
 // 모바일 전용 방문식당 표(1행 = 식당 1곳). 식당이 여러 곳이면 필드별 카드가 여러 번
 // 반복되는 #spotView 대신, 식당명/메뉴/주소를 표로 비교하기 쉽게 보여준다(사용자 요청).
 // 편집 관련 UI(수정/폐업·이전 처리 버튼)는 모바일에서 전부 숨기므로 여기선 열람만 지원한다.
-function restaurantMobileRow(r, episodeNum) {
+// 제보 관련 UI(제보 배지·제보하기)는 방문자 누구나 쓰는 공개 기능이라 모바일에서도 그대로 유지한다.
+function restaurantMobileRow(r, episodeNum, allComments) {
   const sc = r.status_check;
   const hasVisibleBadge = Boolean(sc && (sc.closure_suspected || sc.moved_suspected) && sc.admin_decision !== 'dismissed');
   const statusMarkup = hasVisibleBadge ? statusCheckBadge(sc, episodeNum, r.name) : '';
+  const comments = (allComments || []).filter((c) => c.restaurant_name === r.name);
+  const commentMarkup = `${commentCountBadge(comments)}${commentReportButton(episodeNum, r.name)}`;
   const mapCell = r.address
     ? `<td class="mobile-spot-map"><a href="${mapUrl(r)}" target="_blank" rel="noopener">${pinIcon}</a></td>`
     : `<td class="mobile-spot-map empty-cell">-</td>`;
   return `
     <tr>
-      <td class="mobile-spot-name">${escapeHtml(r.name) || '미확인'}${statusMarkup}</td>
+      <td class="mobile-spot-name">${escapeHtml(r.name) || '미확인'}${statusMarkup}${commentMarkup}</td>
       <td>${r.menu ? escapeHtml(r.menu) : '-'}</td>
       <td>${r.address ? escapeHtml(r.address) : '미확인'}</td>
       ${mapCell}
@@ -668,13 +793,28 @@ async function ensureBodyHtml(ep) {
   }
 }
 
+// 제보(댓글)도 목록 응답엔 포함되지 않아 상세보기를 열 때 따로 불러온다. 다른 방문자가
+// 방금 새로 남겼을 수도 있으니(body_html과 달리 계속 바뀌는 데이터) 열 때마다 다시 조회한다.
+async function ensureComments(ep) {
+  try {
+    const res = await fetch(`/api/episodes/${ep.episode}/comments`);
+    if (res.ok) {
+      ep.comments = await res.json();
+      return;
+    }
+  } catch (err) {
+    // API 없는 환경 — 아래에서 제보 배지 없이 표시됨
+  }
+  if (ep.comments === undefined) ep.comments = [];
+}
+
 async function renderDetail(epNum) {
   const ep = findEpisode(epNum);
   if (!ep) {
     detailView.innerHTML = `<div class="detail-wrap"><p>존재하지 않는 회차입니다.</p><a class="back-link" href="#/">← 목록으로</a></div>`;
     return;
   }
-  await ensureBodyHtml(ep);
+  await Promise.all([ensureBodyHtml(ep), ensureComments(ep)]);
   if (String(location.hash) !== `#/episode/${epNum}`) return; // 그 사이 다른 화면으로 이동했으면 중단
 
   const restaurants = ep.restaurants || [];
@@ -684,7 +824,7 @@ async function renderDetail(epNum) {
   const bodyHtml = ep.body_html ? DOMPurify.sanitize(ep.body_html) : '<p>본문을 불러오지 못했습니다.</p>';
 
   const viewRows = restaurants.length
-    ? `<div class="restaurant-rows-grid">${restaurants.map((r) => restaurantViewRow(r, ep.episode, ep.restaurants_source_url)).join('')}</div>`
+    ? `<div class="restaurant-rows-grid">${restaurants.map((r) => restaurantViewRow(r, ep.episode, ep.restaurants_source_url, ep.comments)).join('')}</div>`
     : `<p class="spot-field"><strong>식당명</strong>미확인</p><p class="spot-field"><strong>위치</strong>${
         truncateAddress(ep.region) ? escapeHtml(truncateAddress(ep.region)) : '미확인'
       }</p>`;
@@ -696,7 +836,7 @@ async function renderDetail(epNum) {
   const mobileSpotBody = restaurants.length
     ? `<table class="mobile-spot-table">
         <thead><tr><th>식당명</th><th>메뉴</th><th>주소</th><th></th></tr></thead>
-        <tbody>${restaurants.map((r) => restaurantMobileRow(r, ep.episode)).join('')}</tbody>
+        <tbody>${restaurants.map((r) => restaurantMobileRow(r, ep.episode, ep.comments)).join('')}</tbody>
       </table>`
     : `<p class="spot-field"><strong>식당명</strong>미확인</p>`;
 
