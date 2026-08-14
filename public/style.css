@@ -135,14 +135,6 @@ button, a, input, select, textarea {
   width: 100%;
 }
 .search-box input::placeholder { color: var(--ink-soft); }
-.sort-select {
-  border: 1px solid var(--line);
-  border-radius: var(--radius-card);
-  padding: 7px 10px;
-  background: var(--paper-raised);
-  color: var(--ink);
-  font-size: 13px;
-}
 .edit-toggle {
   display: flex;
   align-items: center;
@@ -1689,7 +1681,6 @@ button, a, input, select, textarea {
   #editToggle {
     display: none;
   }
-  .sort-select { width: 100%; }
   .creator-credit {
     align-self: flex-start;
   }

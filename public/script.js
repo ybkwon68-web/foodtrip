@@ -39,7 +39,6 @@ const resultCount = document.getElementById('resultCount');
 const listView = document.getElementById('listView');
 const detailView = document.getElementById('detailView');
 const searchInput = document.getElementById('searchInput');
-const sortSelect = document.getElementById('sortSelect');
 const editToggle = document.getElementById('editToggle');
 const addEntryLink = document.getElementById('addEntryLink');
 const commentsEntryLink = document.getElementById('commentsEntryLink');
@@ -185,7 +184,7 @@ function cardTemplate(ep) {
 function renderList() {
   const query = searchInput.value.trim();
   const filtered = episodes.filter((ep) => matchesSearch(ep, query));
-  const sorted = sortEpisodes(filtered, sortSelect.value);
+  const sorted = sortEpisodes(filtered, 'latest');
 
   const summaryHint = query
     ? `“${query}”로 찾은 회차 ${sorted.length}개`
@@ -999,7 +998,6 @@ grid.addEventListener('keydown', (e) => {
 
 window.addEventListener('hashchange', route);
 searchInput.addEventListener('input', () => { if (!listView.hidden) renderList(); });
-sortSelect.addEventListener('change', () => { if (!listView.hidden) renderList(); });
 editToggle.addEventListener('click', async () => {
   if (editing) {
     clearAdminSession();
