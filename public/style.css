@@ -1788,7 +1788,13 @@ button, a, input, select, textarea {
     font-size: 10.8px;
     font-weight: 700;
   }
-  .mobile-spot-table .mobile-spot-name { font-weight: 700; }
+  /* 4개 칸 너비 배분 — 이전엔 지도 칸(td.mobile-spot-map)에만 width가 붙어있었는데,
+     table-layout:fixed는 첫 행(thead)의 셀 너비로 칸 폭을 정하기 때문에 thead th에는
+     클래스가 없어 실제로는 무시되고 4칸이 거의 균등 분배돼 지도 칸이 필요 이상으로
+     넓어 보였음(사용자 제보) — thead th에도 같은 클래스를 붙이고 명시적 비율을 지정. */
+  .mobile-spot-table .mobile-spot-name { width: 24%; font-weight: 700; }
+  .mobile-spot-table .mobile-spot-menu { width: 18%; }
+  .mobile-spot-table .mobile-spot-addr { width: 48%; }
   /* 회차 상세보기 본문(원문 에세이) — 데스크톱 기준 줄간격(1.95)·문단 여백(22px)이
      좁은 화면에서는 스크롤이 과하게 길어져 한 화면에 몇 줄 안 보이는 문제(사용자 제보,
      1차로 1.6/12px까지 좁혔다가 "최대한 글씨가 많이 보이게" 추가 요청으로 재조정) —
@@ -1806,7 +1812,7 @@ button, a, input, select, textarea {
     margin-right: 2px;
     margin-top: 20px;
   }
-  .mobile-spot-table .mobile-spot-map { width: 34px; text-align: center; }
+  .mobile-spot-table .mobile-spot-map { width: 10%; text-align: center; }
   .mobile-spot-table .mobile-spot-map a { display: inline-flex; color: var(--accent); }
   .mobile-spot-table .mobile-spot-map svg { width: 16px; height: 16px; }
   .table-page {

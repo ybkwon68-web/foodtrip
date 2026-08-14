@@ -717,8 +717,8 @@ function restaurantMobileRow(r, episodeNum, allComments) {
   return `
     <tr>
       <td class="mobile-spot-name">${escapeHtml(r.name) || '미확인'}${statusMarkup}${commentMarkup}</td>
-      <td>${r.menu ? escapeHtml(r.menu) : '-'}</td>
-      <td>${r.address ? escapeHtml(r.address) : '미확인'}</td>
+      <td class="mobile-spot-menu">${r.menu ? escapeHtml(r.menu) : '-'}</td>
+      <td class="mobile-spot-addr"><span class="cell-clamp">${r.address ? escapeHtml(r.address) : '미확인'}</span></td>
       ${mapCell}
     </tr>
   `;
@@ -834,7 +834,12 @@ async function renderDetail(epNum) {
   // 미디어쿼리 관련 CSS 참고) — 데스크톱 마크업은 그대로 두고 화면 폭에 따라 둘 중 하나만 보이게 함.
   const mobileSpotBody = restaurants.length
     ? `<table class="mobile-spot-table">
-        <thead><tr><th>식당명</th><th>메뉴</th><th>주소</th><th></th></tr></thead>
+        <thead><tr>
+          <th class="mobile-spot-name">식당명</th>
+          <th class="mobile-spot-menu">메뉴</th>
+          <th class="mobile-spot-addr">주소</th>
+          <th class="mobile-spot-map"></th>
+        </tr></thead>
         <tbody>${restaurants.map((r) => restaurantMobileRow(r, ep.episode, ep.comments)).join('')}</tbody>
       </table>`
     : `<p class="spot-field"><strong>식당명</strong>미확인</p>`;
