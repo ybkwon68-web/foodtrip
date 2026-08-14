@@ -1798,6 +1798,14 @@ button, a, input, select, textarea {
     font-weight: 700;
   }
   .mobile-spot-table .mobile-spot-name { font-weight: 700; }
+  /* 좁은 칸에서 "제보하기"/제보 배지가 식당명 바로 아래 줄바꿈되면서 오터치로
+     눌리기 쉬웠던 문제 — 별도 줄로 확실히 띄우고 위쪽 여백을 넉넉히 둔다(사용자 제보). */
+  .mobile-spot-table .mobile-spot-name .comment-badge-wrap,
+  .mobile-spot-table .mobile-spot-name .comment-report-btn {
+    display: block;
+    margin-left: 0;
+    margin-top: 6px;
+  }
   .mobile-spot-table .mobile-spot-map { width: 34px; text-align: center; }
   .mobile-spot-table .mobile-spot-map a { display: inline-flex; color: var(--accent); }
   .mobile-spot-table .mobile-spot-map svg { width: 16px; height: 16px; }
