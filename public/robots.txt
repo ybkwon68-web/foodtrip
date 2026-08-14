@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /add.html
+Disallow: /comments.html
